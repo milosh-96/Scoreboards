@@ -4,5 +4,10 @@
     {
         public string Name { get; set; } = "Undefined";
         public int Score { get; set; } = 0;
+
+        public override string ToString()
+        {
+            return this.Name+ " " + Score + "";
+        }
     }
 }

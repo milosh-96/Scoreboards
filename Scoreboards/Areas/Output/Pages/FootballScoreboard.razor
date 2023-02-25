@@ -1,0 +1,14 @@
+﻿@page "/scoreboard/football"
+@using Scoreboards.Models.Football;
+<div>
+    <h1>@ViewModel.GetMatchTitleWithScore()</h1>
+    <hr />
+    <div class="text-center">
+        @ViewModel.GetClockString()
+
+    </div>
+</div>
+
+@code {
+    public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+}

@@ -23,8 +23,7 @@
     <div id="preview">
         <hr />
         <h2>
-            @{var timeSpan = TimeSpan.FromSeconds(ViewModel.Clock);}
-            @String.Format("{0:D2}:{1:D2}", (int) timeSpan.TotalMinutes, timeSpan.Seconds)
+            @ViewModel.GetClockString()
             |
             @ViewModel.HomeTeam.Name 
             @ViewModel.HomeTeam.Score:@ViewModel.AwayTeam.Score
