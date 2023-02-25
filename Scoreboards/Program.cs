@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.ResponseCompression;
+using Scoreboards.Hubs.Football;
 
 namespace Scoreboards
 {
@@ -12,8 +14,14 @@ namespace Scoreboards
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-
+            builder.Services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
             var app = builder.Build();
+            //added for signalr
+            app.UseResponseCompression();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -30,6 +38,9 @@ namespace Scoreboards
             app.UseRouting();
 
             app.MapBlazorHub();
+
+           
+            app.MapHub<FootballScoreboardHub>("/scoreboards/football");
             app.MapFallbackToPage("/_Host");
             app.MapRazorPages();
             app.UseEndpoints(endpoints =>
