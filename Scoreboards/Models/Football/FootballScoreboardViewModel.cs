@@ -5,10 +5,19 @@ namespace Scoreboards.Models.Football
 {
     public class FootballScoreboardViewModel
     {
-        public FootballTeam HomeTeam { get; set; } = new FootballTeam();
-        public FootballTeam AwayTeam { get; set; } = new FootballTeam();    
+        public FootballTeam HomeTeam { get; set; } = new FootballTeam()
+        {
+            Players = Enumerable.Range(1, 11).Select(x => new FootballPlayer() { ShirtNumber = x }).ToList()
+        };
+
+        public FootballTeam AwayTeam { get; set; } = new FootballTeam()
+        {
+            Players = Enumerable.Range(1,11).Select(x=>new FootballPlayer() { ShirtNumber=x}).ToList()
+
+        };    
 
 
+        //set clock to 89 min for testing
         public int Clock { get; set; } = 89*60;
 
         public string GetClockString()

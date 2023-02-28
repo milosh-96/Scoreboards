@@ -1,13 +1,43 @@
 ﻿@page "/manager/football"
+@using Microsoft.AspNetCore.SignalR.Client;
 @using Models.Football;
+@using Scoreboards.Data.Football;
+@inject NavigationManager Navigation
 <div>
     <h3>Football</h3>
+    <hr />
+    <a class="btn btn-primary" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
+
     <div class="row">
         <div class="col">
             <div class="row">
                 <div class="col-6">
                     <input @bind="@ViewModel.HomeTeam.Name" />
                     <input type="number" min="0" max="15" @bind="@ViewModel.HomeTeam.Score" />
+                    <hr />
+                    <h3>Stats</h3>
+                        <div class="input-group">
+                            <input @bind="@ViewModel.HomeTeam.Stats.Posession" class="form-control" />
+                            <span>Possesion</span>
+                            <input @bind="@ViewModel.AwayTeam.Stats.Posession" class="form-control" />
+                        </div>
+                        <div class="input-group">
+                            <input @bind="@ViewModel.HomeTeam.Stats.Passes" class="form-control" />
+                            <span>Possesion</span>
+                            <input @bind="@ViewModel.AwayTeam.Stats.Passes" class="form-control" />
+                        </div>
+                    <hr />
+                    <h3>Players</h3>
+                    @for(int i=0;i<ViewModel.HomeTeam.Players.Count;i++)
+                    {
+                        var item = ViewModel.HomeTeam.Players[i];
+                        <div id="@i" class="input-group" @key="@i">
+                            <input class="form-control" @bind="@item.ShirtNumber" type="text" />
+                            <input class="form-control" @bind="@item.FirstName" type="text" />
+                            <input class ="form-control" @bind="@item.LastName" type="text" />
+                            <input class="form-control" @bind="@item.Position" type="text" />
+                           </div>
+                    }
                 </div>
                 <div class="col-6">
                     <input @bind="@ViewModel.AwayTeam.Name" />
@@ -20,34 +50,61 @@
             <button @onclick="StartTimer" disabled="@(timer != null)">Start</button>
         </div>
     </div>
-    <div id="preview">
-        <hr />
-        <h2>
-            @ViewModel.GetClockString()
-            |
-            @ViewModel.HomeTeam.Name 
-            @ViewModel.HomeTeam.Score:@ViewModel.AwayTeam.Score
-            @ViewModel.AwayTeam.Name
-
-        </h2>
-    </div>
+   @*debug
+    <div>
+    token: @Token
+    @if (hubConnection != null && hubConnection.ConnectionId != null) {
+    <span>@hubConnection.ConnectionId</span>
+    }
+    else {
+    <span>wait...</span>
+    }
+    </div>*@
 </div>
 
 
 @code {
+    //signalr stuff//
+
+    private HubConnection? hubConnection;
+    //properties
+    private string ConnectionToken { get; set; } = Guid.NewGuid().ToString();
+
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
     System.Threading.Timer? timer;
 
     private void SetClock(object stateInfo)
     {
         ViewModel.Clock = ViewModel.Clock + 1;
+        if (hubConnection != null)
+        {
+            Task.Run(async () => 
+            await hubConnection.SendAsync("SendMessage",
+                new KeyValuePair<string,FootballScoreboardViewModel>(ConnectionToken,ViewModel)
+            )
+            );
+        }
         InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
     }
     public async Task StartTimer(MouseEventArgs e)
     {
         if(timer == null) {
-        timer = new System.Threading.Timer(SetClock, new System.Threading.AutoResetEvent(false), 10, 1000); // 10 milliseconds
+            timer = new System.Threading.Timer(SetClock, new System.Threading.AutoResetEvent(false), 10, 1000); // 10 milliseconds
         }
-        }
+    }
 
+    //life cycle events//
+    protected override async Task OnInitializedAsync()
+    {
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/scoreboards/football"))
+        .Build();       
+
+        await hubConnection.StartAsync();
+    }
+
+
+    
+    
 }

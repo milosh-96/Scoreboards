@@ -1,14 +1,108 @@
-﻿@page "/scoreboard/football"
+﻿@page "/scoreboard/football/"
+@page "/scoreboard/football/{token}"
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Data.Football;
 @using Scoreboards.Models.Football;
+@inject NavigationManager Navigation
+
 <div>
+    
     <h1>@ViewModel.GetMatchTitleWithScore()</h1>
     <hr />
     <div class="text-center">
         @ViewModel.GetClockString()
-
     </div>
+
+    
+    <div class="row text-center">
+        <div class="col">
+            @foreach (var item in ViewModel.HomeTeam.Players)
+            {
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span>
+                            @item.ToString()
+                        </span>
+
+                        <span>
+                            @item.Position
+                        </span>
+                    </li>
+                </ul>
+            }
+        </div>
+        <div class="col">
+            <h3>Stats</h3>
+            <ul class="list-group">
+                @foreach(var property in typeof(FootballStats).GetProperties())
+                {
+                    <li class="list-group-item">
+                        <span>@ViewModel.HomeTeam.Stats.GetType().GetProperty(property.Name).GetValue(ViewModel.HomeTeam.Stats)</span>
+                        <span>@property.Name</span>
+                        <span>@ViewModel.AwayTeam.Stats.GetType().GetProperty(property.Name).GetValue(ViewModel.AwayTeam.Stats)</span>
+                    </li>
+                }
+
+            </ul>
+        </div>
+        <div class="col">
+            @foreach(var item in ViewModel.AwayTeam.Players)
+            {
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span>
+                            @item.ToString()
+                        </span>
+                        
+                        <span>
+                            @item.Position
+                            </span>
+                    </li>
+                </ul>                   
+            }
+        </div>
+    </div>
+    @*debug
+        <div>
+        token: @Token
+        @if (hubConnection != null && hubConnection.ConnectionId != null) {
+        <span>@hubConnection.ConnectionId</span>
+        }
+        else {
+        <span>wait...</span>
+        }
+    </div>*@
 </div>
 
 @code {
+    [Parameter]
+    public string Token { get; set; } = "";
+
+    //signalr stuff//
+    private HubConnection? hubConnection;
+    //properties
+    public string? ConnectionId { get; set; }
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+
+    //life cycle events//
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/scoreboards/football"))
+            .Build();
+
+        hubConnection.On<KeyValuePair<string,FootballScoreboardViewModel>>("UpdateData", (item) =>
+        {
+           
+            if(item.Key == Token) {
+                ViewModel = item.Value;
+            }
+            InvokeAsync(StateHasChanged);
+
+        });
+       
+
+        await hubConnection.StartAsync();
+    }
+
 }
