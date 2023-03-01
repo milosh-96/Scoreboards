@@ -2,52 +2,143 @@
 @using Microsoft.AspNetCore.SignalR.Client;
 @using Models.Football;
 @using Scoreboards.Data.Football;
+@implements IDisposable;
 @inject NavigationManager Navigation
 <div>
-    <h3>Football</h3>
+    <div class="alert alert-warning">
+        Do not close this tab/window. Closing of this tab/window will stop all outputs
+        with current token.
+    </div>
+    <div>
+        <h3>Football</h3>
+        <a class="btn btn-primary" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
+
+    </div>
     <hr />
-    <a class="btn btn-primary" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
+
+
+
+
 
     <div class="row">
-        <div class="col">
+        <div class="col col-md-8">
             <div class="row">
                 <div class="col-6">
                     <input @bind="@ViewModel.HomeTeam.Name" />
                     <input type="number" min="0" max="15" @bind="@ViewModel.HomeTeam.Score" />
                     <hr />
-                    <h3>Stats</h3>
-                        <div class="input-group">
-                            <input @bind="@ViewModel.HomeTeam.Stats.Posession" class="form-control" />
-                            <span>Possesion</span>
-                            <input @bind="@ViewModel.AwayTeam.Stats.Posession" class="form-control" />
-                        </div>
-                        <div class="input-group">
-                            <input @bind="@ViewModel.HomeTeam.Stats.Passes" class="form-control" />
-                            <span>Possesion</span>
-                            <input @bind="@ViewModel.AwayTeam.Stats.Passes" class="form-control" />
-                        </div>
-                    <hr />
-                    <h3>Players</h3>
-                    @for(int i=0;i<ViewModel.HomeTeam.Players.Count;i++)
-                    {
-                        var item = ViewModel.HomeTeam.Players[i];
-                        <div id="@i" class="input-group" @key="@i">
-                            <input class="form-control" @bind="@item.ShirtNumber" type="text" />
-                            <input class="form-control" @bind="@item.FirstName" type="text" />
-                            <input class ="form-control" @bind="@item.LastName" type="text" />
-                            <input class="form-control" @bind="@item.Position" type="text" />
-                           </div>
-                    }
+                    
                 </div>
                 <div class="col-6">
                     <input @bind="@ViewModel.AwayTeam.Name" />
                     <input type="number" min="0" max="15" @bind="@ViewModel.AwayTeam.Score" />
                 </div>
             </div>
-        </div>
-        <div class="col">
+            <div class="col-12">
+                <h3>Stats</h3>
 
-            <button @onclick="StartTimer" disabled="@(timer != null)">Start</button>
+                @{
+                    var homeStats = ViewModel.HomeTeam.Stats;
+                    var awayStats = ViewModel.AwayTeam.Stats;
+                }
+                <table class="table">
+                    <tr>
+                        <td><input @bind="@homeStats.Possession" class="form-control" /></td>
+                        <td>Possesion</td>
+                        <td><input @bind="@awayStats.Possession" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td><input @bind="@homeStats.Passes" class="form-control" /></td>
+                        <td>Passes</td>
+                        <td><input @bind="@awayStats.Passes" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td><input @bind="@homeStats.CompletedPasses" class="form-control" /></td>
+                        <td>Completed Passes</td>
+                        <td><input @bind="@awayStats.CompletedPasses" class="form-control" /></td>
+                    </tr>
+
+                     <tr>
+                        <td><input @bind="@homeStats.Shots" class="form-control" /></td>
+                        <td>Shots</td>
+                        <td><input @bind="@awayStats.Shots" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td><input @bind="@homeStats.ShotsOnTarget" class="form-control" /></td>
+                        <td>Shots (on target)</td>
+                        <td><input @bind="@awayStats.ShotsOnTarget" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td><input @bind="@homeStats.CornerKicks" class="form-control" /></td>
+                        <td>Corner Kicks</td>
+                        <td><input @bind="@awayStats.CornerKicks" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td><input @bind="@homeStats.FreeKicks" class="form-control" /></td>
+                        <td>Free Kicks</td>
+                        <td><input @bind="@awayStats.FreeKicks" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td><input @bind="@homeStats.Penalties" class="form-control" /></td>
+                        <td>Penalties</td>
+                        <td><input @bind="@awayStats.Penalties" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td><input @bind="@homeStats.Fouls" class="form-control" /></td>
+                        <td>Fouls</td>
+                        <td><input @bind="@awayStats.Fouls" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td><input @bind="@homeStats.Offsides" class="form-control" /></td>
+                        <td>Offsides</td>
+                        <td><input @bind="@awayStats.Offsides" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td><input @bind="@homeStats.YellowCards" class="form-control" /></td>
+                        <td>Yellow Cards</td>
+                        <td><input @bind="@awayStats.YellowCards" class="form-control" /></td>
+                    </tr>
+                    <tr>
+                        <td><input @bind="@homeStats.RedCards" class="form-control" /></td>
+                        <td>Red Cards</td>
+                        <td><input @bind="@awayStats.RedCards" class="form-control" /></td>
+                    </tr>
+                   
+                   
+                </table>
+                <hr />
+                <h3>Players</h3>
+                <div class="row">
+                    <div class="col">
+                        @for (int i = 0; i < ViewModel.HomeTeam.Players.Count; i++)
+                        {
+                            var item = ViewModel.HomeTeam.Players[i];
+                            <div id="@i" class="input-group" @key="@i">
+                                <input class="form-control" @bind="@item.ShirtNumber" type="text" />
+                                <input class="form-control" @bind="@item.FirstName" type="text" />
+                                <input class="form-control" @bind="@item.LastName" type="text" />
+                                <input class="form-control" @bind="@item.Position" type="text" />
+                            </div>
+                        }
+                    </div>
+                    <div class="col">
+                        @for (int i = 0; i < ViewModel.AwayTeam.Players.Count; i++)
+                        {
+                            var item = ViewModel.AwayTeam.Players[i];
+                            <div id="@i" class="input-group" @key="@i">
+                                <input class="form-control" @bind="@item.ShirtNumber" type="text" />
+                                <input class="form-control" @bind="@item.FirstName" type="text" />
+                                <input class="form-control" @bind="@item.LastName" type="text" />
+                                <input class="form-control" @bind="@item.Position" type="text" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-4">
+                <button class="btn btn-primary" @onclick="StartTimer" disabled="@(timer != null)">Start Clock</button>
+                <h3>@ViewModel.GetClockString()</h3>
         </div>
     </div>
    @*debug
@@ -64,6 +155,13 @@
 
 
 @code {
+    public void Dispose()
+    { 
+        if(hubConnection != null)
+        {
+            Task.Run(async()=> { await hubConnection.DisposeAsync(); });
+        }
+    }
     //signalr stuff//
 
     private HubConnection? hubConnection;

@@ -4,8 +4,8 @@ namespace Scoreboards.Data.Football
 {
     public class FootballStats
     {
-        [DisplayName("Posession (%)")]
-        public int Posession { get; set; } = 0;
+        [DisplayName("Possession (%)")]
+        public int Possession { get; set; } = 0;
         public int Passes { get; set; } = 0;
 
         [DisplayName("Passes (completed)")]
