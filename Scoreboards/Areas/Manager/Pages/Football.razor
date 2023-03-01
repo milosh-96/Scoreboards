@@ -138,7 +138,13 @@
         </div>
         <div class="col col-md-4">
                 <button class="btn btn-primary" @onclick="StartTimer" disabled="@(timer != null)">Start Clock</button>
-                <h3>@ViewModel.GetClockString()</h3>
+                <button class="btn btn-primary" @onclick="StopTimer" disabled="@(timer == null)">Stop Clock</button>
+                <hr />
+            @if(timer == null)
+            {
+                <button class="btn btn-primary" @onclick="RefreshOutputData">Refresh Output</button>
+            }
+            <h3>@ViewModel.GetClockString()</h3>
         </div>
     </div>
    @*debug
@@ -176,11 +182,11 @@
         ViewModel.Clock = ViewModel.Clock + 1;
         if (hubConnection != null)
         {
-            Task.Run(async () => 
-            await hubConnection.SendAsync("SendMessage",
-                new KeyValuePair<string,FootballScoreboardViewModel>(ConnectionToken,ViewModel)
-            )
-            );
+            Task.Run(async () =>
+            {
+                await RefreshOutputData();
+            }
+        );
         }
         InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
     }
@@ -188,6 +194,25 @@
     {
         if(timer == null) {
             timer = new System.Threading.Timer(SetClock, new System.Threading.AutoResetEvent(false), 10, 1000); // 10 milliseconds
+        }
+    }
+
+    public async Task StopTimer()
+    {
+        if(timer != null)
+        {
+            timer.Dispose();
+            timer = null;
+        }
+    }
+
+    public async Task RefreshOutputData()
+    {
+        if(hubConnection != null)
+        {
+            await hubConnection.SendAsync("SendMessage",
+              new KeyValuePair<string, FootballScoreboardViewModel>(ConnectionToken, ViewModel)
+          );
         }
     }
 
@@ -201,6 +226,12 @@
 
         await hubConnection.StartAsync();
     }
+
+
+
+
+
+
 
 
     
