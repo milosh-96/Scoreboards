@@ -3,11 +3,21 @@
 @using Microsoft.AspNetCore.SignalR.Client;
 @using Scoreboards.Data.Football;
 @using Scoreboards.Models.Football;
+@using System.Drawing;
 @inject NavigationManager Navigation
 
 <div>
     
-    <h1>@ViewModel.GetMatchTitleWithScore()</h1>
+    <h1>
+        <span style="color:@ViewModel.HomeTeam.AccentColorHex">
+            @ViewModel.HomeTeam.Name
+        </span>
+        <span>@ViewModel.HomeTeam.Score:@ViewModel.AwayTeam.Score</span>
+        <span style="color:@ViewModel.AwayTeam.AccentColorHex">
+            @ViewModel.AwayTeam.Name
+        </span>
+       
+    </h1>
     <hr />
     <div class="text-center">
         @ViewModel.GetClockString()
