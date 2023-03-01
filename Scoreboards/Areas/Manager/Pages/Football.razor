@@ -136,6 +136,7 @@
                 </div>
             </div>
         </div>
+        @*Tools*@
         <div class="col col-md-4">
                 <button class="btn btn-primary" @onclick="StartTimer" disabled="@(timer != null)">Start Clock</button>
                 <button class="btn btn-primary" @onclick="StopTimer" disabled="@(timer == null)">Stop Clock</button>
@@ -163,6 +164,7 @@
 @code {
     public void Dispose()
     { 
+        // kill connection with current token when this tab/window is closed //
         if(hubConnection != null)
         {
             Task.Run(async()=> { await hubConnection.DisposeAsync(); });
@@ -179,9 +181,11 @@
 
     private void SetClock(object stateInfo)
     {
+        // increment seconds count of viewmodel //
         ViewModel.Clock = ViewModel.Clock + 1;
         if (hubConnection != null)
         {
+            // send data to output each seconds, this is important because of clock //
             Task.Run(async () =>
             {
                 await RefreshOutputData();
@@ -193,7 +197,8 @@
     public async Task StartTimer(MouseEventArgs e)
     {
         if(timer == null) {
-            timer = new System.Threading.Timer(SetClock, new System.Threading.AutoResetEvent(false), 10, 1000); // 10 milliseconds
+            // run timer every second
+            timer = new System.Threading.Timer(SetClock, new System.Threading.AutoResetEvent(false), 10, 1000); //
         }
     }
 
