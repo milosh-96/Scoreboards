@@ -1,0 +1,47 @@
+﻿@page "/scoreboard/football/"
+@page "/scoreboard/football/{token}"
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Areas.Output.Pages.Football.Layouts
+@using Scoreboards.Data.Football;
+@using Scoreboards.Models.Football;
+@using System.Drawing;
+@inject NavigationManager Navigation
+
+<div>
+    <VerticalLayoutWithClock
+    ViewModel="ViewModel"
+    ></VerticalLayoutWithClock>
+</div>
+
+@code {
+    [Parameter]
+    public string Token { get; set; } = "";
+
+    //signalr stuff//
+    private HubConnection? hubConnection;
+    //properties
+    public string? ConnectionId { get; set; }
+    public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+
+    //life cycle events//
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/scoreboards/football"))
+            .Build();
+
+        hubConnection.On<KeyValuePair<string,FootballScoreboardViewModel>>("UpdateData", (item) =>
+        {
+           
+            if(item.Key == Token) {
+                ViewModel = item.Value;
+            }
+            InvokeAsync(StateHasChanged);
+
+        });
+       
+
+        await hubConnection.StartAsync();
+    }
+
+}

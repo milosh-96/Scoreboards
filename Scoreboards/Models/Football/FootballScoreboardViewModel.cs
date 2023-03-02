@@ -21,7 +21,7 @@ namespace Scoreboards.Models.Football
 
 
         //set clock to 89 min for testing
-        public int Clock { get; set; } = 89*60;
+        public int Clock { get; set; } = 35*60;
 
         public string GetClockString()
         {
