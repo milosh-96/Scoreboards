@@ -6,7 +6,7 @@
         public string FirstName { get; set; } = "John";
         public string LastName { get; set; } = "Doe";
 
-        public string Position { get; set; } = "Striker";
+        public string Position { get; set; }
 
         public override string ToString()
         {

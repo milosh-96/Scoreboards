@@ -1,0 +1,31 @@
+﻿@using Scoreboards.Data.Football;
+@if(Team != null && Team.Players.Count > 0)
+{
+    <div>
+        @Team.Name
+        @for (int i = 0; i < Team.Players.Count; i++)
+        {
+            var item = Team.Players[i];
+            <div id="@i" class="input-group" @key="@i">
+                <input class="form-control" @bind="@item.ShirtNumber" type="text" />
+                <input class="form-control" @bind="@item.FirstName" type="text" />
+                <input class="form-control" @bind="@item.LastName" type="text" />
+                <select class="form-control" @bind="@item.Position">
+                    <option value="Gk">Goalkeeper</option>
+                    <option value="Df">Defender</option>
+                    <option value="Mf">Middlefielder</option>
+                    <option value="St">Striker</option>
+                </select>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div>please pass team with at least one player</div>
+}
+
+@code {
+    [Parameter]
+    public FootballTeam? Team { get; set; }
+}

@@ -9,13 +9,13 @@ namespace Scoreboards.Models.Football
         public FootballTeam HomeTeam { get; set; } = new FootballTeam()
         {
             AccentColorHex = "#dd0000",
-            Players = Enumerable.Range(1, 11).Select(x => new FootballPlayer() { ShirtNumber = x }).ToList()
+            Players = Enumerable.Range(1, 11).Select(x => new FootballPlayer() {Position="Goalkeeper", ShirtNumber = x }).ToList()
         };
 
         public FootballTeam AwayTeam { get; set; } = new FootballTeam()
         {
             AccentColorHex ="#003366",
-            Players = Enumerable.Range(1,11).Select(x=>new FootballPlayer() { ShirtNumber=x}).ToList()
+            Players = Enumerable.Range(1,11).Select(x=>new FootballPlayer() {Position="Goalkeeper",  ShirtNumber=x}).ToList()
 
         };    
 
