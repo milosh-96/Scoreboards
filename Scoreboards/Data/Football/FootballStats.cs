@@ -18,6 +18,7 @@ namespace Scoreboards.Data.Football
         public int CornerKicks { get; set; } = 0;
         public int FreeKicks { get; set; } = 0;
         public int Penalties { get; set; } = 0;
+        public int GoalkeeperSaves { get; set; } = 0;
         public int Fouls { get; set; } = 0;
         public int Offsides { get; set; } = 0;
         public int YellowCards { get; set; } = 0;

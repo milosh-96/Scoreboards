@@ -1,4 +1,5 @@
-﻿using Scoreboards.Data.Football;
+﻿using Scoreboards.Areas.Output.Pages.Football.Layouts;
+using Scoreboards.Data.Football;
 using System;
 using System.Drawing;
 
@@ -6,6 +7,7 @@ namespace Scoreboards.Models.Football
 {
     public class FootballScoreboardViewModel
     {
+        public string ScoreboardLayout { get; set; } = nameof(HorizontalLayoutWithLineupsAndClock);
         public FootballTeam HomeTeam { get; set; } = new FootballTeam()
         {
             AccentColorHex = "#dd0000",

@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.SignalR.Client;
 @using Models.Football;
 @using Scoreboards.Areas.Manager.Pages.Football.Components
+@using Scoreboards.Areas.Output.Pages.Football.Layouts;
 @using Scoreboards.Data.Football;
 @implements IDisposable;
 @inject NavigationManager Navigation
@@ -13,8 +14,7 @@
     <div>
         <h3>Football</h3>
         <a class="btn btn-primary" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
-
-    </div>
+      
     <hr />
 
 
@@ -25,7 +25,7 @@
                    <div class="input-group">
                         <input @bind="@ViewModel.HomeTeam.Name" class="form-control" />
                         <input type="number" min="0" max="15" @bind="@ViewModel.HomeTeam.Score" class="form-control" />
-                        <input type="text" @bind="@ViewModel.HomeTeam.Logo" class="form-control" />
+                        <input type="text" @bind="@ViewModel.HomeTeam.Logo" class="form-control" placeholder="Team Logo URL" />
                         <input type="color" @bind="@ViewModel.HomeTeam.AccentColorHex" class="form-control" />
                         <hr />
 
@@ -35,98 +35,80 @@
                     <div class="input-group">
                         <input @bind="@ViewModel.AwayTeam.Name" class="form-control" />
                         <input type="number" min="0" max="15" @bind="@ViewModel.AwayTeam.Score" class="form-control" />
-                        <input type="text" @bind="@ViewModel.AwayTeam.Logo" class="form-control" />
+                        <input type="text" @bind="@ViewModel.AwayTeam.Logo" class="form-control" placeholder="Team Logo URL" />
                         <input type="color" @bind="@ViewModel.AwayTeam.AccentColorHex" class="form-control" />
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <h3>Stats</h3>
+            <div class="row">
+                    <hr />
+                <div class="col">
+                       <div>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editMatchStats">
+                                Edit Match Stats
+                            </button><p></p>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editLineups">
+                                Edit Lineups
+                            </button>
+                       </div>
+                        <!-- Modal -->
+                        <div class="modal modal-xl fade" id="editMatchStats" tabindex="-1" aria-labelledby="editMatchStatsLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="editMatchStatsLabel">Edit Match Stats</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <MatchStats HomeTeam="ViewModel.HomeTeam"
+                                                            AwayTeam="ViewModel.AwayTeam"></MatchStats>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                @{
-                    var homeStats = ViewModel.HomeTeam.Stats;
-                    var awayStats = ViewModel.AwayTeam.Stats;
-                }
-                <table class="table">
-                    <tr>
-                        <td><input @bind="@homeStats.Possession" class="form-control" /></td>
-                        <td>Possesion</td>
-                        <td><input @bind="@awayStats.Possession" class="form-control" /></td>
-                    </tr>
-                    <tr>
-                        <td><input @bind="@homeStats.Passes" class="form-control" /></td>
-                        <td>Passes</td>
-                        <td><input @bind="@awayStats.Passes" class="form-control" /></td>
-                    </tr>
-                    <tr>
-                        <td><input @bind="@homeStats.CompletedPasses" class="form-control" /></td>
-                        <td>Completed Passes</td>
-                        <td><input @bind="@awayStats.CompletedPasses" class="form-control" /></td>
-                    </tr>
+                      
 
-                     <tr>
-                        <td><input @bind="@homeStats.Shots" class="form-control" /></td>
-                        <td>Shots</td>
-                        <td><input @bind="@awayStats.Shots" class="form-control" /></td>
-                    </tr>
-                    <tr>
-                        <td><input @bind="@homeStats.ShotsOnTarget" class="form-control" /></td>
-                        <td>Shots (on target)</td>
-                        <td><input @bind="@awayStats.ShotsOnTarget" class="form-control" /></td>
-                    </tr>
-                    <tr>
-                        <td><input @bind="@homeStats.CornerKicks" class="form-control" /></td>
-                        <td>Corner Kicks</td>
-                        <td><input @bind="@awayStats.CornerKicks" class="form-control" /></td>
-                    </tr>
-                    <tr>
-                        <td><input @bind="@homeStats.FreeKicks" class="form-control" /></td>
-                        <td>Free Kicks</td>
-                        <td><input @bind="@awayStats.FreeKicks" class="form-control" /></td>
-                    </tr>
-                    <tr>
-                        <td><input @bind="@homeStats.Penalties" class="form-control" /></td>
-                        <td>Penalties</td>
-                        <td><input @bind="@awayStats.Penalties" class="form-control" /></td>
-                    </tr>
-                    <tr>
-                        <td><input @bind="@homeStats.Fouls" class="form-control" /></td>
-                        <td>Fouls</td>
-                        <td><input @bind="@awayStats.Fouls" class="form-control" /></td>
-                    </tr>
-                    <tr>
-                        <td><input @bind="@homeStats.Offsides" class="form-control" /></td>
-                        <td>Offsides</td>
-                        <td><input @bind="@awayStats.Offsides" class="form-control" /></td>
-                    </tr>
-                    <tr>
-                        <td><input @bind="@homeStats.YellowCards" class="form-control" /></td>
-                        <td>Yellow Cards</td>
-                        <td><input @bind="@awayStats.YellowCards" class="form-control" /></td>
-                    </tr>
-                    <tr>
-                        <td><input @bind="@homeStats.RedCards" class="form-control" /></td>
-                        <td>Red Cards</td>
-                        <td><input @bind="@awayStats.RedCards" class="form-control" /></td>
-                    </tr>
-                   
-                   
-                </table>
-                <hr />
-                
-                <div class="row">
-                    <div class="col">
-                        
-                      <TeamLineup Team="ViewModel.HomeTeam"></TeamLineup>
-                    </div>
-                    <div class="col">
-                        <TeamLineup Team="ViewModel.AwayTeam"></TeamLineup>
+                        <!-- Modal -->
+                        <div class="modal modal-xl fade" id="editLineups" tabindex="-1" aria-labelledby="editLineupsLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="editLineupsLabel">Edit Lineups</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <TeamLineup Team="ViewModel.HomeTeam"></TeamLineup>
+                                            </div>
+                                            <div class="col">
+                                                <TeamLineup Team="ViewModel.AwayTeam"></TeamLineup>
 
-                    </div>
-                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>      
             </div>
+                        
+                    
         </div>
-        @*Tools*@
+            
         <div class="col col-md-4">
                 <button class="btn btn-primary" @onclick="StartTimer" disabled="@(timer != null)">Start Clock</button>
                 <button class="btn btn-primary" @onclick="StopTimer" disabled="@(timer == null)">Stop Clock</button>
@@ -138,6 +120,8 @@
             <h3>@ViewModel.GetClockString()</h3>
         </div>
     </div>
+    </div>
+    </div>
    @*debug
     <div>
     token: @Token
@@ -148,7 +132,6 @@
     <span>wait...</span>
     }
     </div>*@
-</div>
 
 
 @code {
@@ -211,6 +194,7 @@
         }
     }
 
+   
     //life cycle events//
     protected override async Task OnInitializedAsync()
     {

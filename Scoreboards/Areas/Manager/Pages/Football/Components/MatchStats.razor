@@ -1,0 +1,81 @@
+﻿@using Scoreboards.Data.Football;
+@{
+    var homeStats = HomeTeam.Stats;
+    var awayStats = AwayTeam.Stats;
+}
+<table class="table">
+    <tr>
+        <td><input type="number" @bind="@homeStats.Possession" class="form-control" /></td>
+        <td>Possesion</td>
+        <td><input type="number" @bind="@awayStats.Possession" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.Passes" class="form-control" /></td>
+        <td>Passes</td>
+        <td><input type="number" @bind="@awayStats.Passes" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.CompletedPasses" class="form-control" /></td>
+        <td>Completed Passes</td>
+        <td><input type="number" @bind="@awayStats.CompletedPasses" class="form-control" /></td>
+    </tr>
+
+    <tr>
+        <td><input type="number" @bind="@homeStats.Shots" class="form-control" /></td>
+        <td>Shots</td>
+        <td><input type="number" @bind="@awayStats.Shots" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.ShotsOnTarget" class="form-control" /></td>
+        <td>Shots (on target)</td>
+        <td><input type="number" @bind="@awayStats.ShotsOnTarget" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.CornerKicks" class="form-control" /></td>
+        <td>Corner Kicks</td>
+        <td><input type="number" @bind="@awayStats.CornerKicks" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.FreeKicks" class="form-control" /></td>
+        <td>Free Kicks</td>
+        <td><input type="number" @bind="@awayStats.FreeKicks" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.Penalties" class="form-control" /></td>
+        <td>Penalties</td>
+        <td><input type="number" @bind="@awayStats.Penalties" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.GoalkeeperSaves" class="form-control" /></td>
+        <td>Goalkeeper Saves</td>
+        <td><input type="number" @bind="@awayStats.GoalkeeperSaves" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.Fouls" class="form-control" /></td>
+        <td>Fouls</td>
+        <td><input type="number" @bind="@awayStats.Fouls" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.Offsides" class="form-control" /></td>
+        <td>Offsides</td>
+        <td><input type="number" @bind="@awayStats.Offsides" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.YellowCards" class="form-control" /></td>
+        <td>Yellow Cards</td>
+        <td><input type="number" @bind="@awayStats.YellowCards" class="form-control" /></td>
+    </tr>
+    <tr>
+        <td><input type="number" @bind="@homeStats.RedCards" class="form-control" /></td>
+        <td>Red Cards</td>
+        <td><input type="number" @bind="@awayStats.RedCards" class="form-control" /></td>
+    </tr>
+
+
+</table>
+@code {
+    [Parameter]
+    public FootballTeam HomeTeam { get; set; } = new FootballTeam();
+    [Parameter]
+    public FootballTeam AwayTeam { get; set; } = new FootballTeam();
+}

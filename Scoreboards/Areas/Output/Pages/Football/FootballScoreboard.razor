@@ -8,6 +8,7 @@
 @inject NavigationManager Navigation
 
 <div>
+   
     <HorizontalLayoutWithLineupsAndClock ViewModel="ViewModel"></HorizontalLayoutWithLineupsAndClock>
 </div>
 
@@ -19,7 +20,11 @@
     private HubConnection? hubConnection;
     //properties
     public string? ConnectionId { get; set; }
+
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+
+    // dynamic component stuff //
+
 
     //life cycle events//
     protected override async Task OnInitializedAsync()
@@ -30,16 +35,18 @@
 
         hubConnection.On<KeyValuePair<string,FootballScoreboardViewModel>>("UpdateData", (item) =>
         {
-           
+
+          
             if(item.Key == Token) {
                 ViewModel = item.Value;
             }
             InvokeAsync(StateHasChanged);
 
         });
-       
+
 
         await hubConnection.StartAsync();
     }
+
 
 }
