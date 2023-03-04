@@ -8,8 +8,16 @@
 @inject NavigationManager Navigation
 
 <div>
-   
-    <HorizontalLayoutWithLineupsAndClock ViewModel="ViewModel"></HorizontalLayoutWithLineupsAndClock>
+    @switch(ViewModel.LayoutPreset)
+    {
+        case 2:
+            <VerticalLayoutWithClock ViewModel="ViewModel"></VerticalLayoutWithClock>
+        break;
+        case 1:
+        default:
+            <HorizontalLayoutWithLineupsAndClock ViewModel="ViewModel"></HorizontalLayoutWithLineupsAndClock>
+        break;
+    }
 </div>
 
 @code {

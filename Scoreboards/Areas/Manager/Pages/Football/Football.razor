@@ -13,7 +13,20 @@
     </div>
     <div>
         <h3>Football</h3>
-        <a class="btn btn-primary" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
+        <div class="row">
+<div class="col">
+                <div class="input-group">
+                    <select class="form-control" @bind="ViewModel.LayoutPreset">
+                        <option value="1">Preset 1</option>
+                        <option value="2">Preset 2</option>
+                    </select>
+                </div>
+</div>
+<div class="col">
+                <a class="btn btn-primary" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
+
+</div>
+</div>
       
     <hr />
 
