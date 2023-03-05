@@ -187,20 +187,26 @@
     private string ConnectionToken { get; set; } = Guid.NewGuid().ToString();
 
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+    System.Threading.Timer? dataSyncTimer;
     System.Threading.Timer? timer;
 
     private void SetClock(object stateInfo)
     {
         // increment seconds count of viewmodel //
         ViewModel.Clock = ViewModel.Clock + 1;
+        
+        InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
+    }
+    private void SyncScoreboardData(object stateInfo)
+    {
         if (hubConnection != null)
         {
             // send data to output each seconds, this is important because of clock //
             Task.Run(async () =>
-            {
-                await RefreshOutputData();
-            }
-        );
+                {
+                    await RefreshOutputData();
+                }
+            );
         }
         InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
     }
@@ -241,6 +247,12 @@
         .Build();       
 
         await hubConnection.StartAsync();
+
+        if (dataSyncTimer == null)
+        {
+            // run timer every second
+            dataSyncTimer = new System.Threading.Timer(SyncScoreboardData, new System.Threading.AutoResetEvent(false), 10, 1000); //
+        }
     }
 
 
