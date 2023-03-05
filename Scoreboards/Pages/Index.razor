@@ -25,12 +25,10 @@
                 <div class="text-center my-5">
                     <h1 class="display-5 fw-bolder text-white mb-2">A scoreboard for you!</h1>
                     <p class="lead text-white-50 mb-4">
-                        Welcome! R8 Match Scoreboards is a web service that allows you to
-                        have modern, live and interactive scoreboards in your
-                        home, park, arena or stadium. Literally anywhere.
+                        @SiteInfo.Description
                     </p>
                     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="/manager/football">Get Started</a>
+                        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="/app/manager/football">Get Started</a>
                     </div>
                 </div>
             </div>
@@ -66,15 +64,18 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
-                    <h2 class="h4 fw-bolder">Real time updates</h2>
+                    <h2 class="h4 fw-bolder">Real(istic) Layouts</h2>
                     <p>
-                        Forget clicking on "update" button. Our system is real-time so your changes will be instantly
-                        reflected on an output window!
+                        All Layout presets are inspired by real scoreboards. 
+                        For entertainment purposes there are some layouts that will
+                        allow you to simulate a real scoreboard. Currently the layout preset
+                        2 is a replica of the Anfield scoreboard.
+
                     </p>
-                 @*   <a class="text-decoration-none" href="#!">
-                        How to use Scoreboards
+                    <a class="text-decoration-none" href="/app/manager/football">
+                        Try Now (choose Preset 2)
                         <i class="bi bi-arrow-right"></i>
-                    </a>*@
+                    </a>
                 </div>
             </div>
         </div>
@@ -115,43 +116,25 @@
             </div>
        
     </section>
-   @* <!-- Testimonials section-->
-    <section class="py-5 border-bottom">
-        <div class="container px-5 my-5 px-5">
-            <div class="text-center mb-5">
-                <h2 class="fw-bolder">Customer testimonials</h2>
-                <p class="lead mb-0">Our customers love working with us</p>
-            </div>
+  
+    <section class="bg-light py-5 border-bottom">
+                <div class="container px-5 my-5">
+
             <div class="row gx-5 justify-content-center">
-                <div class="col-lg-6">
-                    <!-- Testimonial 1-->
-                    <div class="card mb-4">
-                        <div class="card-body p-4">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
-                                <div class="ms-4">
-                                    <p class="mb-1">Thank you for putting together such a great product. We loved working with you and the whole team, and we will be recommending you to others!</p>
-                                    <div class="small text-muted">- Client Name, Location</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Testimonial 2-->
-                    <div class="card">
-                        <div class="card-body p-4">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
-                                <div class="ms-4">
-                                    <p class="mb-1">The whole team was a huge help with putting things together for our company and brand. We will be hiring them again in the near future for additional work!</p>
-                                    <div class="small text-muted">- Client Name, Location</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col">
+                    <h2>How to use?</h2>
+                    <p>
+                        As an admin you will be using the manager window where you will be able to make all changes to the scoreboard.
+                        Once everything is ready, you can open the output window in a new tab/window and that tab/window can be then projected (mirrored)
+                        to the stadium screen. <strong>All updates will be immediately displayed on the output.</strong>
+                    </p>
+                    <p>
+                        If you use Windows operating system, these instructions about <a href="https://support.microsoft.com/en-us/windows/screen-mirroring-and-projecting-to-your-pc-5af9f371-c704-1c7f-8f0d-fa607551d09c" target="_blank">Screen Mirroning</a> may help you.
+                    </p>
                 </div>
             </div>
         </div>
-    </section>*@
+    </section>
 </div>
 <footer class="py-5 bg-dark">
     <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; @SiteInfo.Name 2022-@DateTime.Now.ToString("yyyy")</p></div>
