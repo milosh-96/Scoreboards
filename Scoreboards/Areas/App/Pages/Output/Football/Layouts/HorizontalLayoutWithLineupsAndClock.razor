@@ -1,8 +1,12 @@
 ﻿@using Scoreboards.Models.Football;
+@{
+    var layoutOptions = ViewModel.LayoutOptions;
+    string middleColumnWidth = layoutOptions.ShowStats ? "col-md-5" : "col-md-2";
+}
 <div class="container scoreboard">
     <div class="layout">
         <div class="row">
-            <div class="col col-md-5 home-team">
+            <div class="col home-team">
                 <ul class="list-group lineups">
                     @foreach (var item in ViewModel.HomeTeam.Players)
                     {
@@ -18,26 +22,52 @@
                     }
                 </ul>
             </div>
-            <div class="col col-md-2 info">
+            <div class="col @middleColumnWidth info">
                 <div class="score-screen">
                     <div class="row">
-                        <div class="col-6">
-                            <img src="@ViewModel.HomeTeam.Logo" class="img-fluid" />
+                        <div class="col-4">
+                            @if (ViewModel.LayoutOptions.ShowTeamLogos)
+                            {
+                                <img src="@ViewModel.HomeTeam.Logo" class="img-fluid" />
+                            } 
+                            @if (ViewModel.LayoutOptions.ShowTeamNames)
+                            {
+                                <p>@ViewModel.HomeTeam.Name</p>
+                            }
+                           
                         </div>
-                        <div class="col-6">
-                            <img src="@ViewModel.AwayTeam.Logo" class="img-fluid" />
-                        </div>
-                    </div>
-                    <div>
-                        @ViewModel.HomeTeam.Score-@ViewModel.AwayTeam.Score
+                        <div class="score col-4">
+                            @ViewModel.HomeTeam.Score-@ViewModel.AwayTeam.Score
 
+                        </div>
+                        <div class="col-4">
+                            @if (ViewModel.LayoutOptions.ShowTeamLogos)
+                            {
+                                <img src="@ViewModel.AwayTeam.Logo" class="img-fluid"  />
+                            }
+                            @if (ViewModel.LayoutOptions.ShowTeamNames)
+                            {
+                                <p>@ViewModel.AwayTeam.Name</p>
+                            }
+                        </div>
                     </div>
+                   
                 </div>
-                <div class="clock">
-                    @ViewModel.GetClockString()
-                </div>
+                @if(ViewModel.LayoutOptions.ShowStats)
+                {
+                    <Scoreboards.Areas.App.Pages.Output.Football.Components.MatchStatsTable
+                    HomeTeam="ViewModel.HomeTeam"
+                    AwayTeam="ViewModel.AwayTeam"
+                    ></Scoreboards.Areas.App.Pages.Output.Football.Components.MatchStatsTable>
+                }
+                @if(ViewModel.LayoutOptions.ShowClock)
+                {
+                    <div class="clock">
+                        @ViewModel.GetClockString()
+                    </div>
+                }
             </div>
-            <div class="col col-md-5 away-team">
+            <div class="col away-team">
                 <ul class="list-group lineups">
                     @foreach (var item in ViewModel.AwayTeam.Players)
                     {
@@ -74,22 +104,25 @@
         width:100%;
         height:35vh;
         padding:10px;
-        font-size:64px;
         text-align:center;
         box-shadow: 5px 5px 1px rgba(255,255,255,0.2);
-        margin-bottom:40vh;
     }
-    .lineups > li {
+    .score-screen .score {
+            font-size: 64px;
+        }
+    .lineups > li,.stats-table > tr {
         background:rgba(0,0,0,0.4);
         color:inherit;
         text-transform:uppercase;
     }
+    .stats-table > tr > td {color:#fff;text-align:center;font-size:18px;}
     .clock {
         background:rgba(255,255,255,0.2);
         box-shadow:5px 5px 1px rgba(255,255,255,0.2);
         font-size:48px;
         padding:10px;
         text-align:center;
+        
 
     }
 </style>

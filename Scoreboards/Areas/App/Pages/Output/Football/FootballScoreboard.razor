@@ -1,7 +1,6 @@
-﻿@page "/scoreboard/football/"
-@page "/scoreboard/football/{token}"
+﻿@page "/scoreboard/football/{token}"
 @using Microsoft.AspNetCore.SignalR.Client;
-@using Scoreboards.Areas.Output.Pages.Football.Layouts
+@using Scoreboards.Areas.App.Pages.Output.Football.Layouts
 @using Scoreboards.Data.Football;
 @using Scoreboards.Models.Football;
 @using System.Drawing;
@@ -21,6 +20,7 @@
 </div>
 
 @code {
+   
     [Parameter]
     public string Token { get; set; } = "";
 

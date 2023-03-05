@@ -1,8 +1,8 @@
-﻿@page "/manager/football"
+﻿@page "/app/manager/football"
 @using Microsoft.AspNetCore.SignalR.Client;
 @using Models.Football;
-@using Scoreboards.Areas.Manager.Pages.Football.Components
-@using Scoreboards.Areas.Output.Pages.Football.Layouts;
+@using Scoreboards.Areas.App.Pages.Manager.Football.Components
+@using Scoreboards.Areas.App.Pages.Output.Football.Layouts;
 @using Scoreboards.Data.Football;
 @implements IDisposable;
 @inject NavigationManager Navigation
@@ -20,6 +20,30 @@
                         <option value="1">Preset 1</option>
                         <option value="2">Preset 2</option>
                     </select>
+                </div>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#layoutOptions">
+                    Layout Options
+                </button><p></p>
+                <div class="modal modal-xl fade" id="layoutOptions" tabindex="-1" aria-labelledby="layoutOptionsLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="layoutOptionsLabel">Layout options</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <LayoutOptions Options="ViewModel.LayoutOptions"></LayoutOptions>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 </div>
 <div class="col">

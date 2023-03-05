@@ -1,4 +1,4 @@
-﻿using Scoreboards.Areas.Output.Pages.Football.Layouts;
+﻿using Scoreboards.Areas.App.Pages.Output.Football.Layouts;
 using Scoreboards.Data.Football;
 using System;
 using System.Drawing;
@@ -7,7 +7,7 @@ namespace Scoreboards.Models.Football
 {
     public class FootballScoreboardViewModel
     {
-
+        public FootballScoreboardLayoutOptions LayoutOptions { get; set; } = new FootballScoreboardLayoutOptions();
         public int LayoutPreset { get; set; } = 1;
         public FootballTeam HomeTeam { get; set; } = new FootballTeam()
         {

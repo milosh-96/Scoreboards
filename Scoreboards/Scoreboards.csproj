@@ -11,15 +11,4 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.12" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Manager\Controllers\" />
-    <Folder Include="Areas\Manager\Data\" />
-    <Folder Include="Areas\Manager\Models\" />
-    <Folder Include="Areas\Manager\Views\" />
-    <Folder Include="Areas\Output\Controllers\" />
-    <Folder Include="Areas\Output\Data\" />
-    <Folder Include="Areas\Output\Models\" />
-    <Folder Include="Areas\Output\Views\" />
-  </ItemGroup>
-
 </Project>
