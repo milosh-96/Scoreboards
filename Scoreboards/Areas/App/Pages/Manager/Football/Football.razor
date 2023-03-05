@@ -17,8 +17,8 @@
 <div class="col">
                 <div class="input-group">
                     <select class="form-control" @bind="ViewModel.LayoutPreset">
-                        <option value="1">Preset 1</option>
-                        <option value="2">Preset 2 (Anfield-like)</option>
+                        <option value="1">Layout Preset 1</option>
+                        <option value="2">Layout Preset 2 (Anfield-like)</option>
                     </select>
                 </div>
                 <!-- Button trigger modal -->
@@ -150,10 +150,10 @@
                 <button class="btn btn-primary" @onclick="StartTimer" disabled="@(timer != null)">Start Clock</button>
                 <button class="btn btn-primary" @onclick="StopTimer" disabled="@(timer == null)">Stop Clock</button>
                 <hr />
-            @if(timer == null)
+            @*@if(timer == null)
             {
                 <button class="btn btn-primary" @onclick="RefreshOutputData">Refresh Output</button>
-            }
+            }*@
             <h3>@ViewModel.GetClockString()</h3>
         </div>
     </div>
