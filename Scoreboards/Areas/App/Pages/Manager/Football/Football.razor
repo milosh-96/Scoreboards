@@ -59,22 +59,25 @@
         <div class="col col-md-8">
             <div class="row">
                 <div class="col-12">
+                    <span>Home Team</span>
                    <div class="input-group">
                         <input @bind="@ViewModel.HomeTeam.Name" class="form-control" />
                         <input type="number" min="0" max="15" @bind="@ViewModel.HomeTeam.Score" class="form-control" />
                         <input type="text" @bind="@ViewModel.HomeTeam.Logo" class="form-control" placeholder="Team Logo URL" />
                         <input type="color" @bind="@ViewModel.HomeTeam.AccentColorHex" class="form-control" />
-                        <hr />
-
                     </div>
+                    <hr />
+
                 </div>
                 <div class="col-12">
+                    <span>Away Team</span>
                     <div class="input-group">
                         <input @bind="@ViewModel.AwayTeam.Name" class="form-control" />
                         <input type="number" min="0" max="15" @bind="@ViewModel.AwayTeam.Score" class="form-control" />
                         <input type="text" @bind="@ViewModel.AwayTeam.Logo" class="form-control" placeholder="Team Logo URL" />
                         <input type="color" @bind="@ViewModel.AwayTeam.AccentColorHex" class="form-control" />
                     </div>
+                        <hr />
                 </div>
             </div>
             <div class="row">
@@ -147,17 +150,33 @@
         </div>
             
         <div class="col col-md-4">
-                <button class="btn btn-primary" @onclick="StartTimer" disabled="@(timer != null)">Start Clock</button>
-                <button class="btn btn-primary" @onclick="StopTimer" disabled="@(timer == null)">Stop Clock</button>
+                <h3>@ViewModel.GetClockString()</h3>
+            <hr />
+                <div>
+                    <button class="btn btn-primary" @onclick="StartTimer" disabled="@(timer != null)">Start Clock</button>
+                    <button class="btn btn-primary" @onclick="StopTimer" disabled="@(timer == null)">Stop Clock</button>
+                </div>
                 <hr />
             @if(timer == null)
             {
-                <button class="btn btn-primary" @onclick="()=>ViewModel.Clock++">Increasee Seconds</button>
-                @if(ViewModel.Clock > 0) {
-                <button class="btn btn-primary" @onclick="()=>{if(ViewModel.Clock >= 0){ViewModel.Clock--;}}">Decrease Seconds</button>
-                }
-                }
-            <h3>@ViewModel.GetClockString()</h3>
+               <div class="row">
+                       <div class="col">
+                            <button class="btn btn-sm btn-secondary my-1" @onclick="()=>ViewModel.Clock+= 60">Increase Minutes</button>
+                            <button class="btn btn-sm btn-secondary" @onclick="()=>ViewModel.Clock++">Increasee Seconds</button>
+                       </div>
+                        <div class="col">
+                            @if (ViewModel.Clock >= 60)
+                            {
+                                <button class="btn btn-sm btn-secondary my-1" @onclick="()=>{if(ViewModel.Clock >= 60){ViewModel.Clock-=60;}}">Decrease Minutes</button>
+                            }
+                            @if (ViewModel.Clock > 0)
+                            {
+                                <button class="btn btn-sm btn-secondary" @onclick="()=>{if(ViewModel.Clock >= 0){ViewModel.Clock--;}}">Decrease Seconds</button>
+                            }
+                        </div>
+               </div>
+            }
+           
         </div>
     </div>
     </div>
