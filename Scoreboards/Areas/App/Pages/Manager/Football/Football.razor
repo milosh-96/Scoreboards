@@ -150,10 +150,11 @@
                 <button class="btn btn-primary" @onclick="StartTimer" disabled="@(timer != null)">Start Clock</button>
                 <button class="btn btn-primary" @onclick="StopTimer" disabled="@(timer == null)">Stop Clock</button>
                 <hr />
-            @*@if(timer == null)
+            @if(timer == null)
             {
-                <button class="btn btn-primary" @onclick="RefreshOutputData">Refresh Output</button>
-            }*@
+                <button class="btn btn-primary" @onclick="()=>ViewModel.Clock++">Increasee Seconds</button>
+                <button class="btn btn-primary" @onclick="()=>ViewModel.Clock--">Decrease Seconds</button>
+            }
             <h3>@ViewModel.GetClockString()</h3>
         </div>
     </div>
