@@ -13,6 +13,7 @@
     </div>
     <div>
         <h3>Football</h3>
+      
         <div class="row">
 <div class="col">
                 <div class="input-group">
@@ -22,7 +23,7 @@
                     </select>
                 </div>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#layoutOptions">
+                <button type="button" class="btn btn-sm btn-secondary my-1" data-bs-toggle="modal" data-bs-target="#layoutOptions">
                     Layout Options
                 </button><p></p>
                 <div class="modal modal-xl fade" id="layoutOptions" tabindex="-1" aria-labelledby="layoutOptionsLabel" aria-hidden="true">
@@ -47,8 +48,15 @@
                 </div>
 </div>
 <div class="col">
-                <a class="btn btn-primary" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
-
+                <a class="btn btn-primary mx-1" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
+                @if (dataSyncTimer != null)
+                {
+                    <button class="btn btn-sm btn-warning" @onclick="()=>{dataSyncTimer.Dispose();dataSyncTimer=null;}">Pause Output Syncing</button>
+                }
+                else
+                {
+                    <button class="btn btn-sm btn-success" @onclick="()=>SetupDataSyncTimer()">Start Output Syncing</button>
+                }
 </div>
 </div>
       
@@ -209,14 +217,17 @@
     private string ConnectionToken { get; set; } = Guid.NewGuid().ToString();
 
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+    // this timer will be run to send data to output //
     System.Threading.Timer? dataSyncTimer;
+
+    //this is game clock
     System.Threading.Timer? timer;
 
     private void SetClock(object stateInfo)
     {
         // increment seconds count of viewmodel //
         ViewModel.Clock = ViewModel.Clock + 1;
-        
+
         InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
     }
     private void SyncScoreboardData(object stateInfo)
@@ -259,7 +270,14 @@
         }
     }
 
-   
+    public void SetupDataSyncTimer()
+    {
+        if (dataSyncTimer == null)
+        {
+            // run timer every second
+            dataSyncTimer = new System.Threading.Timer(SyncScoreboardData, new System.Threading.AutoResetEvent(false), 10, 1000); //
+        }
+    }
     //life cycle events//
     protected override async Task OnInitializedAsync()
     {
@@ -270,11 +288,8 @@
 
         await hubConnection.StartAsync();
 
-        if (dataSyncTimer == null)
-        {
-            // run timer every second
-            dataSyncTimer = new System.Threading.Timer(SyncScoreboardData, new System.Threading.AutoResetEvent(false), 10, 1000); //
-        }
+        // start output updates once app is started //
+        SetupDataSyncTimer();
     }
 
 
