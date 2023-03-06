@@ -153,8 +153,10 @@
             @if(timer == null)
             {
                 <button class="btn btn-primary" @onclick="()=>ViewModel.Clock++">Increasee Seconds</button>
-                <button class="btn btn-primary" @onclick="()=>ViewModel.Clock--">Decrease Seconds</button>
-            }
+                @if(ViewModel.Clock > 0) {
+                <button class="btn btn-primary" @onclick="()=>{if(ViewModel.Clock >= 0){ViewModel.Clock--;}}">Decrease Seconds</button>
+                }
+                }
             <h3>@ViewModel.GetClockString()</h3>
         </div>
     </div>
