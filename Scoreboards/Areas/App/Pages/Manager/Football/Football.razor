@@ -13,9 +13,9 @@
     </div>
     <div>
         <h3>Football</h3>
-      
+
         <div class="row">
-<div class="col">
+            <div class="col">
                 <div class="input-group">
                     <select class="form-control" @bind="ViewModel.LayoutPreset">
                         <option value="1">Layout Preset 1</option>
@@ -26,28 +26,11 @@
                 <button type="button" class="btn btn-sm btn-secondary my-1" data-bs-toggle="modal" data-bs-target="#layoutOptions">
                     Layout Options
                 </button><p></p>
-                <div class="modal modal-xl fade" id="layoutOptions" tabindex="-1" aria-labelledby="layoutOptionsLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="layoutOptionsLabel">Layout options</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <LayoutOptions Options="ViewModel.LayoutOptions"></LayoutOptions>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-</div>
-<div class="col">
+                <Scoreboards.Areas.App.Pages.Manager.Football.Modals.LayoutOptionsModal
+                    Options="@ViewModel.LayoutOptions"
+                ></Scoreboards.Areas.App.Pages.Manager.Football.Modals.LayoutOptionsModal>
+            </div>
+            <div class="col">
                 <a class="btn btn-primary mx-1" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
                 @if (dataSyncTimer != null)
                 {
@@ -57,41 +40,41 @@
                 {
                     <button class="btn btn-sm btn-success" @onclick="()=>SetupDataSyncTimer()">Start Output Syncing</button>
                 }
-</div>
-</div>
-      
-    <hr />
-
-
-    <div class="row">
-        <div class="col col-md-8">
-            <div class="row">
-                <div class="col-12">
-                    <span>Home Team</span>
-                   <div class="input-group">
-                        <input @bind="@ViewModel.HomeTeam.Name" class="form-control" />
-                        <input type="number" min="0" max="15" @bind="@ViewModel.HomeTeam.Score" class="form-control" />
-                        <input type="text" @bind="@ViewModel.HomeTeam.Logo" class="form-control" placeholder="Team Logo URL" />
-                        <input type="color" @bind="@ViewModel.HomeTeam.AccentColorHex" class="form-control" />
-                    </div>
-                    <hr />
-
-                </div>
-                <div class="col-12">
-                    <span>Away Team</span>
-                    <div class="input-group">
-                        <input @bind="@ViewModel.AwayTeam.Name" class="form-control" />
-                        <input type="number" min="0" max="15" @bind="@ViewModel.AwayTeam.Score" class="form-control" />
-                        <input type="text" @bind="@ViewModel.AwayTeam.Logo" class="form-control" placeholder="Team Logo URL" />
-                        <input type="color" @bind="@ViewModel.AwayTeam.AccentColorHex" class="form-control" />
-                    </div>
-                        <hr />
-                </div>
             </div>
-            <div class="row">
+        </div>
+
+        <hr />
+
+
+        <div class="row">
+            <div class="col col-md-8">
+                <div class="row">
+                    <div class="col-12">
+                        <span>Home Team</span>
+                        <div class="input-group">
+                            <input @bind="@ViewModel.HomeTeam.Name" class="form-control" />
+                            <input type="number" min="0" max="15" @bind="@ViewModel.HomeTeam.Score" class="form-control" />
+                            <input type="text" @bind="@ViewModel.HomeTeam.Logo" class="form-control" placeholder="Team Logo URL" />
+                            <input type="color" @bind="@ViewModel.HomeTeam.AccentColorHex" class="form-control" />
+                        </div>
+                        <hr />
+
+                    </div>
+                    <div class="col-12">
+                        <span>Away Team</span>
+                        <div class="input-group">
+                            <input @bind="@ViewModel.AwayTeam.Name" class="form-control" />
+                            <input type="number" min="0" max="15" @bind="@ViewModel.AwayTeam.Score" class="form-control" />
+                            <input type="text" @bind="@ViewModel.AwayTeam.Logo" class="form-control" placeholder="Team Logo URL" />
+                            <input type="color" @bind="@ViewModel.AwayTeam.AccentColorHex" class="form-control" />
+                        </div>
+                        <hr />
+                    </div>
+                </div>
+                <div class="row">
                     <hr />
-                <div class="col">
-                       <div>
+                    <div class="col">
+                        <div>
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editMatchStats">
                                 Edit Match Stats
@@ -100,78 +83,39 @@
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editLineups">
                                 Edit Lineups
                             </button>
-                       </div>
-                        <!-- Modal -->
-                        <div class="modal modal-xl fade" id="editMatchStats" tabindex="-1" aria-labelledby="editMatchStatsLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editMatchStatsLabel">Edit Match Stats</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <MatchStats HomeTeam="ViewModel.HomeTeam"
-                                                            AwayTeam="ViewModel.AwayTeam"></MatchStats>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
-                      
+                        @*this will open when  edit stats button is clicked*@
+                        <Scoreboards.Areas.App.Pages.Manager.Football.Modals.EditStats 
+                            HomeTeam="ViewModel.HomeTeam"
+                            AwayTeam="ViewModel.AwayTeam">
+                        </Scoreboards.Areas.App.Pages.Manager.Football.Modals.EditStats>
+                        @*this will open when edit lineups button is clicked*@
+                        <Scoreboards.Areas.App.Pages.Manager.Football.Modals.EditLineups
+                            HomeTeam="ViewModel.HomeTeam"
+                            AwayTeam="ViewModel.AwayTeam">
+                        </Scoreboards.Areas.App.Pages.Manager.Football.Modals.EditLineups>
+                    </div>
+                </div>
 
-                        <!-- Modal -->
-                        <div class="modal modal-xl fade" id="editLineups" tabindex="-1" aria-labelledby="editLineupsLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editLineupsLabel">Edit Lineups</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <TeamLineup Team="ViewModel.HomeTeam"></TeamLineup>
-                                            </div>
-                                            <div class="col">
-                                                <TeamLineup Team="ViewModel.AwayTeam"></TeamLineup>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                </div>      
             </div>
-                        
-                    
-        </div>
-            
-        <div class="col col-md-4">
+
+            <div class="col col-md-4">
                 <h3>@ViewModel.GetClockString()</h3>
-            <hr />
+                <hr />
                 <div>
                     <button class="btn btn-primary" @onclick="StartTimer" disabled="@(timer != null)">Start Clock</button>
                     <button class="btn btn-primary" @onclick="StopTimer" disabled="@(timer == null)">Stop Clock</button>
                 </div>
                 <hr />
-            @if(timer == null)
-            {
-               <div class="row">
-                       <div class="col">
+                @if (timer == null)
+                {
+                    <div class="row">
+                        <div class="col">
                             <button class="btn btn-sm btn-secondary my-1" @onclick="()=>ViewModel.Clock+= 60">Increase Minutes</button>
                             <button class="btn btn-sm btn-secondary" @onclick="()=>ViewModel.Clock++">Increasee Seconds</button>
-                       </div>
+                        </div>
                         <div class="col">
                             @if (ViewModel.Clock >= 60)
                             {
@@ -182,14 +126,14 @@
                                 <button class="btn btn-sm btn-secondary" @onclick="()=>{if(ViewModel.Clock >= 0){ViewModel.Clock--;}}">Decrease Seconds</button>
                             }
                         </div>
-               </div>
-            }
-           
+                    </div>
+                }
+
+            </div>
         </div>
     </div>
-    </div>
-    </div>
-   @*debug
+</div>
+@*debug
     <div>
     token: @Token
     @if (hubConnection != null && hubConnection.ConnectionId != null) {
@@ -203,11 +147,11 @@
 
 @code {
     public void Dispose()
-    { 
+    {
         // kill connection with current token when this tab/window is closed //
-        if(hubConnection != null)
+        if (hubConnection != null)
         {
-            Task.Run(async()=> { await hubConnection.DisposeAsync(); });
+            Task.Run(async () => { await hubConnection.DisposeAsync(); });
         }
     }
     //signalr stuff//
@@ -245,7 +189,8 @@
     }
     public async Task StartTimer(MouseEventArgs e)
     {
-        if(timer == null) {
+        if (timer == null)
+        {
             // run timer every second
             timer = new System.Threading.Timer(SetClock, new System.Threading.AutoResetEvent(false), 10, 1000); //
         }
@@ -253,7 +198,7 @@
 
     public async Task StopTimer()
     {
-        if(timer != null)
+        if (timer != null)
         {
             timer.Dispose();
             timer = null;
@@ -262,7 +207,7 @@
 
     public async Task RefreshOutputData()
     {
-        if(hubConnection != null)
+        if (hubConnection != null)
         {
             await hubConnection.SendAsync("SendMessage",
               new KeyValuePair<string, FootballScoreboardViewModel>(ConnectionToken, ViewModel)
@@ -284,7 +229,7 @@
 
         hubConnection = new HubConnectionBuilder()
             .WithUrl(Navigation.ToAbsoluteUri("/scoreboards/football"))
-        .Build();       
+        .Build();
 
         await hubConnection.StartAsync();
 
@@ -299,6 +244,6 @@
 
 
 
-    
-    
+
+
 }

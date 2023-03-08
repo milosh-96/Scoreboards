@@ -1,0 +1,31 @@
+﻿@using Scoreboards.Areas.App.Pages.Manager.Football.Components
+@using Scoreboards.Data.Football;
+<!-- Modal -->
+                        <div class="modal modal-xl fade" id="editMatchStats" tabindex="-1" aria-labelledby="editMatchStatsLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="editMatchStatsLabel">Edit Match Stats</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <MatchStats HomeTeam="HomeTeam"
+                                                            AwayTeam="AwayTeam"></MatchStats>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+@code {
+    [Parameter]
+    public FootballTeam HomeTeam { get; set; } = new FootballTeam();
+    [Parameter]
+    public FootballTeam AwayTeam { get; set; } = new FootballTeam();
+}
