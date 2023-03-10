@@ -84,6 +84,16 @@
                                 Edit Lineups
                             </button>
                         </div>
+                        <hr />
+                        <h3>Match Events</h3>
+                        <button class="btn btn-secondary"
+                            @onclick="@(async ()=>{
+                                ViewModel.HomeTeam.Score++;
+                                await EmitEvent("goalEvent");
+                                
+                            })">
+                            Goal!
+                        </button>
 
                         @*this will open when  edit stats button is clicked*@
                         <Scoreboards.Areas.App.Pages.Manager.Football.Modals.EditStatsModal 
@@ -223,6 +233,17 @@
             dataSyncTimer = new System.Threading.Timer(SyncScoreboardData, new System.Threading.AutoResetEvent(false), 10, 1000); //
         }
     }
+
+    // match events
+
+    public async Task EmitEvent(string name)
+    {
+        if(hubConnection!=null)
+        {
+            await hubConnection.SendAsync("EmitEvent",name);
+        }
+    }
+
     //life cycle events//
     protected override async Task OnInitializedAsync()
     {
@@ -237,7 +258,7 @@
         SetupDataSyncTimer();
     }
 
-
+   
 
 
 

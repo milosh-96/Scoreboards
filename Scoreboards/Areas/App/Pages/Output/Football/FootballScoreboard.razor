@@ -4,6 +4,7 @@
 @using Scoreboards.Data.Football;
 @using Scoreboards.Models.Football;
 @using System.Drawing;
+@inject IJSRuntime jsRuntime;
 @inject NavigationManager Navigation
 
 <div>
@@ -20,7 +21,7 @@
 </div>
 
 @code {
-   
+
     [Parameter]
     public string Token { get; set; } = "";
 
@@ -44,17 +45,27 @@
         hubConnection.On<KeyValuePair<string,FootballScoreboardViewModel>>("UpdateData", (item) =>
         {
 
-          
+
             if(item.Key == Token) {
                 ViewModel = item.Value;
             }
             InvokeAsync(StateHasChanged);
 
         });
+        hubConnection.On<string>("EmittedEvent", async (string name) =>
+        {
+            switch(name)
+            {
+                case "goalEvent":
+                    await jsRuntime.InvokeVoidAsync("alert", name);
+                    break;
+            }
 
+        });
 
         await hubConnection.StartAsync();
     }
 
 
+    // events
 }

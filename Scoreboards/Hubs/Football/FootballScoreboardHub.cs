@@ -17,5 +17,9 @@ namespace Scoreboards.Hubs.Football
 
                 );
         }
+
+        public async Task EmitEvent(string name) {
+            await Clients.All.SendAsync("EmittedEvent",name);
+        }
     }
 }
