@@ -8,6 +8,26 @@
 @inject NavigationManager Navigation
 
 <div>
+    @if(ActiveEvent != null)
+    {
+       <div class="full-screen-overlay">
+            @switch (ActiveEvent)
+            {
+                case "goalEvent":
+                    var word = "Goal!!!";
+                    <div>
+                        <h1 class="ml14">
+                           <span class="letters">
+                                @word
+                           </span>
+                            <span class="line"></span>
+                        </h1>
+
+                    </div>
+                    break;
+            }
+       </div>
+    }
     @switch(ViewModel.LayoutPreset)
     {
         case 2:
@@ -33,7 +53,7 @@
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
 
     // dynamic component stuff //
-
+    public string? ActiveEvent { get; set; }
 
     //life cycle events//
     protected override async Task OnInitializedAsync()
@@ -57,7 +77,12 @@
             switch(name)
             {
                 case "goalEvent":
-                    await jsRuntime.InvokeVoidAsync("alert", name);
+                    ActiveEvent = name;
+                    InvokeAsync(StateHasChanged);
+                    await jsRuntime.InvokeVoidAsync("goalEvent");
+                    await Task.Delay(TimeSpan.FromSeconds(60));
+                    ActiveEvent = null;
+                    InvokeAsync(StateHasChanged);
                     break;
             }
 
@@ -69,3 +94,48 @@
 
     // events
 }
+
+        <style>
+            .full-screen-overlay {
+      min-height:100vh;
+        position: absolute;
+        background: @ViewModel.HomeTeam.AccentColorHex;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 9999;
+            }
+
+    .ml14 {
+        font-weight: 200;
+        font-size: 256px;
+        padding-top:15vh;
+        text-align: center;
+    }
+
+        .ml14 .text-wrapper {
+            position: relative;
+            display: inline-block;
+            padding-top: 0.1em;
+            padding-right: 0.05em;
+            padding-bottom: 0.15em;
+        }
+
+        .ml14 .line {
+            opacity: 0;
+            position: absolute;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            background-color: #fff;
+            transform-origin: 100% 100%;
+            bottom: 0;
+        }
+
+        .ml14 .letter {
+            display: inline-block;
+            line-height: 1em;
+        }
+
+        </style>

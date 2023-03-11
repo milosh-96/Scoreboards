@@ -12,7 +12,11 @@
     },
     {
       "library": "popper.js@2.11.6",
-      "destination": "wwwroot/lib/popper"
+      "destination": "wwwroot/lib/popper",
+    },
+    {
+      "library": "animejs@3.2.1",
+      "destination": "wwwroot/lib/animejs"
     }
   ]
 }
