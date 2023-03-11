@@ -86,10 +86,28 @@
                         </div>
                         <hr />
                         <h3>Match Events</h3>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-secondary" @onclick="@(async ()=>{
+                                await StartTimer();
+                                await EmitEvent(FootballEventsEnum.MatchStarted);
+                                
+                            })" disabled="@(timer != null)">Kick Off</button>
+
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-secondary">Half Time</button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-secondary">Match End</button>
+
+                            </div>
+                        </div>
+                        
                         <button class="btn btn-secondary"
                             @onclick="@(async ()=>{
                                 ViewModel.HomeTeam.Score++;
-                                await EmitEvent("goalEvent");
+                                await EmitEvent(FootballEventsEnum.GoalScored);
                                 
                             })">
                             Goal!
@@ -197,7 +215,7 @@
         }
         InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
     }
-    public async Task StartTimer(MouseEventArgs e)
+    public async Task StartTimer()
     {
         if (timer == null)
         {
@@ -236,11 +254,11 @@
 
     // match events
 
-    public async Task EmitEvent(string name)
+    public async Task EmitEvent(FootballEventsEnum eventType)
     {
         if(hubConnection!=null)
         {
-            await hubConnection.SendAsync("EmitEvent",name);
+            await hubConnection.SendAsync("EmitEvent",eventType);
         }
     }
 

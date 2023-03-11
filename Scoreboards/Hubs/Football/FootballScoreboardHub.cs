@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Scoreboards.Data.Football;
 using Scoreboards.Models.Football;
 
 namespace Scoreboards.Hubs.Football
@@ -18,8 +19,8 @@ namespace Scoreboards.Hubs.Football
                 );
         }
 
-        public async Task EmitEvent(string name) {
-            await Clients.All.SendAsync("EmittedEvent",name);
+        public async Task EmitEvent(FootballEventsEnum eventType) {
+            await Clients.All.SendAsync("EmittedEvent",eventType);
         }
     }
 }

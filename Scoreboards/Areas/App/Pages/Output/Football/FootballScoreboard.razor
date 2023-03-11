@@ -11,10 +11,24 @@
     @if(ActiveEvent != null)
     {
        <div class="full-screen-overlay">
+            @{var word = "";}
+
             @switch (ActiveEvent)
             {
-                case "goalEvent":
-                    var word = "Goal!!!";
+                case FootballEventsEnum.GoalScored:
+                    word = "Goal!";
+                    <div>
+                        <h1 class="ml14">
+                           <span class="letters">
+                                @word
+                           </span>
+                            <span class="line"></span>
+                        </h1>
+
+                    </div>
+                    break;
+                case FootballEventsEnum.MatchStarted:
+                    word = "Kick-Off!";
                     <div>
                         <h1 class="ml14">
                            <span class="letters">
@@ -53,7 +67,7 @@
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
 
     // dynamic component stuff //
-    public string? ActiveEvent { get; set; }
+    public FootballEventsEnum? ActiveEvent { get; set; }
 
     //life cycle events//
     protected override async Task OnInitializedAsync()
@@ -72,15 +86,23 @@
             InvokeAsync(StateHasChanged);
 
         });
-        hubConnection.On<string>("EmittedEvent", async (string name) =>
+        hubConnection.On<FootballEventsEnum>("EmittedEvent", async (FootballEventsEnum eventType) =>
         {
-            switch(name)
+            switch(eventType)
             {
-                case "goalEvent":
-                    ActiveEvent = name;
+                case FootballEventsEnum.GoalScored:
+                    ActiveEvent = FootballEventsEnum.GoalScored;
                     InvokeAsync(StateHasChanged);
                     await jsRuntime.InvokeVoidAsync("goalEvent");
                     await Task.Delay(TimeSpan.FromSeconds(60));
+                    ActiveEvent = null;
+                    InvokeAsync(StateHasChanged);
+                    break;
+                case FootballEventsEnum.MatchStarted:
+                    ActiveEvent = FootballEventsEnum.MatchStarted;
+                    InvokeAsync(StateHasChanged);
+                    await jsRuntime.InvokeVoidAsync("goalEvent");
+                    await Task.Delay(TimeSpan.FromSeconds(15));
                     ActiveEvent = null;
                     InvokeAsync(StateHasChanged);
                     break;
