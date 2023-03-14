@@ -6,11 +6,12 @@
 @using Scoreboards.Data.Football;
 @implements IDisposable;
 @inject NavigationManager Navigation
-<div class="container">
+<div class="container mb-3">
     <div class="alert alert-warning">
         Do not close this tab/window. Closing of this tab/window will stop all outputs
-        with current token.
+        with current token. All entered data will be lost as well! 
     </div>
+   
     <div>
         <h3>Football</h3>
 
@@ -93,25 +94,39 @@
                                 await EmitEvent(FootballEventsEnum.MatchStarted);
                                 
                             })" disabled="@(timer != null)">Kick Off</button>
+                                <button class="mx-1 btn btn-secondary" @onclick="@(async ()=>{
+                                await StopTimer();
+                                ViewModel.Clock = 45*60;
+                                await EmitEvent(FootballEventsEnum.HalfTime);
 
-                            </div>
-                            <div class="col">
-                                <button class="btn btn-secondary">Half Time</button>
-                            </div>
-                            <div class="col">
+                            })" disabled="@(timer == null)">
+                                    Half Time
+                                </button>
                                 <button class="btn btn-secondary">Match End</button>
-
                             </div>
                         </div>
-                        
-                        <button class="btn btn-secondary"
-                            @onclick="@(async ()=>{
+                        <div class="row">
+                          <div class="col mt-3">
+                                <button class="mx-1 btn btn-secondary"
+                                        @onclick="@(async ()=>{
                                 ViewModel.HomeTeam.Score++;
                                 await EmitEvent(FootballEventsEnum.GoalScored);
-                                
+
                             })">
-                            Goal!
-                        </button>
+                                    Goal (home team)
+                                </button>
+                                <button class="btn btn-secondary"
+                                        @onclick="@(async ()=>{
+                                ViewModel.AwayTeam.Score++;
+                                await EmitEvent(FootballEventsEnum.GoalScored);
+
+                            })">
+                                    Goal (away team)
+                                   
+                                </button> - <small><em>will play "goal" animation</em></small>
+                          </div>
+                        </div>
+                       
 
                         @*this will open when  edit stats button is clicked*@
                         <Scoreboards.Areas.App.Pages.Manager.Football.Modals.EditStatsModal 

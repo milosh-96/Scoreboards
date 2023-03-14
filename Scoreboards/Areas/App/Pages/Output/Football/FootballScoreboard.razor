@@ -39,6 +39,18 @@
 
                     </div>
                     break;
+                    case FootballEventsEnum.HalfTime:
+                    word = "Half Time";
+                    <div>
+                        <h1 class="ml14">
+                           <span class="letters">
+                                @word
+                           </span>
+                            <span class="line"></span>
+                        </h1>
+
+                    </div>
+                    break;
             }
        </div>
     }
@@ -100,6 +112,14 @@
                     break;
                 case FootballEventsEnum.MatchStarted:
                     ActiveEvent = FootballEventsEnum.MatchStarted;
+                    InvokeAsync(StateHasChanged);
+                    await jsRuntime.InvokeVoidAsync("goalEvent");
+                    await Task.Delay(TimeSpan.FromSeconds(15));
+                    ActiveEvent = null;
+                    InvokeAsync(StateHasChanged);
+                    break;
+                case FootballEventsEnum.HalfTime:
+                    ActiveEvent = FootballEventsEnum.HalfTime;
                     InvokeAsync(StateHasChanged);
                     await jsRuntime.InvokeVoidAsync("goalEvent");
                     await Task.Delay(TimeSpan.FromSeconds(15));
