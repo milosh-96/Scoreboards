@@ -7,6 +7,6 @@
         public bool ShowTeamNames { get; set; } = false;
         public bool ShowTeamLogos { get; set; } = true;
         public bool ShowLineups { get; set; } = true;
-        public bool ShowStats { get; set; } = false;
+        public bool ShowStats { get; set; } = true;
     }
 }
