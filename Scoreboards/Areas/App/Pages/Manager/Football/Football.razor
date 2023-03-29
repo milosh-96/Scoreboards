@@ -119,7 +119,7 @@
                                 <button class="mx-1 btn btn-secondary"
                                         @onclick="@(async ()=>{
                                 ViewModel.HomeTeam.Score++;
-                                await EmitEvent(FootballEventsEnum.GoalScored);
+                                 await EmitEvent(FootballEventsEnum.GoalScored);
 
                             })">
                                     Goal (home team)
@@ -282,7 +282,10 @@
     {
         if(hubConnection!=null)
         {
-            await hubConnection.SendAsync("EmitEvent",eventType);
+            await hubConnection.SendAsync("EmitEvent",
+            new KeyValuePair<string, FootballEventsEnum>(ConnectionToken, eventType)
+            );
+           
         }
     }
 

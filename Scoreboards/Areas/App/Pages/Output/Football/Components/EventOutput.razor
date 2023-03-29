@@ -33,21 +33,18 @@
                 break;
         }
         <div>
-            <h1 class="ml14">
+            <div>
                 <span class="letters">
                     @word
                 </span>
                 <span class="line"></span>
-            </h1>
+            </div>
 
         </div>
     </div>
 }
 
 @code {
-    // this is needed so we can sync this component with the manager //
-    [Parameter]
-    public HubConnection? HubConnection { get; set; }
     //
     [Parameter]
     public FootballTeam HomeTeam { get; set; } = new FootballTeam();
@@ -55,6 +52,7 @@
     [Parameter]
     public FootballTeam AwayTeam { get; set; } = new FootballTeam();
 
+    [Parameter]
     public FootballEventsEnum? ActiveEvent { get; set; }
 
     [Parameter]
@@ -62,43 +60,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        if (HubConnection != null)
-        {
-            HubConnection.On<FootballEventsEnum>("EmittedEvent", async (FootballEventsEnum eventType) =>
-    {
-        switch (eventType)
-        {
-            case FootballEventsEnum.GoalScored:
-                ActiveEvent = FootballEventsEnum.GoalScored;
-                await InvokeAsync(StateHasChanged);
-                await Task.Delay(TimeSpan.FromSeconds(60));
-                ActiveEvent = null;
-                await InvokeAsync(StateHasChanged);
-                break;
-            case FootballEventsEnum.MatchStarted:
-                ActiveEvent = FootballEventsEnum.MatchStarted;
-                await InvokeAsync(StateHasChanged);
-                await Task.Delay(TimeSpan.FromSeconds(15));
-                ActiveEvent = null;
-                await InvokeAsync(StateHasChanged);
-                break;
-            case FootballEventsEnum.HalfTime:
-                ActiveEvent = FootballEventsEnum.HalfTime;
-                await InvokeAsync(StateHasChanged);
-                await Task.Delay(TimeSpan.FromSeconds(15));
-                ActiveEvent = null;
-                await InvokeAsync(StateHasChanged);
-                break;
-           case FootballEventsEnum.MatchEnd:
-                ActiveEvent = FootballEventsEnum.MatchEnd;
-                await InvokeAsync(StateHasChanged);
-                await Task.Delay(TimeSpan.FromSeconds(30));
-                ActiveEvent = null;
-                await InvokeAsync(StateHasChanged);
-                break;
-        }
-    });
-        }
+        
     }
 }
     <style >
@@ -112,36 +74,8 @@
         bottom: 0;
         z-index: 9999;
     }
-
-    .ml14 {
-        font-weight: 200;
-        font-size: 128px;
-        padding-top: 15vh;
-        text-align: center;
+    .letters {
+        font-size:36px;
     }
-
-        .ml14 .text-wrapper {
-            position: relative;
-            display: inline-block;
-            padding-top: 0.1em;
-            padding-right: 0.05em;
-            padding-bottom: 0.15em;
-        }
-
-        .ml14 .line {
-            opacity: 0;
-            position: absolute;
-            left: 0;
-            height: 2px;
-            width: 100%;
-            background-color: #fff;
-            transform-origin: 100% 100%;
-            bottom: 0;
-        }
-
-        .ml14 .letter {
-            display: inline-block;
-            line-height: 1em;
-        }
 
 </style>

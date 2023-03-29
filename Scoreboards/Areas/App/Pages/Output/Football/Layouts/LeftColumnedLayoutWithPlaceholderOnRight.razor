@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client;
 @using Scoreboards.Areas.App.Pages.Output.Football.Components
+@using Scoreboards.Data.Football;
 @using Scoreboards.Models.Football;
 @{
     var layoutOptions = ViewModel.LayoutOptions;
@@ -72,11 +73,12 @@
                 </div>
             </div>
             <div class="col-8" style="background:#efefef;color:@ViewModel.HomeTeam.AccentColorHex">
-                  <EventOutput
-        HubConnection="hubConnection"
-        HomeTeam="ViewModel.HomeTeam"
-        AwayTeam="ViewModel.AwayTeam"
-    ></EventOutput>
+                @if(ActiveEvent != null)
+                {
+                    <EventOutput ActiveEvent="ActiveEvent.Value"
+                             HomeTeam="ViewModel.HomeTeam"
+                             AwayTeam="ViewModel.AwayTeam"></EventOutput>
+                }
             </div>
         </div>
     </div>
@@ -84,7 +86,7 @@
 
 @code {
     [Parameter]
-    public HubConnection hubConnection { get; set; }
+    public FootballEventsEnum? ActiveEvent { get; set; }
    
 
     [Parameter]

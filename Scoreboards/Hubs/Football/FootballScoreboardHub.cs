@@ -19,8 +19,11 @@ namespace Scoreboards.Hubs.Football
                 );
         }
 
-        public async Task EmitEvent(FootballEventsEnum eventType) {
-            await Clients.All.SendAsync("EmittedEvent",eventType);
+        public async Task EmitEvent(KeyValuePair<string,FootballEventsEnum> item) {
+            await Clients.All.SendAsync(
+                "EmittedEvent",
+                new KeyValuePair<string,FootballEventsEnum>(item.Key,item.Value)
+             );
         }
     }
 }

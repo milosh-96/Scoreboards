@@ -16,21 +16,21 @@
             <VerticalLayoutWithClock ViewModel="ViewModel"></VerticalLayoutWithClock>
         break;
         case 3:
-            <LeftColumnedLayoutWithPlaceholderOnRight hubConnection="hubConnection" ViewModel="ViewModel">
+            <LeftColumnedLayoutWithPlaceholderOnRight ActiveEvent="ActiveEvent" ViewModel="ViewModel">
 
             </LeftColumnedLayoutWithPlaceholderOnRight>
         break;
         case 1:
         default:
-            <HorizontalLayoutWithLineupsAndClock ViewModel="ViewModel"></HorizontalLayoutWithLineupsAndClock>
+            <HorizontalLayoutWithLineupsAndClock ActiveEvent="ActiveEvent" ViewModel="ViewModel"></HorizontalLayoutWithLineupsAndClock>
         break;
     }
 </div>
 
 @code {
 
-    [Parameter]
-    public string Token { get; set; } = "";
+        [Parameter]
+        public string Token { get; set; } = "";
 
     //signalr stuff//
     private HubConnection? hubConnection;
@@ -59,6 +59,12 @@
             InvokeAsync(StateHasChanged);
 
         });
+        hubConnection.On<KeyValuePair<string,FootballEventsEnum>>("EmittedEvent", async (item) =>
+         {
+
+             var t = new System.Threading.Thread(async ()=>await OnEvent(item));
+             t.Start();
+        });
        
 
         await hubConnection.StartAsync();
@@ -66,6 +72,14 @@
 
 
     // events
-}
+
+    private async Task OnEvent(KeyValuePair<string,FootballEventsEnum> item) {
+             if(item.Key == Token) {
+                      ActiveEvent = item.Value;
+                      await Task.Delay(TimeSpan.FromSeconds(15));
+                      ActiveEvent = null;
+                  }
+    }
+    }
 
       

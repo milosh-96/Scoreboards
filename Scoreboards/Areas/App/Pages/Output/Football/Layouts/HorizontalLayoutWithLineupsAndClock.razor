@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Areas.App.Pages.Output.Football.Components
+@using Scoreboards.Data.Football;
 @using Scoreboards.Models.Football;
 @{
     var layoutOptions = ViewModel.LayoutOptions;
@@ -6,6 +8,14 @@
 }
   
 <div class="container scoreboard">
+     @if(ActiveEvent != null)
+                {
+                    <EventOutput 
+                        FullScreenMode="true"
+                        ActiveEvent="ActiveEvent.Value"
+                             HomeTeam="ViewModel.HomeTeam"
+                             AwayTeam="ViewModel.AwayTeam"></EventOutput>
+                }
     <div class="layout">
         <div class="row">
             <div class="col home-team">
@@ -102,8 +112,10 @@
 </div>
 
 @code {
-    [CascadingParameter]
-    public HubConnection? HubConnection { get; set; }
+
+    [Parameter]
+    public FootballEventsEnum? ActiveEvent { get; set; }
+
     [Parameter]
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
 }
