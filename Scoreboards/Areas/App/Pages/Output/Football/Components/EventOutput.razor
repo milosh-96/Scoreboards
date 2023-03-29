@@ -2,7 +2,13 @@
 @using Scoreboards.Data.Football;
 @if (ActiveEvent != null)
 {
-    <div class="full-screen-overlay">
+    var containerClass = "boxed";
+
+    if(FullScreenMode)
+    {
+        containerClass = "full-screen-overlay";
+    }
+    <div class="@containerClass">
         @{
             var word = "";
         }
@@ -50,6 +56,10 @@
     public FootballTeam AwayTeam { get; set; } = new FootballTeam();
 
     public FootballEventsEnum? ActiveEvent { get; set; }
+
+    [Parameter]
+    public bool FullScreenMode { get; set; } = false;
+
     protected async override Task OnInitializedAsync()
     {
         if (HubConnection != null)

@@ -9,14 +9,16 @@
 @inject NavigationManager Navigation
 
 <div>
-    <EventOutput 
-        HomeTeam="ViewModel.HomeTeam" 
-        AwayTeam="ViewModel.AwayTeam"
-        HubConnection="hubConnection"></EventOutput>
+  
     @switch(ViewModel.LayoutPreset)
     {
         case 2:
             <VerticalLayoutWithClock ViewModel="ViewModel"></VerticalLayoutWithClock>
+        break;
+        case 3:
+            <LeftColumnedLayoutWithPlaceholderOnRight hubConnection="hubConnection" ViewModel="ViewModel">
+
+            </LeftColumnedLayoutWithPlaceholderOnRight>
         break;
         case 1:
         default:

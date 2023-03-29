@@ -1,0 +1,116 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Areas.App.Pages.Output.Football.Components
+@using Scoreboards.Models.Football;
+@{
+    var layoutOptions = ViewModel.LayoutOptions;
+    string middleColumnWidth = layoutOptions.ShowStats ? "col-md-5" : "col-md-4";
+}
+<div class="container scoreboard">
+    <div class="layout">
+        <div class="row">
+            <div class="col-4">
+                <div class="clock">
+                    @ViewModel.GetClockString()
+                </div>
+                <div class="game row">
+                    <div class="col-3">
+                        <div class="home-team">
+                            <img src="https://via.placeholder.com/500" style="width:100%" alt="" />
+                        </div>
+                    </div>
+                    <div class="result col-6">
+                        @String.Format("{0}:{1}",ViewModel.HomeTeam.Score,ViewModel.AwayTeam.Score)
+                    </div>
+                    <div class="col-3">
+                        <div class="away-team">
+                            <img src="https://via.placeholder.com/500" style="width:100%" alt="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="lineups">
+                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                <ul class="list-group">
+                                    @foreach (var item in ViewModel.HomeTeam.Players)
+                                    {
+                                        <li class="list-group-item">
+                                            <span>
+                                                @item.ShirtNumber
+                                            </span>
+                                            <span>
+                                                @item.LastName
+                                            </span>
+
+
+                                        </li>
+                                    }
+                                </ul>
+                                </div>
+                                <div class="carousel-item">
+                                <ul class="list-group">
+                                    @foreach (var item in ViewModel.AwayTeam.Players)
+                                    {
+                                        <li class="list-group-item">
+                                            <span>
+                                                @item.ShirtNumber
+                                            </span>
+                                            <span>
+                                                @item.LastName
+                                            </span>
+
+
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                                <div class="carousel-item">
+                                  ss
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="col-8" style="background:#efefef;color:@ViewModel.HomeTeam.AccentColorHex">
+                  <EventOutput
+        HubConnection="hubConnection"
+        HomeTeam="ViewModel.HomeTeam"
+        AwayTeam="ViewModel.AwayTeam"
+    ></EventOutput>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public HubConnection hubConnection { get; set; }
+   
+
+    [Parameter]
+    public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+}
+
+<style>
+    body {
+        background:@ViewModel.HomeTeam.AccentColorHex
+    }
+    .scoreboard {
+        color: #fff;
+        background:@ViewModel.HomeTeam.AccentColorHex;
+    }
+
+    .clock {
+        background: #003366;
+        padding: 5px;
+        font-weight: bold;
+        text-align:center;
+        font-size:16px;
+    }
+
+    .home-team,.away-team {display:flex;justify-content:center;padding-top:10px;}
+    .result {
+        font-size: 64px;
+        text-align:center;
+    }
+</style>

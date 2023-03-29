@@ -1,8 +1,10 @@
-﻿@using Scoreboards.Models.Football;
+﻿@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Models.Football;
 @{
     var layoutOptions = ViewModel.LayoutOptions;
     string middleColumnWidth = layoutOptions.ShowStats ? "col-md-5" : "col-md-4";
 }
+  
 <div class="container scoreboard">
     <div class="layout">
         <div class="row">
@@ -100,6 +102,8 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    public HubConnection? HubConnection { get; set; }
     [Parameter]
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
 }
