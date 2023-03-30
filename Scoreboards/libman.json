@@ -15,8 +15,8 @@
       "destination": "wwwroot/lib/popper",
     },
     {
-      "library": "animejs@3.2.1",
-      "destination": "wwwroot/lib/animejs"
+      "library": "animate.css@4.1.1",
+      "destination": "wwwroot/lib/animatecss"
     }
   ]
 }

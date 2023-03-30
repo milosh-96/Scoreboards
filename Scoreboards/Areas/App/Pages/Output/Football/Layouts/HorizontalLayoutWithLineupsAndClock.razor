@@ -11,7 +11,10 @@
      @if(ActiveEvent != null)
                 {
                     <EventOutput 
-                        FullScreenMode="true"
+                        Options="@(new EventOutputOptions() {
+                                    FullScreenMode=true,
+                                    AnimationCssClass="animate__backInLeft"}
+                                        )"
                         ActiveEvent="ActiveEvent.Value"
                              HomeTeam="ViewModel.HomeTeam"
                              AwayTeam="ViewModel.AwayTeam"></EventOutput>
