@@ -13,5 +13,7 @@
         /// for styling purposes.
         /// </remarks>
         public string AnimationCssClass { get; set; } = "animate__heartBeat";
+
+        public string Message { get; set; } = "";
     }
 }

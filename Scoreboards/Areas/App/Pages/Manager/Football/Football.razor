@@ -89,52 +89,56 @@
                         </div>
                         <hr />
                         <h3>Match Events</h3>
-                        <div class="row">
-                            <div class="col">
-                                <button class="btn btn-secondary" @onclick="@(async ()=>{
+                        <div>
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-secondary" @onclick="@(async ()=>{
                                 ViewModel.Clock = 0;
                                 await StartTimer();
                                 await EmitEvent(FootballEventsEnum.MatchStarted);
-                                
-                            })" disabled="@(timer != null)">Kick Off</button>
-                                <button class="mx-1 btn btn-secondary" @onclick="@(async ()=>{
+
+                            })" disabled="@(timer != null)">
+                                        Kick Off
+                                    </button>
+                                    <button class="mx-1 btn btn-secondary" @onclick="@(async ()=>{
                                 await StopTimer();
                                 ViewModel.Clock = 45*60;
                                 await EmitEvent(FootballEventsEnum.HalfTime);
 
                             })" disabled="@(timer == null)">
-                                    Half Time
-                                </button>
-                                <button class="btn btn-secondary" @onclick="@(async ()=>{
+                                        Half Time
+                                    </button>
+                                    <button class="btn btn-secondary" @onclick="@(async ()=>{
                                 await StopTimer();
                                 ViewModel.Clock = 90*60;
                                 await EmitEvent(FootballEventsEnum.MatchEnd);
 
                             })" disabled="@(timer == null)">
-                                    Match End
-                                </button>
+                                        Match End
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                          <div class="col mt-3">
-                                <button class="mx-1 btn btn-secondary"
-                                        @onclick="@(async ()=>{
+                            <div class="row">
+                                <div class="col mt-3">
+                                    <button class="mx-1 btn btn-secondary"
+                                            @onclick="@(async ()=>{
                                 ViewModel.HomeTeam.Score++;
                                  await EmitEvent(FootballEventsEnum.GoalScored);
 
                             })">
-                                    Goal (home team)
-                                </button>
-                                <button class="btn btn-secondary"
-                                        @onclick="@(async ()=>{
+                                        Goal (home team)
+                                    </button>
+                                    <button class="btn btn-secondary"
+                                            @onclick="@(async ()=>{
                                 ViewModel.AwayTeam.Score++;
                                 await EmitEvent(FootballEventsEnum.GoalScored);
 
                             })">
-                                    Goal (away team)
-                                   
-                                </button> - <small><em>will play "goal" animation</em></small>
-                          </div>
+                                        Goal (away team)
+
+                                    </button> - <small><em>will play "goal" animation</em></small>
+                                </div>
+                            </div>
                         </div>
                        
 
