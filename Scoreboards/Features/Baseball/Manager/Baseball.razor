@@ -1,0 +1,187 @@
+﻿@page "/manager/baseball"
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Features.Baseball.Manager.AtBat
+<div class="container">
+    <div class="alert alert-warning">
+        Do not close this tab/window. Closing of this tab/window will stop all outputs
+        with current token.
+    </div>
+    <div class="row">
+        <h3>Baseball</h3>
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-primary mx-1" href="/scoreboard/baseball/@ConnectionToken" target="_blank">Open Output</a>
+                @if (dataSyncTimer != null)
+                {
+                    <button class="btn btn-sm btn-warning" @onclick="()=>{dataSyncTimer.Dispose();dataSyncTimer=null;}">Pause Output Syncing</button>
+                }
+                else
+                {
+                    <button class="btn btn-sm btn-success" @onclick="()=>SetupDataSyncTimer()">Start Output Syncing</button>
+                }
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>R</th>
+                        <th>H</th>
+                        <th>E</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input class="form-control"  type="text" @bind="ViewModel.AwayTeam.Name" />  </td>
+
+                        @for(int i = 0;i<9;i++)
+                        {
+                            var item = ViewModel.AwayTeam.Stats.Linescore[i];
+                            <td id="home-@i" @key="@i"><input class="form-control" type="number" @bind="@item.Runs" /></td>
+                        }
+
+                        <td><input class="form-control"  type="number" @bind="ViewModel.AwayTeam.Stats.Runs" /></td>
+                        <td><input class="form-control"  type="number" value="0" id="" /></td>
+                        <td><input class="form-control"  type="number" value="0" id="" /></td>
+                    </tr>
+                    <tr>
+                        <td><input class="form-control"  type="text" @bind="ViewModel.HomeTeam.Name" />  </td>
+
+                        @for(int i = 0;i<9;i++)
+                        {
+                            var item = ViewModel.HomeTeam.Stats.Linescore[i];
+                            <td id="home-@i" @key="@i"><input class="form-control" type="number" @bind="@item.Runs" /></td>
+                        }
+
+                        <td><input class="form-control"  type="number" @bind="ViewModel.HomeTeam.Stats.Runs" /></td>
+                        <td><input class="form-control"  type="number" value="0" id="" /></td>
+                        <td><input class="form-control"  type="number" value="0" id="" /></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+            <div class="row">
+                <div class="col">
+                    <CurrentPitcherEditor Pitcher="ViewModel.Game.CurrentAtBat.Pitcher"></CurrentPitcherEditor>
+                </div>
+                <div class="col">
+                    <AtBatControl AtBat="ViewModel.Game.CurrentAtBat"></AtBatControl>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+
+@code {
+    public BaseballScoreboardViewModel ViewModel { get; set; } = new BaseballScoreboardViewModel();
+
+    public void Dispose()
+    {
+        // kill connection with current token when this tab/window is closed //
+        if (hubConnection != null)
+        {
+            Task.Run(async () => { await hubConnection.DisposeAsync(); });
+        }
+    }
+    private HubConnection? hubConnection;
+    private string ConnectionToken { get; set; } = Guid.NewGuid().ToString();
+    //signalr stuff//
+
+
+    //properties
+
+
+    // this timer will be run to send data to output //
+    System.Threading.Timer? dataSyncTimer;
+
+
+    private void SetClock(object stateInfo)
+    {
+        // increment seconds count of viewmodel //
+        InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
+    }
+   
+    private void SyncScoreboardData(object stateInfo)
+    {
+        if (hubConnection != null)
+        {
+            // send data to output each seconds, this is important because of clock //
+            Task.Run(async () =>
+                {
+                    await RefreshOutputData();
+                }
+            );
+        }
+        InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
+    }
+
+
+    public async Task RefreshOutputData()
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.SendAsync("SendMessage",
+              new KeyValuePair<string, BaseballScoreboardViewModel>(ConnectionToken, ViewModel)
+          );
+        }
+    }
+
+    // match events
+
+    //public async Task EmitEvent(FootballEventsEnum eventType)
+    //{
+    //    if (hubConnection != null)
+    //    {
+    //        await hubConnection.SendAsync("EmitEvent",
+    //        new KeyValuePair<string, FootballEventsEnum>(ConnectionToken, eventType)
+    //        );
+
+    //    }
+    //}
+
+    //life cycle events//
+
+    public void SetupDataSyncTimer()
+    {
+        if (dataSyncTimer == null)
+        {
+            // run timer every second
+            dataSyncTimer = new System.Threading.Timer(SyncScoreboardData, new System.Threading.AutoResetEvent(false), 10, 1000); //
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/scoreboards/baseball"))
+        .Build();
+
+        await hubConnection.StartAsync();
+
+        // start output updates once app is started //
+        SetupDataSyncTimer();
+    }
+
+
+
+
+
+
+
+
+
+
+}

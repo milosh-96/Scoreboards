@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.ResponseCompression;
+using Scoreboards.Features.Baseball;
 using Scoreboards.Hubs.Football;
 
 namespace Scoreboards
@@ -41,6 +42,7 @@ namespace Scoreboards
 
            
             app.MapHub<FootballScoreboardHub>("/scoreboards/football");
+            app.MapHub<BaseballScoreboardHub>("/scoreboards/baseball");
             app.MapFallbackToPage("/_Host");
             app.MapRazorPages();
             app.UseEndpoints(endpoints =>

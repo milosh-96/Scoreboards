@@ -2,11 +2,9 @@
 
 namespace Scoreboards.Data.Football
 {
-    public class FootballTeam
+    public class FootballTeam : Team
     {
-        public string Logo { get; set; } = "";
-        public string AccentColorHex { get; set; } = "#dd0000";
-        public string Name { get; set; } = "Undefined";
+       
         public int Score { get; set; } = 0;
 
         public FootballStats Stats { get; set; } = new FootballStats();

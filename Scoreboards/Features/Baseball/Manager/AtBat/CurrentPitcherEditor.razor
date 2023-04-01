@@ -1,0 +1,15 @@
+﻿@using Scoreboards.Data.Baseball;
+<div>
+    <h3>CurrentPitcher</h3>
+    <input type="text" @bind="Pitcher.FirstName" />
+    <input type="text" @bind="Pitcher.LastName" />
+    <br />
+    <input type="number" min="0" @bind="Pitcher.Pitches" />
+
+</div>
+
+@code {
+    [Parameter]
+    public BaseballPitcher Pitcher { get; set; } = new BaseballPitcher();
+
+}
