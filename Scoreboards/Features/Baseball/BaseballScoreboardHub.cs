@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Scoreboards.Data.Football;
 using Scoreboards.Features.Baseball;
-using Scoreboards.Models.Football;
+using Scoreboards.Features.Football;
 
 namespace Scoreboards.Features.Baseball
 {

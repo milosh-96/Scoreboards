@@ -3,7 +3,7 @@
     public enum BaseballInningStateEnum
     {
         Top,
-        Down,
+        Bottom,
         Middle,
         End,
      

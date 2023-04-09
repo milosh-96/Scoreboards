@@ -1,7 +1,8 @@
 ﻿@page "/manager/baseball"
 @inject NavigationManager Navigation
 @using Microsoft.AspNetCore.SignalR.Client;
-@using Scoreboards.Features.Baseball.Manager.AtBat
+@using Scoreboards.Data.Baseball;
+@using Scoreboards.Features.Baseball.Manager.AtBat;
 <div class="container">
     <div class="alert alert-warning">
         Do not close this tab/window. Closing of this tab/window will stop all outputs
@@ -21,7 +22,8 @@
                     <button class="btn btn-sm btn-success" @onclick="()=>SetupDataSyncTimer()">Start Output Syncing</button>
                 }
             </div>
-        </div>    
+        </div>
+        
         <div class="row">
             <div class="col">
             <table class="table">
@@ -44,7 +46,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input class="form-control"  type="text" @bind="ViewModel.AwayTeam.Name" />  </td>
+                        <td>@ViewModel.AwayTeam.Name</td>
 
                         @for(int i = 0;i<9;i++)
                         {
@@ -57,7 +59,7 @@
                         <td><input class="form-control"  type="number" value="0" id="" /></td>
                     </tr>
                     <tr>
-                        <td><input class="form-control"  type="text" @bind="ViewModel.HomeTeam.Name" />  </td>
+                        <td>@ViewModel.HomeTeam.Name</td>
 
                         @for(int i = 0;i<9;i++)
                         {
@@ -75,13 +77,41 @@
         </div>
             <div class="row">
                 <div class="col">
-                    <CurrentPitcherEditor Pitcher="ViewModel.Game.CurrentAtBat.Pitcher"></CurrentPitcherEditor>
+                    <CurrentPitcherEditor Pitcher="ViewModel.Pitcher"></CurrentPitcherEditor>
                 </div>
                 <div class="col">
+                    <button @onclick="()=>ViewModel.Game.CurrentInning.InningNumber++">Inning --</button>
+                    <button @onclick="()=>ViewModel.Game.CurrentInning.InningNumber++">Inning ++</button>
+                    <button @onclick="()=>ViewModel.Game.CurrentInning.State=BaseballInningStateEnum.Top">Top</button>
+                    <button @onclick="()=>ViewModel.Game.CurrentInning.State=BaseballInningStateEnum.Bottom">Down</button>
                     <AtBatControl AtBat="ViewModel.Game.CurrentAtBat"></AtBatControl>
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <div>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTeams">
+                        Edit Teams
+                    </button>
+                    <Scoreboards.Features.Baseball.Manager.TeamsSettings.Modals.TeamsSettingsModal
+                        HomeTeam="ViewModel.HomeTeam"
+                        AwayTeam="ViewModel.AwayTeam"
+                    ></Scoreboards.Features.Baseball.Manager.TeamsSettings.Modals.TeamsSettingsModal>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editLineups">
+                        Edit Lineups
+                    </button>
+                    <Scoreboards.Features.Baseball.Manager.Lineups.Modals.EditLineupsModal
+                        HomeTeam="ViewModel.HomeTeam"
+                        AwayTeam="ViewModel.AwayTeam"
+                    ></Scoreboards.Features.Baseball.Manager.Lineups.Modals.EditLineupsModal>
+                   
+                   
+                </div>
+        </div>
+</div>
 </div>
 </div>
 

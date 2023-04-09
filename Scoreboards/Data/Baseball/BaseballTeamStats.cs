@@ -16,7 +16,7 @@
         }
 
         public int Hits { get; set; }
-        public int Errros { get; set; }
+        public int Errors { get; set; }
 
         public List<Halfinning> Linescore { get; set; } = new List<Halfinning>();
     }

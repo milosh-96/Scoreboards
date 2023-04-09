@@ -1,0 +1,59 @@
+﻿@using Scoreboards.Data.Baseball;
+@if(Team != null && Team.Lineup.Count > 0)
+{
+    <div>
+        @Team.Name
+        @for (int i = 0; i < Team.Lineup.Count; i++)
+        {
+            var item = Team.Lineup[i];
+            <div id="@i" class="input-group" @key="@i">
+                <input class="form-control" @bind="@item.ShirtNumber" type="text" />
+                <input class="form-control" @bind="@item.FirstName" type="text" />
+                <input class="form-control" @bind="@item.LastName" type="text" />
+                <select class="form-control" @bind="@item.Position">
+                    <option value="@BaseballPositionsEnum.Pitcher">
+                        @BaseballPositionsEnumHandler.DisplayName(BaseballPositionsEnum.Pitcher)
+                    </option>
+                    <option value="@BaseballPositionsEnum.Catcher">
+                        @BaseballPositionsEnumHandler.DisplayName(BaseballPositionsEnum.Catcher)
+                    </option>
+                    <option value="@BaseballPositionsEnum.FirstBaseman">
+                        @BaseballPositionsEnumHandler.DisplayName(BaseballPositionsEnum.FirstBaseman)
+                    </option>
+                    <option value="@BaseballPositionsEnum.SecondBaseman">
+                        @BaseballPositionsEnumHandler.DisplayName(BaseballPositionsEnum.SecondBaseman)
+                    </option>
+                    <option value="@BaseballPositionsEnum.ThirdBaseman">
+                        @BaseballPositionsEnumHandler.DisplayName(BaseballPositionsEnum.ThirdBaseman)
+                    </option>
+                    <option value="@BaseballPositionsEnum.Shortstop">
+                        @BaseballPositionsEnumHandler.DisplayName(BaseballPositionsEnum.Shortstop)
+                    </option>
+                    <option value="@BaseballPositionsEnum.LeftFielder">
+                        @BaseballPositionsEnumHandler.DisplayName(BaseballPositionsEnum.LeftFielder)
+                    </option>
+                    <option value="@BaseballPositionsEnum.CenterFielder">
+                        @BaseballPositionsEnumHandler.DisplayName(BaseballPositionsEnum.CenterFielder)
+                    </option>
+                    <option value="@BaseballPositionsEnum.RightFielder">
+                        @BaseballPositionsEnumHandler.DisplayName(BaseballPositionsEnum.RightFielder)
+                    </option>
+                    <option value="@BaseballPositionsEnum.DesignatedHitter">
+                        @BaseballPositionsEnumHandler.DisplayName(BaseballPositionsEnum.DesignatedHitter)
+                    </option>
+                    
+                    
+                </select>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div>please pass team with at least one player</div>
+}
+
+@code {
+    [Parameter]
+    public BaseballTeam? Team { get; set; }
+}

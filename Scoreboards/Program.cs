@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.ResponseCompression;
 using Scoreboards.Features.Baseball;
-using Scoreboards.Hubs.Football;
+using Scoreboards.Features.Football;
 
 namespace Scoreboards
 {

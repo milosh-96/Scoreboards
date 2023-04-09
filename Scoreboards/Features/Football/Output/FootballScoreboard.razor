@@ -1,0 +1,84 @@
+﻿@page "/scoreboard/football/{token}"
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Data.Football;
+@using Scoreboards.Features.Football
+@using Scoreboards.Features.Football.Output.Layouts
+@using System.Drawing;
+@inject IJSRuntime jsRuntime;
+@inject NavigationManager Navigation
+
+<div>
+  
+    @switch(ViewModel.LayoutPreset)
+    {
+        case 2:
+            <VerticalLayoutWithClock ViewModel="ViewModel"></VerticalLayoutWithClock>
+        break;
+        case 3:
+            <LeftColumnedLayoutWithPlaceholderOnRight ActiveEvent="ActiveEvent" ViewModel="ViewModel">
+
+            </LeftColumnedLayoutWithPlaceholderOnRight>
+        break;
+        case 1:
+        default:
+            <HorizontalLayoutWithLineupsAndClock ActiveEvent="ActiveEvent" ViewModel="ViewModel"></HorizontalLayoutWithLineupsAndClock>
+        break;
+    }
+</div>
+
+@code {
+
+        [Parameter]
+        public string Token { get; set; } = "";
+
+    //signalr stuff//
+    private HubConnection? hubConnection;
+    //properties
+    public string? ConnectionId { get; set; }
+
+    public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+
+    // dynamic component stuff //
+    public FootballEventsEnum? ActiveEvent { get; set; }
+
+    //life cycle events//
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/scoreboards/football"))
+            .Build();
+
+        hubConnection.On<KeyValuePair<string,FootballScoreboardViewModel>>("UpdateData", (item) =>
+        {
+
+
+            if(item.Key == Token) {
+                ViewModel = item.Value;
+            }
+            InvokeAsync(StateHasChanged);
+
+        });
+        hubConnection.On<KeyValuePair<string,FootballEventsEnum>>("EmittedEvent", async (item) =>
+         {
+
+             var t = new System.Threading.Thread(async ()=>await OnEvent(item));
+             t.Start();
+        });
+       
+
+        await hubConnection.StartAsync();
+    }
+
+
+    // events
+
+    private async Task OnEvent(KeyValuePair<string,FootballEventsEnum> item) {
+             if(item.Key == Token) {
+                      ActiveEvent = item.Value;
+                      await Task.Delay(TimeSpan.FromSeconds(15));
+                      ActiveEvent = null;
+                  }
+    }
+    }
+
+      
