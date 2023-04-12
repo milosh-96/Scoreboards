@@ -1,0 +1,41 @@
+﻿@using Scoreboards.Data.Baseball;
+<div class="ui-batting-order">
+    <table>
+        <thead>
+            <tr>
+                <th class="team-name" colspan="3">@Team.Name</th>
+                @if(ShowStats)
+                {
+                    <th>Avg</th>
+                    <th>Hr</th>
+                    <th>Rbi</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Team.Lineup)
+            {
+                <tr class="item">
+                    <td class="shirt-number-column">@item.ShirtNumber</td>
+                    <td class="name-column">@item.ToString()</td>
+                    <td class="position-column">@BaseballPositionsEnumHandler.DisplayTwoLetterAbbreviation(item.Position)</td>
+                    @if(ShowStats)
+                    {
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public BaseballTeam Team { get; set; } = new BaseballTeam();
+
+    [Parameter]
+    public bool ShowStats { get; set; } = true;
+}
+

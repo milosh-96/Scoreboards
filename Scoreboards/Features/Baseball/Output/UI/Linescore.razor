@@ -1,0 +1,65 @@
+﻿@using Scoreboards.Data.Baseball;
+<div class="ui-linescore">
+    <table class="table">
+        @if (ShowHeadingRow)
+        {
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                    <th>8</th>
+                    <th>9</th>
+                    <th>R</th>
+                    <th>H</th>
+                    <th>E</th>
+                </tr>
+            </thead>
+        }
+        <tbody>
+            <tr>
+                <td>@AwayTeam.Name </td>
+
+                @for (int i = 0; i < 9; i++)
+                {
+                    var item = AwayTeam.Stats.Linescore[i];
+                    <td id="home-@i" @key="@i">@item.Runs</td>
+                }
+
+                <td>@AwayTeam.Stats.Runs</td>
+                <td>@AwayTeam.Stats.Hits</td>
+                <td>@AwayTeam.Stats.Errors</td>
+
+            </tr>
+            <tr>
+                <td>@HomeTeam.Name</td>
+
+                @for (int i = 0; i < 9; i++)
+                {
+                    var item = HomeTeam.Stats.Linescore[i];
+                    <td id="home-@i" @key="@i">@item.Runs</td>
+                }
+
+                <td>@HomeTeam.Stats.Runs</td>
+                <td>@HomeTeam.Stats.Hits</td>
+                <td>@HomeTeam.Stats.Errors</td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+@code {
+    [Parameter]
+    public BaseballTeam HomeTeam { get; set; } = new BaseballTeam();
+    [Parameter]
+    public BaseballTeam AwayTeam { get; set; } = new BaseballTeam();
+
+    //
+    [Parameter]
+    public bool ShowHeadingRow { get; set; } = true;
+}

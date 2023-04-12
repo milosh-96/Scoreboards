@@ -7,13 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Features\Baseball\Output\UI\BattingOrder.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Features\Baseball\Output\UI\BattingOrder.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.14" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.12" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Features\Football\Manager\Modals\" />
+    <Folder Include="wwwroot\css\output\baseball\" />
     <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
 </Project>

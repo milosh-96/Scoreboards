@@ -1,0 +1,101 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Features.Baseball.Output
+@using Scoreboards.Data.Baseball;
+@using Scoreboards.Features.Baseball;
+@{
+
+}
+<div class="container-fluid" style="padding-top:0;padding-bottom:0;margin:0">
+<div class="scoreboard">
+    <div class="row" id="top-row">
+        <div class="col col-md-5">
+            <Scoreboards.Features.Baseball.Output.UI.BattingOrder
+                Team="ViewModel.HomeTeam"
+            ></Scoreboards.Features.Baseball.Output.UI.BattingOrder>
+        </div>
+        <div class="col col-md-7">
+            <p>aaaa</p> <p>aaaa</p> <p>aaaa</p> <p>aaaa</p> <p>aaaa</p>
+           
+          
+        </div>
+    </div>
+    <div class="row" id="bottom-row">
+        <div class="col col-md-5">
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <img width="100%"
+                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR757bKJiroURNgG3b8b_WFENDurqfiY8Qn0c8wR0bF7BDPgcvceb3n_A1yqQ9AWBZdw8&usqp=CAU" alt="" />
+                    </div>
+                </div>
+                <div class="col">
+                    due up
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-7">
+           <Scoreboards.Features.Baseball.Output.UI.Linescore
+            HomeTeam="ViewModel.HomeTeam"
+            AwayTeam="ViewModel.AwayTeam"
+            ShowHeadingRow="false"
+           ></Scoreboards.Features.Baseball.Output.UI.Linescore>
+        </div>
+    </div>
+</div>
+</div>
+@code {
+
+    [Parameter]
+    public BaseballScoreboardViewModel ViewModel { get; set; } = new BaseballScoreboardViewModel();
+}
+
+<style>
+    body {
+        background: linear-gradient(to top,#004488 35%,#003366);
+        font-size: 24px;
+        color: #fefefe;
+        height:100%;
+        
+    }
+
+    .scoreboard {
+        color: rgba(0,0,0,0.5);
+        min-height:100vh;        
+    }
+    #top-row {
+        
+    }
+    #bottom-row {
+    }
+        .scoreboard th, .scoreboard td {
+            background:rgba(0,0,0,0.3);
+            color: #fff;
+        }
+
+    .ui-batting-order th{
+        font-size:1rem;
+        vertical-align:bottom;
+    }
+    .ui-batting-order th.team-name {
+        font-size:2rem;
+    }
+        .ui-batting-order .item td {
+            font-size:1rem;
+            text-transform:uppercase;
+            font-weight:bold;
+            height:5vh;
+            padding-top:6px;
+            padding-bottom:6px;
+    }
+
+    .ui-batting-order .item td.shirt-number-column {
+        background:linear-gradient(to top,#efefef 25%,#ccc,#efefef 75%);
+        border-right:1px solid #111;
+        color:#111;
+    }
+    .ui-batting-order .item td.name-column {
+        padding-left:10px;
+    }
+
+       
+</style>
