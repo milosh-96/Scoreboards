@@ -31,7 +31,7 @@ namespace Scoreboards.Data.Baseball
                 new BaseballPlayer() {Position=BaseballPositionsEnum.LeftFielder},
                 new BaseballPlayer() {Position=BaseballPositionsEnum.CenterFielder},
                 new BaseballPlayer() {Position=BaseballPositionsEnum.RightFielder},
-                new BaseballPlayer() {Position=BaseballPositionsEnum.DesignatedHitter}
+               // new BaseballPlayer() {Position=BaseballPositionsEnum.DesignatedHitter}
 
             };
         public BaseballPitcher CurrentPitcher { get; set; } = new BaseballPitcher();

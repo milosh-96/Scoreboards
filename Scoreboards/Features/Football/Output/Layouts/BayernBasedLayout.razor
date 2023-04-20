@@ -2,6 +2,7 @@
 @using Scoreboards.Features.Football.Output.Event
 @using Scoreboards.Data.Football;
 @using Scoreboards.Features.Football;
+@inject IJSRuntime jsRuntime;
 @{
     var layoutOptions = ViewModel.LayoutOptions;
     string middleColumnWidth = layoutOptions.ShowStats ? "col-md-5" : "col-md-4";
@@ -29,9 +30,9 @@
                     </div>
                 </div>
                 <div class="lineups">
-                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
+                    <div id="scoreboardSlides" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
                                 <ul class="list-group">
                                     @foreach (var item in ViewModel.HomeTeam.Players)
                                     {
@@ -47,8 +48,8 @@
                                         </li>
                                     }
                                 </ul>
-                                </div>
-                                <div class="carousel-item">
+                            </div>
+                            <div class="carousel-item">
                                 <ul class="list-group">
                                     @foreach (var item in ViewModel.AwayTeam.Players)
                                     {
@@ -65,15 +66,18 @@
                                     }
                                 </ul>
                             </div>
-                                <div class="carousel-item">
-                                  ss
-                                </div>
+                            <div class="carousel-item stats-wrapper">
+                                <Scoreboards.Features.Football.Output.UI.MatchStatsTable.MatchStatsTable
+                                    HomeTeam="ViewModel.HomeTeam"
+                                    AwayTeam="ViewModel.AwayTeam"
+                                ></Scoreboards.Features.Football.Output.UI.MatchStatsTable.MatchStatsTable>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
             <div class="col-8" style="background:#efefef;color:@ViewModel.HomeTeam.AccentColorHex">
-                @if(ActiveEvent != null)
+                @if (ActiveEvent != null)
                 {
                     <EventOutput ActiveEvent="ActiveEvent.Value"
                              HomeTeam="ViewModel.HomeTeam"
@@ -85,9 +89,16 @@
 </div>
 
 @code {
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("bootstrapFunctions.initializeCarousel");
+        }
+    }
     [Parameter]
     public FootballEventsEnum? ActiveEvent { get; set; }
-   
+
 
     [Parameter]
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
@@ -95,24 +106,42 @@
 
 <style>
     body {
-        background:@ViewModel.HomeTeam.AccentColorHex
+        background: @ViewModel.HomeTeam.AccentColorHex
+    }
+
+   #scoreboardSlides {
+        background: #fff;
+        min-height:77vh;
+    }
+    .stats-table {
+        
+        color:#003366;
+        font-weight:bold;
+    }
+    .stats-table td {
+        text-align:center;
     }
     .scoreboard {
         color: #fff;
-        background:@ViewModel.HomeTeam.AccentColorHex;
+        background: @ViewModel.HomeTeam.AccentColorHex;
     }
 
     .clock {
         background: #003366;
         padding: 5px;
         font-weight: bold;
-        text-align:center;
-        font-size:16px;
+        text-align: center;
+        font-size: 16px;
     }
 
-    .home-team,.away-team {display:flex;justify-content:center;padding-top:10px;}
+    .home-team, .away-team {
+        display: flex;
+        justify-content: center;
+        padding-top: 10px;
+    }
+
     .result {
         font-size: 64px;
-        text-align:center;
+        text-align: center;
     }
 </style>

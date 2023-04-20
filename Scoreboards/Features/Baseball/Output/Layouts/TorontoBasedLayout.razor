@@ -7,11 +7,19 @@
 }
 <div class="container-fluid" style="padding-top:0;padding-bottom:0;margin:0">
 <div class="scoreboard">
-    <div class="row" id="top-row">
+    <div class="row gx-0" id="top-row">
         <div class="col col-md-5">
-            <Scoreboards.Features.Baseball.Output.UI.BattingOrder
-                Team="ViewModel.HomeTeam"
-            ></Scoreboards.Features.Baseball.Output.UI.BattingOrder>
+                @switch(ViewModel.Game.CurrentInning.State)
+                {
+                    case BaseballInningStateEnum.Top:
+                    case BaseballInningStateEnum.Middle:
+                        <Scoreboards.Features.Baseball.Output.UI.BattingOrder Team="ViewModel.AwayTeam"></Scoreboards.Features.Baseball.Output.UI.BattingOrder>
+                        break;
+                    default:
+                        <Scoreboards.Features.Baseball.Output.UI.BattingOrder Team="ViewModel.HomeTeam"></Scoreboards.Features.Baseball.Output.UI.BattingOrder>
+                        break;
+                }
+           
         </div>
         <div class="col col-md-7">
             <p>aaaa</p> <p>aaaa</p> <p>aaaa</p> <p>aaaa</p> <p>aaaa</p>
@@ -19,27 +27,47 @@
           
         </div>
     </div>
-    <div class="row" id="bottom-row">
+    <div class="row gx-0" id="bottom-row">
         <div class="col col-md-5">
-            <div class="row">
-                <div class="col">
+            <div class="row gx-0">
+                <div class="col col-md-7">
                     <div>
                         <img width="100%"
                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR757bKJiroURNgG3b8b_WFENDurqfiY8Qn0c8wR0bF7BDPgcvceb3n_A1yqQ9AWBZdw8&usqp=CAU" alt="" />
                     </div>
                 </div>
-                <div class="col">
+                <div class="col col-md-5">
                     due up
                 </div>
             </div>
         </div>
-        <div class="col col-md-7">
+        <div class="col col-md-5">
            <Scoreboards.Features.Baseball.Output.UI.Linescore
             HomeTeam="ViewModel.HomeTeam"
             AwayTeam="ViewModel.AwayTeam"
-            ShowHeadingRow="false"
+            ShowHeadingRow="true"
            ></Scoreboards.Features.Baseball.Output.UI.Linescore>
         </div>
+            <div class="col col-md-2">
+                <div class="ui-inning-state">
+                    <table style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>B</th>
+                                <th>S</th>
+                                <th>O</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@ViewModel.Game.CurrentAtBat.Balls</td>
+                                <td>@ViewModel.Game.CurrentAtBat.Strikes</td>
+                                <td>@ViewModel.Game.CurrentInning.Outs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
     </div>
 </div>
 </div>
@@ -70,6 +98,31 @@
         .scoreboard th, .scoreboard td {
             background:rgba(0,0,0,0.3);
             color: #fff;
+        }
+        .ui-inning-state th {
+            font-size:1rem;text-align:center;
+        }
+     .ui-inning-state td {
+         font-size:3rem;
+        background: linear-gradient(to top,#efefef 25%,#ccc,#efefef 75%);
+        border-right: 1px solid #111;
+        text-align:center;
+        color: #111;
+    }
+     .ui-linescore th {
+         font-size:1rem;color:#ccc;
+     }
+     .ui-linescore td.rhe-column {font-size:2rem;}
+
+        .ui-linescore th.rhe-column,
+        .ui-linescore th.inning-item,
+        .ui-linescore td.rhe-column,
+        .ui-linescore td.inning-item {
+            text-align:center;
+        }
+        .ui-linescore td.rhe-column.runs {
+            color: yellow;
+            background: linear-gradient(to top,#efefef 25%,#ccc,#efefef 75%);
         }
 
     .ui-batting-order th{

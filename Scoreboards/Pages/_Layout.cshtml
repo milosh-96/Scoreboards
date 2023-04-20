@@ -43,9 +43,14 @@
 
     <script src="/lib/jquery/jquery.slim.min.js"></script>
     <script src="/lib/popper/umd/popper.min.js"></script>
-    <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/lib/bootstrap/js/bootstrap.bundle.js"></script>
     <script src="/_framework/blazor.server.js"></script>
     <script>
+         window.bootstrapFunctions = {
+            initializeCarousel:function(){
+                new bootstrap.Carousel(document.querySelector("#scoreboardSlides"))
+            }
+        };
     </script>
 </body>
 </html>

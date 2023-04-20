@@ -1,53 +1,69 @@
 ﻿@using Scoreboards.Data.Baseball;
 <div class="ui-linescore">
-    <table class="table">
+    <table style="width:100%">
         @if (ShowHeadingRow)
         {
             <thead>
                 <tr>
-                    <th>Team</th>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th>4</th>
-                    <th>5</th>
-                    <th>6</th>
-                    <th>7</th>
-                    <th>8</th>
-                    <th>9</th>
-                    <th>R</th>
-                    <th>H</th>
-                    <th>E</th>
+                    <th class="team-name">Team</th>
+                    <th class="inning-item">1</th>
+                    <th class="inning-item">2</th>
+                    <th class="inning-item">3</th>
+                    <th class="inning-item">4</th>
+                    <th class="inning-item">5</th>
+                    <th class="inning-item">6</th>
+                    <th class="inning-item">7</th>
+                    <th class="inning-item">8</th>
+                    <th class="inning-item">9</th>
+                    <th class="rhe-column runs">R</th>
+                    <th class="rhe-column hits">H</th>
+                    <th class="rhe-column errors">E</th>
                 </tr>
             </thead>
         }
         <tbody>
             <tr>
-                <td>@AwayTeam.Name </td>
+                <td class="away team-name">
+                    @if(UseTeamAbbreviations)
+                    {
+                        @AwayTeam.Abbreviation
+                    }
+                    else
+                    {
+                        @AwayTeam.Name
+                    }
+                </td>
 
                 @for (int i = 0; i < 9; i++)
                 {
                     var item = AwayTeam.Stats.Linescore[i];
-                    <td id="home-@i" @key="@i">@item.Runs</td>
+                    <td id="inning-item away-@i" @key="@i">@item.Runs</td>
                 }
-
-                <td>@AwayTeam.Stats.Runs</td>
-                <td>@AwayTeam.Stats.Hits</td>
-                <td>@AwayTeam.Stats.Errors</td>
+                <td class="away rhe-column runs">@AwayTeam.Stats.Runs</td>
+                <td class="away rhe-column hits">@AwayTeam.Stats.Hits</td>
+                <td class="away rhe-column errors">@AwayTeam.Stats.Errors</td>
 
             </tr>
             <tr>
-                <td>@HomeTeam.Name</td>
+                <td class="home team-name">
+                    @if (UseTeamAbbreviations)
+                    {
+                        @HomeTeam.Abbreviation
+                    }
+                    else
+                    {
+                        @HomeTeam.Name
+                    }
+                </td>
 
                 @for (int i = 0; i < 9; i++)
                 {
                     var item = HomeTeam.Stats.Linescore[i];
-                    <td id="home-@i" @key="@i">@item.Runs</td>
+                    <td id="home inning-item home-@i" @key="@i">@item.Runs</td>
                 }
-
-                <td>@HomeTeam.Stats.Runs</td>
-                <td>@HomeTeam.Stats.Hits</td>
-                <td>@HomeTeam.Stats.Errors</td>
+                <td class="home rhe-column runs">@HomeTeam.Stats.Runs</td>
+                <td class="home rhe-column hits">@HomeTeam.Stats.Hits</td>
+                <td class="home rhe-column erors">@HomeTeam.Stats.Errors</td>
             </tr>
 
         </tbody>
@@ -62,4 +78,6 @@
     //
     [Parameter]
     public bool ShowHeadingRow { get; set; } = true;
+    [Parameter]
+    public bool UseTeamAbbreviations { get; set; } = true;
 }
