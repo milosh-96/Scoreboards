@@ -18,11 +18,16 @@ namespace Scoreboards.Features.Football
                 );
         }
 
-        public async Task EmitEvent(KeyValuePair<string, FootballEventsEnum> item)
+        public async Task EmitEvent(KeyValuePair<string, FootballEventsEnum> item, List<string> data)
         {
+            if(data == null)
+            {
+                data = new List<string>();
+            }
             await Clients.All.SendAsync(
                 "EmittedEvent",
-                new KeyValuePair<string, FootballEventsEnum>(item.Key, item.Value)
+                new KeyValuePair<string, FootballEventsEnum>(item.Key, item.Value),
+                data
              );
         }
     }

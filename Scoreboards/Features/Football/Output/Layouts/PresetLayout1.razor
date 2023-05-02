@@ -1,0 +1,269 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Features.Football.Output
+@using Scoreboards.Features.Football.Output.Event
+@using Scoreboards.Features.Football.Output.UI.MatchStats
+@using Scoreboards.Data.Football;
+@using Scoreboards.Features.Football;
+@inject IJSRuntime jsRuntime;
+@{
+    var layoutOptions = ViewModel.LayoutOptions;
+    string middleColumnWidth = layoutOptions.ShowStats ? "col-md-5" : "col-md-4";
+    EventOutputOptions options = new EventOutputOptions()
+            {
+                FullScreenMode = true,
+                AnimationCssClass = "animate__backInLeft",
+            };
+    if (ActiveEvent != null)
+    {
+        options.ActiveEvent = ActiveEvent.Value;
+        options.Data = EventData;
+
+    }
+}
+
+<div id="wrapper">
+    @if (ActiveEvent != null)
+    {
+        <EventOutput Options="options"
+                 HomeTeam="ViewModel.HomeTeam"
+                 AwayTeam="ViewModel.AwayTeam"></EventOutput>
+    }
+    <div class="container main-screen" style="">
+        <div class="row">
+            <div class="column">
+                <div class="width-33 height-33 home-team team-logo">
+                    <div class="logo-object">
+                        <img src="@ViewModel.HomeTeam.Logo" style="height:100%" />
+                    </div>
+                </div>
+                <div class="width-33 height-66 home-team team-score">
+                    <p>@ViewModel.HomeTeam.Score</p>
+                </div>
+               
+            </div>
+            <div class="column middle-section">
+                <div class="region width-33 height-33">
+                    @*<div class="infobar">
+                        <p>
+                            Coppa Italia
+                        </p>
+                    </div>*@
+                    <div class="clock">
+                        <p>@ViewModel.GetClockString()</p>
+                    </div>
+                </div>
+                <div class="info-slider region width-33 height-66">
+                    <div class="glide">
+                        <div class="glide__track" data-glide-el="track">
+                            <ul class="glide__slides">
+                                <li class="glide__slide">
+                                   <Scoreboards.Features.Football.Output.UI.Lineups.LineupList
+                                    Team="ViewModel.HomeTeam">
+                                    </Scoreboards.Features.Football.Output.UI.Lineups.LineupList>
+                                </li>
+                                <li class="glide__slide">
+                                    <Scoreboards.Features.Football.Output.UI.Lineups.LineupList
+                                        Team="ViewModel.AwayTeam">
+                                    </Scoreboards.Features.Football.Output.UI.Lineups.LineupList>
+                                </li>
+                                <li class="glide__slide">
+                                    <Scoreboards.Features.Football.Output.UI.MatchStats.MatchStatsTable
+                                        HomeTeam="ViewModel.HomeTeam"
+                                        AwayTeam="ViewModel.AwayTeam"
+                                    ></Scoreboards.Features.Football.Output.UI.MatchStats.MatchStatsTable>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+@*                <div class="sponsors region-region-25">
+                    <div class="glide">
+                        <div class="glide__track">
+                            <ul class="glide__slides">
+                                <li class="glide__slide">
+                                    <div>
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Tissot_Logo.svg/640px-Tissot_Logo.svg.png"
+                                             alt="Alternate Text"
+                                             width="100%" />
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>*@
+                </div>
+            <div class="column">
+                <div class="width-33 height-33 away-team team-logo">
+                    <div class="logo-object">
+                        <img src="@ViewModel.AwayTeam.Logo" style="height:100%" />
+                    </div>
+                </div>
+                <div class="width-33 height-66 away-team team-score">
+                    <p>@ViewModel.AwayTeam.Score</p>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+@code {
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("scoreboards.initGlide");
+        }
+    }
+
+    [Parameter]
+    public FootballEventsEnum? ActiveEvent { get; set; }
+
+    [Parameter]
+    public List<string> EventData { get; set; } = new List<string>();
+
+    [Parameter]
+    public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+}
+
+
+<style>
+
+    .main-screen {
+    background: linear-gradient(blue,#000);
+    }
+    
+   body {
+       overflow:hidden;
+   }
+   
+  
+   .middle-section {
+       border-left:0.2rem solid rgba(0,0,0,0.5);
+       border-right:0.2rem solid rgba(0,0,0,0.5);
+   }
+    .team-score {
+        display:flex;
+        border-top: 0.2rem solid rgba(0,0,0,0.5);
+        font-size:25rem;color:#fff;
+        justify-content:center;
+        align-items:center;
+    }
+    @@media all and (display-mode: fullscreen) {
+        .team-score {
+            font-size:30rem;
+        }
+    }
+    .team-logo {
+        display:flex;
+        justify-content:center;
+        align-items:center;   
+    }
+
+    .home-team.team-logo {
+        background: linear-gradient(@ViewModel.HomeTeam.AccentColorHex,#000);
+    }
+
+    .away-team.team-logo {
+        background: linear-gradient(@ViewModel.AwayTeam.AccentColorHex,#000);
+    }
+    .team-logo > .logo-object {
+            height: inherit;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+    }
+    .clock {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: inherit;
+        background: linear-gradient(blue,#000);
+        color: #fff;
+        font-size: 6rem;
+        overflow: hidden;
+    }
+
+    .lineups {
+        overflow: hidden;
+        height: inherit;
+    }
+
+        .lineups ul {
+            overflow: hidden;
+        }
+
+            .lineups ul > li {
+                display: flex;
+                height: 6vh;
+                align-items: flex-start;
+                justify-content: stretch;
+                text-align: center;
+                background: red;
+                color: #fff;
+                font-size:1.3rem;
+                background: linear-gradient(blue,#000);
+            }
+
+                .lineups ul > li > p {
+                    height: inherit;
+                    box-sizing: border-box;
+                    padding-top: 1vh;
+                    background: linear-gradient(blue,#000);
+                    text-align: left;
+                    width: auto;
+                    padding-left: 0.5rem;
+                }
+
+                    .lineups ul > li > p:first-child {
+                        width: 20%;
+                        padding-left: 0;
+                        text-align: center;
+                        background: linear-gradient(yellow,orange);
+                        font-weight: bold;
+                    }
+
+    .match-stats {
+        background: #333;
+        height: 50vh;
+    }
+
+        .match-stats ul > li {
+            display: flex;
+            height:6vh;
+            align-items: center;
+            justify-content: space-around;
+            text-align: center;
+            background: red;
+            color: #fff;
+            font-size:1.3rem;
+        }
+
+            .match-stats ul > li > p {
+                height: inherit;
+                box-sizing: border-box;
+                padding-top: 0.2rem;
+                background: linear-gradient(blue,#000);
+                width: 20%;
+            }
+
+    @@media all and (display-mode: fullscreen) {
+        .match-stats ul > li > p {padding-top:0.6rem;}
+    }
+
+                .match-stats ul > li > p:nth-child(2) {
+                    width: 60%;
+                    background: linear-gradient(yellow,orange);
+                    font-weight: bold;
+                }
+
+    .sponsors {
+        display: flex;
+        align-content: center;
+    }
+
+        .sponsors img {
+            height: 20vh;
+        }
+</style>

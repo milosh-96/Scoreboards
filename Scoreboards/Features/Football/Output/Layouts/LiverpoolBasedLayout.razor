@@ -1,16 +1,32 @@
 ﻿@using Scoreboards.Features.Football;
-<div class="container-fluid scoreboard">
-    <div class="layout">
-        <div class="row">
-            <div class="col col-md-8 team-name">@ViewModel.HomeTeam.Name</div>
-            <div class="col col-md-2 team-score">@ViewModel.HomeTeam.Score</div>
-            <div class="col col-md-2 clock">@DateTime.Now.ToString("HH:mm")</div>
-        </div>
-        <div class="row">
-            <div class="col col-md-8 team-name">@ViewModel.AwayTeam.Name</div>
-            <div class="col col-md-2 team-score">@ViewModel.AwayTeam.Score</div>
-            <div class="col col-md-2 clock">@ViewModel.GetClockString()</div>
-        </div>
+<div class="wrapper">
+    <div class="container scoreboard">
+            <div class="row">
+                <div class="region width-50 height-25 team-name">
+                    @ViewModel.HomeTeam.Name
+                </div>
+                <div class="region width-25 height-25 team-score">
+                    @ViewModel.HomeTeam.Score
+                </div>
+                <div class="region width-25 height-25 date-time">
+                    @DateTime.Now.ToString("HH:mm")
+                </div>
+                
+                
+            </div>
+            <div class="row">
+                    <div class="region width-50 height-25 team-name">
+                        @ViewModel.AwayTeam.Name
+                    </div>
+                    <div class="region width-25 height-25 team-score">
+                        @ViewModel.AwayTeam.Score
+                    </div>
+                    <div class="region width-25 height-25 clock">
+                        @ViewModel.GetClockString()
+                    </div>
+                
+            </div>
+           
     </div>
 </div>
 
@@ -20,29 +36,29 @@
 }
 
 <style>
+    
     .scoreboard {
-        color: #fff;
-        background: @ViewModel.HomeTeam.AccentColorHex;
-        font-size: 36px;
-        padding-top:25vh;
-        height:100vh;
+        flex-direction:column;
+        font-size:1rem;
+        background:@ViewModel.HomeTeam.AccentColorHex;
+        align-content:center;
+        color:#fff;
+        
+    }   
+    .row,.region {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-    .scoreboard .layout {
-        height:25vh;
-        padding-top:2.5vh;
-/*        border:1px solid #fff;
-*/    }
     .scoreboard .team-name {
-        text-align:left;
+        font-size:7rem;
         text-transform:uppercase;
     }
     .scoreboard .team-score {
-        text-align:right;
-        font-size:46px;
-        margin-top:-10px;
+        font-size:7rem;
         font-weight:bold;
-    }.scoreboard .clock {
-        text-align:right;
-     
+    }
+    .scoreboard .clock,.scoreboard .date-time {
+        font-size:7rem;
     }
 </style>

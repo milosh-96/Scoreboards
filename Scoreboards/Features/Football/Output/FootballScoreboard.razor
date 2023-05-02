@@ -21,15 +21,17 @@
         break;
         case 1:
         default:
-            <HorizontalLayoutWithLineupsAndClock ActiveEvent="ActiveEvent" ViewModel="ViewModel"></HorizontalLayoutWithLineupsAndClock>
+            <PresetLayout1 EventData="EventData" ActiveEvent="ActiveEvent" ViewModel="ViewModel"></PresetLayout1>
         break;
     }
+    <div style="border-top:0.5rem dashed blue;box-sizing:border-box;">if you see the blue dashed lines, align your screen so they aren't visible.</div>
+
 </div>
 
 @code {
 
-        [Parameter]
-        public string Token { get; set; } = "";
+    [Parameter]
+    public string Token { get; set; } = "";
 
     //signalr stuff//
     private HubConnection? hubConnection;
@@ -40,6 +42,7 @@
 
     // dynamic component stuff //
     public FootballEventsEnum? ActiveEvent { get; set; }
+    public List<string> EventData { get; set; } = new List<string>();
 
     //life cycle events//
     protected override async Task OnInitializedAsync()
@@ -58,13 +61,13 @@
             InvokeAsync(StateHasChanged);
 
         });
-        hubConnection.On<KeyValuePair<string,FootballEventsEnum>>("EmittedEvent", async (item) =>
+        hubConnection.On<KeyValuePair<string,FootballEventsEnum>,List<string>>("EmittedEvent", async (item,data) =>
          {
 
-             var t = new System.Threading.Thread(async ()=>await OnEvent(item));
+             var t = new System.Threading.Thread(async ()=>await OnEvent(item,data));
              t.Start();
-        });
-       
+         });
+
 
         await hubConnection.StartAsync();
     }
@@ -72,12 +75,14 @@
 
     // events
 
-    private async Task OnEvent(KeyValuePair<string,FootballEventsEnum> item) {
-             if(item.Key == Token) {
-                      ActiveEvent = item.Value;
-                      await Task.Delay(TimeSpan.FromSeconds(15));
-                      ActiveEvent = null;
-                  }
+    private async Task OnEvent(KeyValuePair<string,FootballEventsEnum> item,List<string> data) {
+        if(item.Key == Token) {
+            ActiveEvent = item.Value;
+            EventData = data;
+            await Task.Delay(TimeSpan.FromSeconds(15));
+            ActiveEvent = null;
+            EventData = new List<string>();
+        }
     }
     }
 

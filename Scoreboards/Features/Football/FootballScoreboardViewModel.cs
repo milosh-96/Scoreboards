@@ -11,6 +11,7 @@ namespace Scoreboards.Features.Football
         public int LayoutPreset { get; set; } = 1;
         public FootballTeam HomeTeam { get; set; } = new FootballTeam()
         {
+
             AccentColorHex = "#dd0000",
             Players = Enumerable.Range(1, 11).Select(x => new FootballPlayer() { Position = "Goalkeeper", ShirtNumber = x }).ToList()
         };

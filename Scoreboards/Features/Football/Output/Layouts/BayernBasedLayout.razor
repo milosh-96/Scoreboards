@@ -7,85 +7,86 @@
     var layoutOptions = ViewModel.LayoutOptions;
     string middleColumnWidth = layoutOptions.ShowStats ? "col-md-5" : "col-md-4";
 }
-<div class="container scoreboard">
-    <div class="layout">
-        <div class="row">
-            <div class="col-4">
-                <div class="clock">
-                    @ViewModel.GetClockString()
-                </div>
-                <div class="game row">
-                    <div class="col-3">
-                        <div class="home-team">
-                            <img src="https://via.placeholder.com/500" style="width:100%" alt="" />
-                        </div>
+<div class="scoreboard">
+    <div class="container-scoreboard">
+        <div class="layout">
+            <div class="row">
+                <div class="col-4">
+                    <div class="clock">
+                        @ViewModel.GetClockString()
                     </div>
-                    <div class="result col-6">
-                        @String.Format("{0}:{1}",ViewModel.HomeTeam.Score,ViewModel.AwayTeam.Score)
-                    </div>
-                    <div class="col-3">
-                        <div class="away-team">
-                            <img src="https://via.placeholder.com/500" style="width:100%" alt="" />
-                        </div>
-                    </div>
-                </div>
-                <div class="lineups">
-                    <div id="scoreboardSlides" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <ul class="list-group">
-                                    @foreach (var item in ViewModel.HomeTeam.Players)
-                                    {
-                                        <li class="list-group-item">
-                                            <span>
-                                                @item.ShirtNumber
-                                            </span>
-                                            <span>
-                                                @item.LastName
-                                            </span>
-
-
-                                        </li>
-                                    }
-                                </ul>
+                    <div class="game row">
+                        <div class="col-3">
+                            <div class="home-team">
+                                <img src="https://via.placeholder.com/500" />
                             </div>
-                            <div class="carousel-item">
-                                <ul class="list-group">
-                                    @foreach (var item in ViewModel.AwayTeam.Players)
-                                    {
-                                        <li class="list-group-item">
-                                            <span>
-                                                @item.ShirtNumber
-                                            </span>
-                                            <span>
-                                                @item.LastName
-                                            </span>
-
-
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                            <div class="carousel-item stats-wrapper">
-                                <Scoreboards.Features.Football.Output.UI.MatchStatsTable.MatchStatsTable
-                                    HomeTeam="ViewModel.HomeTeam"
-                                    AwayTeam="ViewModel.AwayTeam"
-                                ></Scoreboards.Features.Football.Output.UI.MatchStatsTable.MatchStatsTable>
+                        </div>
+                        <div class="result col-6">
+                            @String.Format("{0}:{1}",ViewModel.HomeTeam.Score,ViewModel.AwayTeam.Score)
+                        </div>
+                        <div class="col-3">
+                            <div class="away-team">
+                                <img src="https://via.placeholder.com/500" style="width:100%" alt="" />
                             </div>
                         </div>
                     </div>
+                    <div class="match-data">
+                        <div id="scoreboardSlides" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <ul class="list-group lineup-list">
+                                        @foreach (var item in ViewModel.HomeTeam.Players)
+                                        {
+                                            <li class="list-group-item">
+                                                <span>
+                                                    @item.ShirtNumber
+                                                </span>
+                                                <span>
+                                                    @item.LastName
+                                                </span>
+
+
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="carousel-item">
+                                    <ul class="list-group lineup-list">
+                                        @foreach (var item in ViewModel.AwayTeam.Players)
+                                        {
+                                            <li class="list-group-item">
+                                                <span>
+                                                    @item.ShirtNumber
+                                                </span>
+                                                <span>
+                                                    @item.LastName
+                                                </span>
+
+
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="carousel-item stats-wrapper">
+                                    <Scoreboards.Features.Football.Output.UI.MatchStats.MatchStatsTable HomeTeam="ViewModel.HomeTeam"
+                                                                                                             AwayTeam="ViewModel.AwayTeam"></Scoreboards.Features.Football.Output.UI.MatchStats.MatchStatsTable>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-8" style="background:#efefef;color:@ViewModel.HomeTeam.AccentColorHex">
-                @if (ActiveEvent != null)
-                {
-                    <EventOutput ActiveEvent="ActiveEvent.Value"
-                             HomeTeam="ViewModel.HomeTeam"
-                             AwayTeam="ViewModel.AwayTeam"></EventOutput>
-                }
+                <div class="col-8" style="background:#efefef;color:@ViewModel.HomeTeam.AccentColorHex">
+                    @if (ActiveEvent != null)
+                    {
+                        <EventOutput Options="new EventOutputOptions {ActiveEvent = ActiveEvent.Value}"
+                                 HomeTeam="ViewModel.HomeTeam"
+                                 AwayTeam="ViewModel.AwayTeam"></EventOutput>
+                    }
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 
 @code {
@@ -93,11 +94,13 @@
     {
         if(firstRender)
         {
-            await jsRuntime.InvokeVoidAsync("bootstrapFunctions.initializeCarousel");
+            await jsRuntime.InvokeVoidAsync("scoreboards.football.initGlide");
         }
     }
     [Parameter]
     public FootballEventsEnum? ActiveEvent { get; set; }
+    [Parameter]
+    public List<string> EventData { get; set; } = new List<string>();
 
 
     [Parameter]
@@ -106,42 +109,84 @@
 
 <style>
     body {
-        background: @ViewModel.HomeTeam.AccentColorHex
+        background: @ViewModel.HomeTeam.AccentColorHex;
+        margin: 0;
+        padding: 0;
+       
     }
 
-   #scoreboardSlides {
+    .scoreboard {
+        color: #fff;
+        background: @ViewModel.HomeTeam.AccentColorHex;
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+        font-size:1rem;
+        box-sizing:border-box;
+    }
+
+    @@media all and (display-mode: fullscreen) {
+        .scoreboard {
+            font-size:1.5rem;
+        }
+
+        .home-team > img, .away-team > img {
+            width: 150%;
+        }
+    }
+    .home-team > img,.away-team > img {
+        width:100%;
+    }
+
+    .scoreboard > .container-scoreboard {
+            position: absolute;
+            bottom: 0;
+            width: 100vw;
+            left: 0vw;
+            background: blue;
+            box-sizing: border-box;
+            height: 100vh;
+    }
+    .match-data {
+        height:75vh;
+        width:100%;
+        position: absolute;
         background: #fff;
-        min-height:77vh;
+        bottom:0;
+    }
+  
+    #scoreboardSlides .carousel-item {
+            height: 100vh;
+            width: 100%;
+            background:#fff;
     }
     .stats-table {
         
         color:#003366;
         font-weight:bold;
+        height:50vh;
     }
     .stats-table td {
         text-align:center;
     }
-    .scoreboard {
-        color: #fff;
-        background: @ViewModel.HomeTeam.AccentColorHex;
-    }
+    
 
     .clock {
         background: #003366;
-        padding: 5px;
+        padding: 0.3vw;
         font-weight: bold;
         text-align: center;
-        font-size: 16px;
+        font-size: 1rem;
     }
 
     .home-team, .away-team {
         display: flex;
         justify-content: center;
-        padding-top: 10px;
+        padding-top: 0.3vw;
     }
 
     .result {
-        font-size: 64px;
+        font-size: 3.5rem;
         text-align: center;
     }
 </style>

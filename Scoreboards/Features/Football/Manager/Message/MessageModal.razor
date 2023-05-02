@@ -1,0 +1,31 @@
+﻿@using Scoreboards.Data.Football;
+<div class="modal modal-xl fade" id="makeSubstitution" tabindex="-1" aria-labelledby="makeSubstitutionLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                <h1 class="modal-title fs-5" id="makeSubstitutionLabel">Make a Substitution</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <input @bind="Message"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" @onclick="async ()=> await OnSend.InvokeAsync(new KeyValuePair<FootballEventsEnum, List<string>>(Mode,new List<string>(){Message}))" class="btn btn-secondary" data-bs-dismiss="modal">Send and Close</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+@code {
+    [Parameter]
+    public FootballEventsEnum Mode { get; set; }
+
+    [Parameter]
+    public EventCallback<KeyValuePair<FootballEventsEnum, List<string>>> OnSend {get;set;}
+
+    public string Message { get; set; } = "";
+}

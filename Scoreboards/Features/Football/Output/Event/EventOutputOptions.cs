@@ -1,7 +1,10 @@
-﻿namespace Scoreboards.Features.Football.Output.Event
+﻿using Scoreboards.Data.Football;
+
+namespace Scoreboards.Features.Football.Output.Event
 {
     public class EventOutputOptions
     {
+        public FootballEventsEnum ActiveEvent { get; set; }
         public bool FullScreenMode { get; set; } = false;
 
         /// <summary>
@@ -15,5 +18,7 @@
         public string AnimationCssClass { get; set; } = "animate__heartBeat";
 
         public string Message { get; set; } = "";
+
+        public List<string> Data { get; set; } = new List<string>();
     }
 }

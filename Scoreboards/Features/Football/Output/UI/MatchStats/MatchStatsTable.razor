@@ -1,0 +1,72 @@
+﻿@using Scoreboards.Data.Football;
+@{
+    var homeStats = HomeTeam.Stats;
+    var awayStats = AwayTeam.Stats;
+}
+<div class="match-stats">
+    <ul>
+        <li>
+            <p>@homeStats.Shots</p>
+            <p>Shots</p>
+            <p>@awayStats.Shots</p>
+        </li>
+        <li>
+            <p>@homeStats.ShotsOnTarget</p>
+            <p>Shots (on target)</p>
+            <p>@awayStats.ShotsOnTarget</p>
+        </li>
+        <li>
+            <p>432</p>
+            <p>Passes</p>
+            <p>243</p>
+        </li>
+        <li>
+            <p>83</p>
+            <p>Successful Passes (%)</p>
+            <p>86</p>
+        </li>
+        <li>
+            <p>3</p>
+            <p>Corner Kicks</p>
+            <p>4</p>
+        </li>
+        <li>
+            <p>62</p>
+            <p>Possesion (%)</p>
+            <p>38</p>
+        </li>
+        <li>
+            <p>5</p>
+            <p>Saves</p>
+            <p>5</p>
+        </li>
+        <li>
+            <p>6</p>
+            <p>Fouls</p>
+            <p>12</p>
+        </li>
+        <li>
+            <p>2</p>
+            <p>Offsides</p>
+            <p>2</p>
+        </li>
+        <li>
+            <p>2</p>
+            <p>Yellow Cards</p>
+            <p>2</p>
+        </li>
+        <li>
+            <p>0</p>
+            <p>Red Cards</p>
+            <p>0</p>
+        </li>
+    </ul>
+</div>
+
+
+@code {
+    [Parameter]
+    public FootballTeam HomeTeam { get; set; } = new FootballTeam();
+    [Parameter]
+    public FootballTeam AwayTeam { get; set; } = new FootballTeam();
+}

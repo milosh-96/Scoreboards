@@ -2,6 +2,7 @@
 {
     public enum FootballEventsEnum
     {
+        None = 999,
         GoalScored = 3,
         MatchStarted = 0,
         HalfTime = 1,
