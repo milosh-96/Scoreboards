@@ -15,13 +15,13 @@
             <LiverpoolBasedLayout ViewModel="ViewModel"></LiverpoolBasedLayout>
         break;
         case 3:
-            <BayernBasedLayout ActiveEvent="ActiveEvent" ViewModel="ViewModel">
+            <BayernBasedLayout ViewModel="ViewModel">
 
             </BayernBasedLayout>
         break;
         case 1:
         default:
-            <PresetLayout1 EventData="EventData" ActiveEvent="ActiveEvent" ViewModel="ViewModel"></PresetLayout1>
+            <PresetLayout1 ViewModel="ViewModel"></PresetLayout1>
         break;
     }
     <div style="border-top:0.5rem dashed blue;box-sizing:border-box;">if you see the blue dashed lines, align your screen so they aren't visible.</div>
@@ -40,9 +40,7 @@
 
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
 
-    // dynamic component stuff //
-    public FootballEventsEnum? ActiveEvent { get; set; }
-    public List<string> EventData { get; set; } = new List<string>();
+   
 
     //life cycle events//
     protected override async Task OnInitializedAsync()
@@ -61,29 +59,14 @@
             InvokeAsync(StateHasChanged);
 
         });
-        hubConnection.On<KeyValuePair<string,FootballEventsEnum>,List<string>>("EmittedEvent", async (item,data) =>
-         {
-
-             var t = new System.Threading.Thread(async ()=>await OnEvent(item,data));
-             t.Start();
-         });
+      
 
 
         await hubConnection.StartAsync();
     }
 
 
-    // events
-
-    private async Task OnEvent(KeyValuePair<string,FootballEventsEnum> item,List<string> data) {
-        if(item.Key == Token) {
-            ActiveEvent = item.Value;
-            EventData = data;
-            await Task.Delay(TimeSpan.FromSeconds(15));
-            ActiveEvent = null;
-            EventData = new List<string>();
-        }
-    }
+    
     }
 
       

@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client;
 @using Scoreboards.Features.Football.Output
-@using Scoreboards.Features.Football.Output.Event
 @using Scoreboards.Features.Football.Output.UI.MatchStats
 @using Scoreboards.Data.Football;
 @using Scoreboards.Features.Football;
@@ -8,26 +7,11 @@
 @{
     var layoutOptions = ViewModel.LayoutOptions;
     string middleColumnWidth = layoutOptions.ShowStats ? "col-md-5" : "col-md-4";
-    EventOutputOptions options = new EventOutputOptions()
-            {
-                FullScreenMode = true,
-                AnimationCssClass = "animate__backInLeft",
-            };
-    if (ActiveEvent != null)
-    {
-        options.ActiveEvent = ActiveEvent.Value;
-        options.Data = EventData;
-
-    }
+  
 }
 
 <div id="wrapper">
-    @if (ActiveEvent != null)
-    {
-        <EventOutput Options="options"
-                 HomeTeam="ViewModel.HomeTeam"
-                 AwayTeam="ViewModel.AwayTeam"></EventOutput>
-    }
+   
     <div class="container main-screen" style="">
         <div class="row">
             <div class="column">
@@ -118,11 +102,6 @@
         }
     }
 
-    [Parameter]
-    public FootballEventsEnum? ActiveEvent { get; set; }
-
-    [Parameter]
-    public List<string> EventData { get; set; } = new List<string>();
 
     [Parameter]
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();

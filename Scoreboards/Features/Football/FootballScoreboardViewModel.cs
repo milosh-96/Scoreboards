@@ -1,5 +1,4 @@
-﻿using Scoreboards.Features.Football.Output.Event;
-using Scoreboards.Data.Football;
+﻿using Scoreboards.Data.Football;
 using System;
 using System.Drawing;
 
@@ -9,6 +8,9 @@ namespace Scoreboards.Features.Football
     {
         public FootballScoreboardLayoutOptions LayoutOptions { get; set; } = new FootballScoreboardLayoutOptions();
         public int LayoutPreset { get; set; } = 1;
+
+        public string EventMessage { get; set; } = "";
+
         public FootballTeam HomeTeam { get; set; } = new FootballTeam()
         {
 

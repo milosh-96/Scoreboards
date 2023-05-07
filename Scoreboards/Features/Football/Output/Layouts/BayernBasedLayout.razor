@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client;
-@using Scoreboards.Features.Football.Output.Event
 @using Scoreboards.Data.Football;
 @using Scoreboards.Features.Football;
 @inject IJSRuntime jsRuntime;
@@ -76,12 +75,7 @@
                     </div>
                 </div>
                 <div class="col-8" style="background:#efefef;color:@ViewModel.HomeTeam.AccentColorHex">
-                    @if (ActiveEvent != null)
-                    {
-                        <EventOutput Options="new EventOutputOptions {ActiveEvent = ActiveEvent.Value}"
-                                 HomeTeam="ViewModel.HomeTeam"
-                                 AwayTeam="ViewModel.AwayTeam"></EventOutput>
-                    }
+                   
                 </div>
             </div>
         </div>
@@ -97,12 +91,7 @@
             await jsRuntime.InvokeVoidAsync("scoreboards.football.initGlide");
         }
     }
-    [Parameter]
-    public FootballEventsEnum? ActiveEvent { get; set; }
-    [Parameter]
-    public List<string> EventData { get; set; } = new List<string>();
-
-
+   
     [Parameter]
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
 }

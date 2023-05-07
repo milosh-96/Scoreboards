@@ -90,28 +90,34 @@
                         <div>
                             <div class="row">
                                 <div class="col">
-                                    <button class="btn btn-secondary" @onclick="@(async ()=>{
-                                ViewModel.Clock = 0;
-                                await StartTimer();
-                                await EmitEvent(FootballEventsEnum.MatchStarted);
-
-                            })" disabled="@(timer != null)">
+                                    <button class="btn btn-secondary" 
+                                    @onclick="@(
+                                        async ()=>{
+                                            ViewModel.Clock = 0;
+                                            await StartTimer();
+                                        }
+                                    )"
+                                    disabled="@(timer != null)">
                                         Kick Off
                                     </button>
-                                    <button class="mx-1 btn btn-secondary" @onclick="@(async ()=>{
-                                await StopTimer();
-                                ViewModel.Clock = 45*60;
-                                await EmitEvent(FootballEventsEnum.HalfTime);
-
-                            })" disabled="@(timer == null)">
+                                    <button class="mx-1 btn btn-secondary" 
+                                    @onclick="@(
+                                        async ()=>{
+                                            await StopTimer();
+                                            ViewModel.Clock = 45*60;
+                                        }
+                                     )" 
+                                    disabled="@(timer == null)">
                                         Half Time
                                     </button>
-                                    <button class="btn btn-secondary" @onclick="@(async ()=>{
-                                await StopTimer();
-                                ViewModel.Clock = 90*60;
-                                await EmitEvent(FootballEventsEnum.MatchEnd);
-
-                            })" disabled="@(timer == null)">
+                                    <button class="btn btn-secondary"
+                                    @onclick="@(
+                                        async ()=>{
+                                            await StopTimer();
+                                            ViewModel.Clock = 90*60;
+                                        }
+                                    )"
+                                    disabled="@(timer == null)">
                                         Match End
                                     </button>
                                 </div>
@@ -119,39 +125,29 @@
                             <div class="row">
                                 <div class="col mt-3">
                                     <button class="mx-1 btn btn-secondary"
-                                            @onclick="@(async ()=>{
-                                ViewModel.HomeTeam.Score++;
-                                 await EmitEvent(FootballEventsEnum.GoalScored);
-
-                            })">
+                                    @onclick="@(
+                                        async ()=>{
+                                            ViewModel.HomeTeam.Score++;
+                                        }
+                                    )">
                                         Goal (home team)
                                     </button>
                                     <button class="btn btn-secondary"
-                                            @onclick="@(async ()=>{
-                                ViewModel.AwayTeam.Score++;
-                                await EmitEvent(FootballEventsEnum.GoalScored);
-
-                            })">
+                                    @onclick="@(
+                                        async ()=>{
+                                            ViewModel.AwayTeam.Score++;
+                                        }
+                                    )">
                                         Goal (away team)
 
-                                    </button> - <small><em>will play "goal" animation</em></small>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                        
                         <div class="row">
                             <div class="col mt-3">
-                                <button class="mx-1 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#makeSubstitution">
-                                    Substitution (home team)
-                                </button>
-                                <button class="mx-1 btn btn-secondary">
-                                    Substitution (away team)
-                                </button>
-                                  
-                                <Scoreboards.Features.Football.Manager.Message.MessageModal
-                                    OnSend="()=>EmitEvent()"
-                                >
-                                </Scoreboards.Features.Football.Manager.Message.MessageModal>
+                               
 
                             </div>
                         </div>
@@ -226,7 +222,7 @@
     {
         ViewModel.HomeTeam.Name = "Inter";
         ViewModel.HomeTeam.Logo = "https://uploads.r8match.com/sportsglobe/football/ita/fc-internazionale-milano.png";  
-        
+
         ViewModel.AwayTeam.Name = "AC Milan";
         ViewModel.AwayTeam.Logo = "https://uploads.r8match.com/sportsglobe/football/ita/ac-milan.png";
     }     
@@ -314,6 +310,10 @@
     {
         if(hubConnection!=null)
         {
+            if(args == null) { args = new List<string>(); }
+            
+                args.Add(ViewModel.EventMessage);
+            
             await hubConnection.SendAsync("EmitEvent",
             new KeyValuePair<string, FootballEventsEnum>(ConnectionToken, eventType.Value),
             args

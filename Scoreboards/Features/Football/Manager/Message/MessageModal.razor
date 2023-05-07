@@ -14,7 +14,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" @onclick="async ()=> await OnSend.InvokeAsync(new KeyValuePair<FootballEventsEnum, List<string>>(Mode,new List<string>(){Message}))" class="btn btn-secondary" data-bs-dismiss="modal">Send and Close</button>
+                                        <button type="button" @onclick="async ()=> {await EventMessageChanged.InvokeAsync(Message);await OnSend.InvokeAsync(new KeyValuePair<FootballEventsEnum, List<string>>(Mode,new List<string>()));}" class="btn btn-secondary" data-bs-dismiss="modal">Send and Close</button>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     </div>
                                 </div>
@@ -22,10 +22,14 @@
                         </div>
 @code {
     [Parameter]
+    public string EventMessage  { get; set; }
+    [Parameter]
     public FootballEventsEnum Mode { get; set; }
 
     [Parameter]
-    public EventCallback<KeyValuePair<FootballEventsEnum, List<string>>> OnSend {get;set;}
+    public EventCallback<KeyValuePair<FootballEventsEnum, List<string>>> OnSend {get;set;} [Parameter]
+    
+    public EventCallback<string> EventMessageChanged {get;set;}
 
     public string Message { get; set; } = "";
 }
