@@ -1,36 +1,41 @@
 ﻿@using Scoreboards.Data.Baseball;
 <div class="ui-batting-order">
-    <table>
-        <thead>
-            <tr>
-                <th class="team-name" colspan="3">@Team.Name</th>
-                @if(ShowStats)
+    <div class="head" style="display:flex">
+        <div class="team-name">
+            @Team.Name
+        </div>
+        
+    </div>
+        <div class="content-body">
+            <ul>
+            <li class="item" style="display:flex">
+                <div class="shirt-number-column">#</div>
+                <div class="name-column">Name</div>
+                <div class="position-column">Pos</div>
+                @if (ShowStats)
                 {
-                    <th>Avg</th>
-                    <th>Hr</th>
-                    <th>Rbi</th>
+                    <div>H</div>
+                    <div>BB</div>
+                    <div>K</div>
                 }
-            </tr>
-        </thead>
-        <tbody>
+            </li>
             @foreach (var item in Team.Lineup)
             {
-                <tr class="item">
-                    <td class="shirt-number-column">@item.ShirtNumber</td>
-                    <td class="name-column">@item.ToString()</td>
-                    <td class="position-column">@BaseballPositionsEnumHandler.DisplayTwoLetterAbbreviation(item.Position)</td>
+                <li class="item" style="display:flex">
+                    <div class="shirt-number-column">@item.ShirtNumber</div>
+                    <div class="name-column">@item.ToString()</div>
+                    <div class="position-column">@BaseballPositionsEnumHandler.DisplayTwoLetterAbbreviation(item.Position)</div>
                     @if(ShowStats)
                     {
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
+                        <div>0</div>
+                        <div>0</div>
+                        <div>0</div>
                     }
-                </tr>
+                </li>
             }
-        </tbody>
-    </table>
-</div>
-
+            </ul>
+        </div>
+    </div>
 @code {
     [Parameter]
     public BaseballTeam Team { get; set; } = new BaseballTeam();

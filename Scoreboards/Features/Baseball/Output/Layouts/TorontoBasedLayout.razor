@@ -5,11 +5,11 @@
 @{
 
 }
-<div class="container-fluid" style="padding-top:0;padding-bottom:0;margin:0">
-<div class="scoreboard">
-    <div class="row gx-0" id="top-row">
-        <div class="col col-md-5">
-                @switch(ViewModel.Game.CurrentInning.State)
+<div class="container">
+    <div class="row" id="top-row">
+        <div class="column">
+            <div class="width-25 height-75">
+                @switch (ViewModel.Game.CurrentInning.State)
                 {
                     case BaseballInningStateEnum.Top:
                     case BaseballInningStateEnum.Middle:
@@ -19,76 +19,66 @@
                         <Scoreboards.Features.Baseball.Output.UI.BattingOrder Team="ViewModel.HomeTeam"></Scoreboards.Features.Baseball.Output.UI.BattingOrder>
                         break;
                 }
+            </div>
            
         </div>
-        <div class="col col-md-7">
-            <p>aaaa</p> <p>aaaa</p> <p>aaaa</p> <p>aaaa</p> <p>aaaa</p>
-           
+        <div class="column">
+            <div class="width-50 height-75">
+                <p>aaaa</p> <p>aaaa</p> <p>aaaa</p> <p>aaaa</p> <p>aaaa</p>
+            </div>
+          
+        </div>
+        <div class="column">
+            <div class="width-25 height-75">
+                <p>sidebar</p>
+            </div>
           
         </div>
     </div>
-    <div class="row gx-0" id="bottom-row">
-        <div class="col col-md-5">
-            <div class="row gx-0">
-                <div class="col col-md-7">
-                    <div>
+    <div class="row" id="bottom-row">
+                    <div class="region width-10 height-25">
                         <img width="100%"
                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR757bKJiroURNgG3b8b_WFENDurqfiY8Qn0c8wR0bF7BDPgcvceb3n_A1yqQ9AWBZdw8&usqp=CAU" alt="" />
                     </div>
-                </div>
-                <div class="col col-md-5">
-                    due up
-                </div>
+                    <div class="region width-15 height-25">due up</div>
+            <div class="region width-50 height-25">
+                <Scoreboards.Features.Baseball.Output.UI.Linescore HomeTeam="ViewModel.HomeTeam"
+                                                                   AwayTeam="ViewModel.AwayTeam"
+                                                                   ShowHeadingRow="true"></Scoreboards.Features.Baseball.Output.UI.Linescore>
             </div>
-        </div>
-        <div class="col col-md-5">
-           <Scoreboards.Features.Baseball.Output.UI.Linescore
-            HomeTeam="ViewModel.HomeTeam"
-            AwayTeam="ViewModel.AwayTeam"
-            ShowHeadingRow="true"
-           ></Scoreboards.Features.Baseball.Output.UI.Linescore>
-        </div>
-            <div class="col col-md-2">
+            <div class="region width-25 height-25">
                 <div class="ui-inning-state">
-                    <table style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>B</th>
-                                <th>S</th>
-                                <th>O</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>@ViewModel.Game.CurrentAtBat.Balls</td>
-                                <td>@ViewModel.Game.CurrentAtBat.Strikes</td>
-                                <td>@ViewModel.Game.CurrentInning.Outs</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="head">
+                            <div>B</div>
+                            <div>S</div>
+                            <div>O</div>
+                    </div>
+                    <div class="content-body">
+                                <div>@ViewModel.Game.CurrentAtBat.Balls</div>
+                                <div>@ViewModel.Game.CurrentAtBat.Strikes</div>
+                                <div>@ViewModel.Game.CurrentInning.Outs</div>
+                            </div>
+                      
                 </div>
             </div>
     </div>
 </div>
-</div>
 @code {
 
-    [Parameter]
+    [CascadingParameter]
     public BaseballScoreboardViewModel ViewModel { get; set; } = new BaseballScoreboardViewModel();
 }
 
 <style>
     body {
         background: linear-gradient(to top,#004488 35%,#003366);
-        font-size: 24px;
+        font-size: 1.3rem;
         color: #fefefe;
-        height:100%;
         
     }
 
     .scoreboard {
         color: rgba(0,0,0,0.5);
-        min-height:100vh;        
     }
     #top-row {
         
@@ -99,15 +89,36 @@
             background:rgba(0,0,0,0.3);
             color: #fff;
         }
-        .ui-inning-state th {
-            font-size:1rem;text-align:center;
+        .ui-inning-state div {
+        font-size: 1rem;
+        text-align: center;
+        flex: 1;
+       
         }
-     .ui-inning-state td {
+
+    .ui-inning-state {
+        height: 25vh;
+    }
+
+        .ui-inning-state div.content-body,.ui-inning-state div.head {
+            display:flex;
+            justify-content:stretch;
+            align-items:stretch;
+        }
+        .ui-inning-state div.head {
+            height:5vh;
+        }.ui-inning-state div.content-body {
+            align-self:stretch;
+            flex:1;
+        }
+     .ui-inning-state div.content-body div {
          font-size:3rem;
         background: linear-gradient(to top,#efefef 25%,#ccc,#efefef 75%);
         border-right: 1px solid #111;
         text-align:center;
         color: #111;
+        
+        
     }
      .ui-linescore th {
          font-size:1rem;color:#ccc;
@@ -125,29 +136,41 @@
             background: linear-gradient(to top,#efefef 25%,#ccc,#efefef 75%);
         }
 
-    .ui-batting-order th{
+    .ui-batting-order {
         font-size:1rem;
-        vertical-align:bottom;
     }
-    .ui-batting-order th.team-name {
+    .ui-batting-order .head {
+        height:10vh;
+    }
+    .ui-batting-order .content-body {
+        height:65vh;
+    }
+    .ui-batting-order .team-name {
         font-size:2rem;
     }
-        .ui-batting-order .item td {
+        .ui-batting-order .item {
             font-size:1rem;
             text-transform:uppercase;
             font-weight:bold;
-            height:5vh;
-            padding-top:6px;
-            padding-bottom:6px;
-    }
-
-    .ui-batting-order .item td.shirt-number-column {
+            height:6.5vh;
+           
+            box-sizing:border-box;
+            align-items:stretch;
+        }
+    .ui-batting-order .item > div {
+                width: 10%;
+                align-content:center;
+            }
+    .ui-batting-order .item .shirt-number-column {
         background:linear-gradient(to top,#efefef 25%,#ccc,#efefef 75%);
         border-right:1px solid #111;
         color:#111;
+        width:15%;
+        text-align:center;
     }
-    .ui-batting-order .item td.name-column {
-        padding-left:10px;
+    .ui-batting-order .item .name-column {
+        padding-left:0.4rem;
+        width:60%;
     }
 
        

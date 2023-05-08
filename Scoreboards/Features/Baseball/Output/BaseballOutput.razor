@@ -8,9 +8,9 @@
 @inject NavigationManager Navigation
 
 <div class="scoreboard">
-  <Scoreboards.Features.Baseball.Output.Layouts.TorontoBasedLayout
-    ViewModel="ViewModel"
-  ></Scoreboards.Features.Baseball.Output.Layouts.TorontoBasedLayout>
+  <CascadingValue Value="@ViewModel">
+        <Scoreboards.Features.Baseball.Output.Layouts.TorontoBasedLayout></Scoreboards.Features.Baseball.Output.Layouts.TorontoBasedLayout>
+  </CascadingValue>
 </div>
 
 <style>
