@@ -1,0 +1,30 @@
+﻿   
+    <div class="output">
+        <div class="row">
+            <div class="column">
+            <div class="width-100 height-50">
+                @if(
+                    ViewModel.Event.Options.AnimationCssClasses != null &&
+                    ViewModel.Event.Options.AnimationCssClasses.Count > 0
+                )
+                {
+                    <div class="@String.Join(" ",ViewModel.Event.Options.AnimationCssClasses)">
+                        @ViewModel.Event.Message
+                    </div>
+                }
+                else
+                {
+                    <div class="static">
+                        @ViewModel.Event.Message
+                    </div>
+                }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @code {
+        [CascadingParameter]
+        public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+    }

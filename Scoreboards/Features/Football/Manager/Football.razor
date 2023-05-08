@@ -1,5 +1,6 @@
 ﻿@page "/manager/football"
 @using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Data;
 @using Scoreboards.Features.Football
 @using Scoreboards.Features.Football.Manager
 @using Scoreboards.Features.Football.Output;
@@ -94,7 +95,8 @@
                                     @onclick="@(
                                         async ()=>{
                                             ViewModel.Clock = 0;
-                                            await StartTimer();
+                                            TriggerEvent(FootballEventsEnum.MatchStarted,"Kick-Off");
+                                    await StartTimer();
                                         }
                                     )"
                                     disabled="@(timer != null)">
@@ -105,6 +107,8 @@
                                         async ()=>{
                                             await StopTimer();
                                             ViewModel.Clock = 45*60;
+                                            TriggerEvent(FootballEventsEnum.HalfTime,"Half-Time!");
+
                                         }
                                      )" 
                                     disabled="@(timer == null)">
@@ -115,6 +119,8 @@
                                         async ()=>{
                                             await StopTimer();
                                             ViewModel.Clock = 90*60;
+                                            TriggerEvent(FootballEventsEnum.MatchEnd,"Full-Time!");
+
                                         }
                                     )"
                                     disabled="@(timer == null)">
@@ -128,6 +134,8 @@
                                     @onclick="@(
                                         async ()=>{
                                             ViewModel.HomeTeam.Score++;
+                                            TriggerEvent(FootballEventsEnum.GoalScored,"GOOOOOOAAAAALLLLL!!!!!");
+
                                         }
                                     )">
                                         Goal (home team)
@@ -136,6 +144,15 @@
                                     @onclick="@(
                                         async ()=>{
                                             ViewModel.AwayTeam.Score++;
+                                            TriggerEvent(
+                                                FootballEventsEnum.GoalScored,
+                                                "Goal for visitors.",
+                                                new ScoreboardEventOutputOptions() {
+                                                    FontSize = 5,BackgroundColor = ViewModel.AwayTeam.AccentColorHex,
+                                                    AnimationCssClasses = new List<string>()
+                                                }
+                                                );
+
                                         }
                                     )">
                                         Goal (away team)
@@ -305,22 +322,20 @@
     }
 
     // match events
-
-    public async Task EmitEvent(FootballEventsEnum? eventType = FootballEventsEnum.None, List<string> args = null)
+    public void TriggerEvent(FootballEventsEnum eventType,string message)
     {
-        if(hubConnection!=null)
-        {
-            if(args == null) { args = new List<string>(); }
-            
-                args.Add(ViewModel.EventMessage);
-            
-            await hubConnection.SendAsync("EmitEvent",
-            new KeyValuePair<string, FootballEventsEnum>(ConnectionToken, eventType.Value),
-            args
-            );
-           
-        }
+        ViewModel.Event.IsActive = true;
+        ViewModel.Event.EventType = eventType;
+        ViewModel.Event.Message = message;
+        ViewModel.Event.Options.BackgroundColor = ViewModel.HomeTeam.AccentColorHex; ;
+
+    } 
+    public void TriggerEvent(FootballEventsEnum eventType, string message, ScoreboardEventOutputOptions options)
+    {
+        TriggerEvent(eventType, message);
+        ViewModel.Event.Options = options;
     }
+
 
     //life cycle events//
     protected override async Task OnInitializedAsync()

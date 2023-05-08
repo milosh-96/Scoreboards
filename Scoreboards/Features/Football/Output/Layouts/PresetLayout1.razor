@@ -7,11 +7,16 @@
 @{
     var layoutOptions = ViewModel.LayoutOptions;
     string middleColumnWidth = layoutOptions.ShowStats ? "col-md-5" : "col-md-4";
-  
+
 }
 
 <div id="wrapper">
-   
+    @if (ViewModel.Event.IsActive)
+    {
+        <div class="container">
+            @EventOutput
+    </div>
+    }
     <div class="container main-screen" style="">
         <div class="row">
             <div class="column">
@@ -33,6 +38,7 @@
                         </p>
                     </div>*@
                     <div class="clock">
+                      
                         <p>@ViewModel.GetClockString()</p>
                     </div>
                 </div>
@@ -102,8 +108,9 @@
         }
     }
 
-
     [Parameter]
+    public RenderFragment EventOutput { get; set; }
+    [CascadingParameter]
     public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
 }
 
@@ -244,5 +251,13 @@
 
         .sponsors img {
             height: 20vh;
+        }
+
+        .output {
+            background:linear-gradient(@ViewModel.Event.Options.BackgroundColor,#000);
+        color: @ViewModel.Event.Options.FontColor;
+        font-size:@String.Format("{0}{1}",ViewModel.Event.Options.FontSize,"rem");
+            text-align:center;
+            width:100%;
         }
 </style>

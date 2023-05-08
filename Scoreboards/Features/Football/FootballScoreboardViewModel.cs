@@ -1,26 +1,29 @@
-﻿using Scoreboards.Data.Football;
+﻿using Scoreboards.Data;
+using Scoreboards.Data.Football;
 using System;
 using System.Drawing;
 
 namespace Scoreboards.Features.Football
 {
+    
     public class FootballScoreboardViewModel
     {
+        public FootballEventBus Event { get; set; } = new FootballEventBus();
+
         public FootballScoreboardLayoutOptions LayoutOptions { get; set; } = new FootballScoreboardLayoutOptions();
         public int LayoutPreset { get; set; } = 1;
 
-        public string EventMessage { get; set; } = "";
 
         public FootballTeam HomeTeam { get; set; } = new FootballTeam()
         {
 
-            AccentColorHex = "#dd0000",
+            AccentColorHex = "#003366",
             Players = Enumerable.Range(1, 11).Select(x => new FootballPlayer() { Position = "Goalkeeper", ShirtNumber = x }).ToList()
         };
 
         public FootballTeam AwayTeam { get; set; } = new FootballTeam()
         {
-            AccentColorHex = "#003366",
+            AccentColorHex = "#dd0000",
             Players = Enumerable.Range(1, 11).Select(x => new FootballPlayer() { Position = "Goalkeeper", ShirtNumber = x }).ToList()
 
         };

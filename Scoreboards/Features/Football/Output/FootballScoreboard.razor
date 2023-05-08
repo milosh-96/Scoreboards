@@ -8,22 +8,29 @@
 @inject NavigationManager Navigation
 
 <div>
-  
-    @switch(ViewModel.LayoutPreset)
-    {
-        case 2:
-            <LiverpoolBasedLayout ViewModel="ViewModel"></LiverpoolBasedLayout>
-        break;
-        case 3:
-            <BayernBasedLayout ViewModel="ViewModel">
+  <CascadingValue Value="@ViewModel">
+       
+        @switch (ViewModel.LayoutPreset)
+        {
+            case 2:
+                <LiverpoolBasedLayout></LiverpoolBasedLayout>
+                break;
+            case 3:
+                <BayernBasedLayout>
 
-            </BayernBasedLayout>
-        break;
-        case 1:
-        default:
-            <PresetLayout1 ViewModel="ViewModel"></PresetLayout1>
-        break;
-    }
+                </BayernBasedLayout>
+                break;
+            case 1:
+            default:
+               
+                <PresetLayout1>
+                    <EventOutput>
+                        <EventOutput></EventOutput>
+                    </EventOutput>
+                </PresetLayout1>
+                break;
+        }
+  </CascadingValue>
     <div style="border-top:0.5rem dashed blue;box-sizing:border-box;">if you see the blue dashed lines, align your screen so they aren't visible.</div>
 
 </div>
