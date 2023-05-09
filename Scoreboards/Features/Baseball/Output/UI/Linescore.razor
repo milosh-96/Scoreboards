@@ -1,73 +1,69 @@
 ﻿@using Scoreboards.Data.Baseball;
 <div class="ui-linescore">
-    <table style="width:100%">
-        @if (ShowHeadingRow)
-        {
-            <thead>
-                <tr>
-                    <th class="team-name">Team</th>
-                    <th class="inning-item">1</th>
-                    <th class="inning-item">2</th>
-                    <th class="inning-item">3</th>
-                    <th class="inning-item">4</th>
-                    <th class="inning-item">5</th>
-                    <th class="inning-item">6</th>
-                    <th class="inning-item">7</th>
-                    <th class="inning-item">8</th>
-                    <th class="inning-item">9</th>
-                    <th class="rhe-column runs">R</th>
-                    <th class="rhe-column hits">H</th>
-                    <th class="rhe-column errors">E</th>
-                </tr>
-            </thead>
-        }
-        <tbody>
-            <tr>
-                <td class="away team-name">
-                    @if(UseTeamAbbreviations)
-                    {
-                        @AwayTeam.Abbreviation
-                    }
-                    else
-                    {
-                        @AwayTeam.Name
-                    }
-                </td>
-
-                @for (int i = 0; i < 9; i++)
+    @if (ShowHeadingRow)
+    {
+        <div class="head">
+            <div class="team-name">Team</div>
+            <div class="inning-item">1</div>
+            <div class="inning-item">2</div>
+            <div class="inning-item">3</div>
+            <div class="inning-item">4</div>
+            <div class="inning-item">5</div>
+            <div class="inning-item">6</div>
+            <div class="inning-item">7</div>
+            <div class="inning-item">8</div>
+            <div class="inning-item">9</div>
+            <div class="rhe-column runs">R</div>
+            <div class="rhe-column hits">H</div>
+            <div class="rhe-column errors">E</div>
+        </div>
+    }
+    <div class="content-body">
+        <div>
+            <div class="away team-name">
+                @if (UseTeamAbbreviations)
                 {
-                    var item = AwayTeam.Stats.Linescore[i];
-                    <td id="inning-item away-@i" @key="@i">@item.Runs</td>
+                    @AwayTeam.Abbreviation
                 }
-                <td class="away rhe-column runs">@AwayTeam.Stats.Runs</td>
-                <td class="away rhe-column hits">@AwayTeam.Stats.Hits</td>
-                <td class="away rhe-column errors">@AwayTeam.Stats.Errors</td>
-
-            </tr>
-            <tr>
-                <td class="home team-name">
-                    @if (UseTeamAbbreviations)
-                    {
-                        @HomeTeam.Abbreviation
-                    }
-                    else
-                    {
-                        @HomeTeam.Name
-                    }
-                </td>
-
-                @for (int i = 0; i < 9; i++)
+                else
                 {
-                    var item = HomeTeam.Stats.Linescore[i];
-                    <td id="home inning-item home-@i" @key="@i">@item.Runs</td>
+                    @AwayTeam.Name
                 }
-                <td class="home rhe-column runs">@HomeTeam.Stats.Runs</td>
-                <td class="home rhe-column hits">@HomeTeam.Stats.Hits</td>
-                <td class="home rhe-column erors">@HomeTeam.Stats.Errors</td>
-            </tr>
+            </div>
 
-        </tbody>
-    </table>
+            @for (int i = 0; i < 9; i++)
+            {
+                var item = AwayTeam.Stats.Linescore[i];
+                <div id="inning-item away-@i" @key="@i">@item.Runs</div>
+            }
+            <div class="away rhe-column runs">@AwayTeam.Stats.Runs</div>
+            <div class="away rhe-column hits">@AwayTeam.Stats.Hits</div>
+            <div class="away rhe-column errors">@AwayTeam.Stats.Errors</div>
+
+        </div>
+        <div>
+            <div class="home team-name">
+                @if (UseTeamAbbreviations)
+                {
+                    @HomeTeam.Abbreviation
+                }
+                else
+                {
+                    @HomeTeam.Name
+                }
+            </div>
+
+            @for (int i = 0; i < 9; i++)
+            {
+                var item = HomeTeam.Stats.Linescore[i];
+                <td id="home inning-item home-@i" @key="@i">@item.Runs</td>
+            }
+            <div class="home rhe-column runs">@HomeTeam.Stats.Runs</div>
+            <div class="home rhe-column hits">@HomeTeam.Stats.Hits</div>
+            <div class="home rhe-column erors">@HomeTeam.Stats.Errors</div>
+        </div>
+
+    </div>
 </div>
 @code {
     [Parameter]

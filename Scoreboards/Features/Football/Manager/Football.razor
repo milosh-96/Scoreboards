@@ -134,7 +134,7 @@
                                     @onclick="@(
                                         async ()=>{
                                             ViewModel.HomeTeam.Score++;
-                                            TriggerEvent(FootballEventsEnum.GoalScored,"GOOOOOOAAAAALLLLL!!!!!");
+                                            TriggerEvent(FootballEventsEnum.GoalScored,"GOOAALL!!!!!");
 
                                         }
                                     )">
@@ -164,8 +164,20 @@
                        
                         <div class="row">
                             <div class="col mt-3">
-                               
-
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#makeSubstitution">
+                                    Make Substitution
+                                </button>
+                                <Scoreboards.Features.Football.Manager.Substitutions.MakeSubstitutionModal
+                                EventBus="ViewModel.Event"
+                                Mode="FootballEventsEnum.SubstitutionHomeTeam"
+                                ></Scoreboards.Features.Football.Manager.Substitutions.MakeSubstitutionModal> <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#makeSubstitution">
+                                    Make Substitution (away)
+                                </button>
+                                <Scoreboards.Features.Football.Manager.Substitutions.MakeSubstitutionModal
+                                EventBus="ViewModel.Event"
+                                Mode="FootballEventsEnum.SubstitutionAwayTeam"
+                                ></Scoreboards.Features.Football.Manager.Substitutions.MakeSubstitutionModal>
                             </div>
                         </div>
                     </div>
@@ -324,11 +336,10 @@
     // match events
     public void TriggerEvent(FootballEventsEnum eventType,string message)
     {
-        ViewModel.Event.IsActive = true;
         ViewModel.Event.EventType = eventType;
         ViewModel.Event.Message = message;
         ViewModel.Event.Options.BackgroundColor = ViewModel.HomeTeam.AccentColorHex; ;
-
+        ViewModel.Event.Activate();
     } 
     public void TriggerEvent(FootballEventsEnum eventType, string message, ScoreboardEventOutputOptions options)
     {

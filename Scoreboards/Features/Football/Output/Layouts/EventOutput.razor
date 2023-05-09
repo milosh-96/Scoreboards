@@ -1,29 +1,40 @@
-﻿   
+﻿@using Scoreboards.Data.Football;
+   
     <div class="output">
         <div class="row">
             <div class="column">
-            <div class="width-100 height-50">
-                @if(
-                    ViewModel.Event.Options.AnimationCssClasses != null &&
-                    ViewModel.Event.Options.AnimationCssClasses.Count > 0
-                )
+            <div class="width-100 height-100">
+                @switch(ViewModel.Event.EventType)
                 {
-                    <div class="@String.Join(" ",ViewModel.Event.Options.AnimationCssClasses)">
-                        @ViewModel.Event.Message
-                    </div>
-                }
-                else
-                {
-                    <div class="static">
-                        @ViewModel.Event.Message
-                    </div>
-                }
+                    case FootballEventsEnum.SubstitutionHomeTeam:
+                    <Scoreboards.Features.Football.Output.UI.Substitutions.SingleSubstitution
+                        EventBus="ViewModel.Event"
+                    ></Scoreboards.Features.Football.Output.UI.Substitutions.SingleSubstitution>
+                            break;
+                    default:
+               
+                    @if (
+                   ViewModel.Event.Options.AnimationCssClasses != null &&
+                   ViewModel.Event.Options.AnimationCssClasses.Count > 0
+                   )
+                    {
+                        <div class="@String.Join(" ",ViewModel.Event.Options.AnimationCssClasses)">
+                            @ViewModel.Event.Message
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="static">
+                            @ViewModel.Event.Message
+                        </div>
+                    }
+                    break;
 
-                </div>
+                }
+            </div>
             </div>
         </div>
     </div>
-
     @code {
         [CascadingParameter]
         public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();

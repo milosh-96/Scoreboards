@@ -1,0 +1,21 @@
+﻿@using Scoreboards.Data;
+<div class="substitution single">
+    <div class="out height-50">
+       @EventBus.Data.Where(x=>x.Key=="Substitution_SubbedOutPlayer").FirstOrDefault().Value
+    </div>
+    <div class="in height-50">
+       @EventBus.Data.Where(x=>x.Key=="Substitution_SubbedInPlayer").FirstOrDefault().Value
+    </div>
+</div>
+@code {
+    [Parameter]
+    public FootballEventBus EventBus { get; set; } = new FootballEventBus();
+}
+
+<style>
+    .substitution .out,.substitution .in {
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+</style>
