@@ -15,4 +15,11 @@
 
         
     }
+
+    public enum FootballEventsDataKeysEnum
+    {
+        None = 999,
+        Substitution_SubbedOutPlayer = 10,
+        Substitution_SubbedInPlayer = 11,
+    }
 }

@@ -1,4 +1,6 @@
-﻿namespace Scoreboards.Data
+﻿using Scoreboards.Data.Football;
+
+namespace Scoreboards.Data
 {
     public abstract class EventBus
     {
@@ -23,7 +25,7 @@
 
         public string Message { get; set; } = "test";
 
-        public List<KeyValuePair<string, string>> Data { get; set; } = new List<KeyValuePair<string, string>>();
+        public List<KeyValuePair<FootballEventsDataKeysEnum, string>> Data { get; set; } = new List<KeyValuePair<FootballEventsDataKeysEnum, string>>();
     
         public  void Activate(TimeSpan? duration = null)
         {
@@ -32,7 +34,7 @@
                       .ContinueWith(t => {
                           this.IsActive = false;
                           this.Message = "";
-                          this.Data = new List<KeyValuePair<string, string>>();
+                          this.Data = new List<KeyValuePair<FootballEventsDataKeysEnum, string>>();
                           this.Options = new ScoreboardEventOutputOptions();
                       });
         }

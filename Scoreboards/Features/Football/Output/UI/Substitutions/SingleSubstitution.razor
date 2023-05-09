@@ -1,10 +1,11 @@
 ﻿@using Scoreboards.Data;
+@using Scoreboards.Data.Football;
 <div class="substitution single">
     <div class="out height-50">
-       @EventBus.Data.Where(x=>x.Key=="Substitution_SubbedOutPlayer").FirstOrDefault().Value
+       @EventBus.Data.FirstOrDefault(x=>x.Key==FootballEventsDataKeysEnum.Substitution_SubbedOutPlayer).Value
     </div>
     <div class="in height-50">
-       @EventBus.Data.Where(x=>x.Key=="Substitution_SubbedInPlayer").FirstOrDefault().Value
+        @EventBus.Data.FirstOrDefault(x=>x.Key==FootballEventsDataKeysEnum.Substitution_SubbedInPlayer).Value
     </div>
 </div>
 @code {
