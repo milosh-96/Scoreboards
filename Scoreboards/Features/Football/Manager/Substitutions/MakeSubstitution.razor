@@ -21,6 +21,12 @@
                     <input class="form-control" type="text" @bind="NewPlayer.ShirtNumber" />
                     <input class="form-control" type="text" @bind="NewPlayer.FirstName" />
                     <input class="form-control" type="text" @bind="NewPlayer.LastName" />
+                    <select class="form-control" @bind="@NewPlayer.Position">
+                        <option value="Gk">Goalkeeper</option>
+                        <option value="Df">Defender</option>
+                        <option value="Mf">Middlefielder</option>
+                        <option value="St">Striker</option>
+                    </select>
                 </div>
                 
             </div>
@@ -39,7 +45,7 @@
     [Parameter]
     public FootballTeam Team { get; set; } = new FootballTeam();
 
-    public FootballPlayer NewPlayer { get; set; } = new FootballPlayer() { FirstName = "Milos" };
+    public FootballPlayer NewPlayer { get; set; } = new FootballPlayer() { ShirtNumber=33, FirstName = "Jack",LastName="Smith",Position="Mf" };
 
     public int SubbedOutPlayerIndex { get; set; } = 0;
     public FootballPlayer SubbedOutPlayer { get; set; } = new FootballPlayer();
