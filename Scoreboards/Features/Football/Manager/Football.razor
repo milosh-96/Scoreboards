@@ -168,16 +168,13 @@
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#makeSubstitution">
                                     Make Substitution
                                 </button>
-                                <Scoreboards.Features.Football.Manager.Substitutions.MakeSubstitutionModal
+                                <Scoreboards.Features.Football.Manager.Substitutions.SubstitutionsModal
                                 EventBus="ViewModel.Event"
-                                Mode="FootballEventsEnum.SubstitutionHomeTeam"
-                                ></Scoreboards.Features.Football.Manager.Substitutions.MakeSubstitutionModal> <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#makeSubstitution">
-                                    Make Substitution (away)
-                                </button>
-                                <Scoreboards.Features.Football.Manager.Substitutions.MakeSubstitutionModal
-                                EventBus="ViewModel.Event"
-                                Mode="FootballEventsEnum.SubstitutionAwayTeam"
-                                ></Scoreboards.Features.Football.Manager.Substitutions.MakeSubstitutionModal>
+                                HomeTeam="ViewModel.HomeTeam"
+                                AwayTeam="ViewModel.AwayTeam"
+                                ></Scoreboards.Features.Football.Manager.Substitutions.SubstitutionsModal>
+                                
+                              
                             </div>
                         </div>
                     </div>

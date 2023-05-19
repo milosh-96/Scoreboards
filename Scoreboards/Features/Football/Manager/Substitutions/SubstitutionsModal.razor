@@ -1,0 +1,50 @@
+﻿@using Scoreboards.Data;
+@using Scoreboards.Features.Football.Manager
+@using Scoreboards.Data.Football;
+<div class="modal modal-xl fade" id="makeSubstitution" tabindex="-1" aria-labelledby="makeSubstitutionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="makeSubstitutionLabel">Make Substitution</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <h3>@HomeTeam.Name</h3>
+                            <MakeSubstitution Mode="FootballEventsEnum.SubstitutionHomeTeam"
+                                              EventBus="EventBus"
+                                              Team="HomeTeam"></MakeSubstitution>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <h3>@AwayTeam.Name</h3>
+                            <MakeSubstitution
+                                Mode="FootballEventsEnum.SubstitutionAwayTeam"
+                                EventBus="EventBus"
+                                Team="AwayTeam"
+                            ></MakeSubstitution>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@code {
+    
+    [Parameter]
+    public FootballEventBus EventBus { get; set; } = new FootballEventBus();
+
+    [Parameter]
+    public FootballTeam HomeTeam { get; set; } = new FootballTeam(); 
+    
+    [Parameter]
+    public FootballTeam AwayTeam { get; set; } = new FootballTeam();
+
+}
