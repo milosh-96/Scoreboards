@@ -164,15 +164,11 @@
                        
                         <div class="row">
                             <div class="col mt-3">
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#makeSubstitution">
-                                    Make Substitution
+                              
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventSelector">
+                                    Events Dashboard
                                 </button>
-                                <Scoreboards.Features.Football.Manager.Substitutions.SubstitutionsModal
-                                EventBus="ViewModel.Event"
-                                HomeTeam="ViewModel.HomeTeam"
-                                AwayTeam="ViewModel.AwayTeam"
-                                ></Scoreboards.Features.Football.Manager.Substitutions.SubstitutionsModal>
+                               <EventSelectorModal ViewModel="ViewModel"></EventSelectorModal>
                                 
                               
                             </div>

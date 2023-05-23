@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Football\Manager\Modals\**" />
+    <Content Remove="Features\Football\Manager\Modals\**" />
+    <EmbeddedResource Remove="Features\Football\Manager\Modals\**" />
+    <None Remove="Features\Football\Manager\Modals\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Features\Baseball\Output\UI\BattingOrder.razor.css" />
     <None Remove="flex.html" />
   </ItemGroup>
@@ -21,7 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Football\Manager\Modals\" />
+    <Folder Include="Features\Football\Manager\Events\Goals\" />
+    <Folder Include="Features\Football\Manager\Events\Bookings\" />
     <Folder Include="wwwroot\css\output\baseball\" />
   </ItemGroup>
 
