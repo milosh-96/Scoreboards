@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Football\Manager\Events\Goals\" />
     <Folder Include="Features\Football\Manager\Events\Bookings\" />
     <Folder Include="wwwroot\css\output\baseball\" />
   </ItemGroup>

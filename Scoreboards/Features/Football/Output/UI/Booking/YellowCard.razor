@@ -1,0 +1,9 @@
+﻿@using Scoreboards.Data;
+<div class="width-100 height-100" style="background-color:yellow;display:flex;align-items:center">
+    <p style="font-size:10rem">Yellow Card</p>
+</div>
+
+@code {
+    [Parameter]
+    public FootballEventBus EventBus { get; set; } = new FootballEventBus();
+}

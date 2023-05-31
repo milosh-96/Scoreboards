@@ -1,0 +1,46 @@
+﻿@using Scoreboards.Data.Football;
+@using Scoreboards.Data;
+<h3>GoalEvent</h3>
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            <label>Who scored?</label>
+            <select class="form-control" @bind="ScorerIndex">
+                @foreach(var item in Team.Players)
+                {
+                    <option value="@Team.Players.IndexOf(item)">@item.ToString()</option>
+                }
+            </select>
+        </div>
+        <button @onclick="Confirm" class="btn btn-primary">Confirm</button>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public FootballEventsEnum Mode { get; set; } = FootballEventsEnum.None;
+    [Parameter]
+    public FootballEventBus EventBus { get; set; } = new FootballEventBus();
+
+    [Parameter]
+    public FootballTeam Team { get; set; } = new FootballTeam();
+
+    public FootballPlayer Scorer { get; set; } = new FootballPlayer();
+    public int ScorerIndex { get; set; } = 0;
+
+
+    public void Confirm()
+    {
+        Scorer = Team.Players[ScorerIndex];
+        EventBus.Data = new List<KeyValuePair<FootballEventsDataKeysEnum, string>>()
+        {
+            new KeyValuePair<FootballEventsDataKeysEnum, string>(FootballEventsDataKeysEnum.GoalScored_Scorer,Scorer.ToString()),
+        };
+        EventBus.EventType = Mode;
+        Team.Score = Team.Score + 1;
+        EventBus.Activate(TimeSpan.FromSeconds(30));
+
+        this.StateHasChanged();
+        this.ScorerIndex = 0;
+        this.Scorer = Team.Players[0];
+    }
+}

@@ -11,11 +11,19 @@
                     <div class="col">
                         <select @bind="SelectedEvent" class="form-control">
                             <option value="@FootballEventsEnum.None">None</option>
-                            <option value="@FootballEventsEnum.SubstitutionHomeTeam">substitution home team</option>
-                            <option value="@FootballEventsEnum.SubstitutionAwayTeam">substitution home team</option>
+                            <option value="@FootballEventsEnum.GoalScored">Goal</option>
+                            <option value="@FootballEventsEnum.SubstitutionHomeTeam">Substitution Home team</option>
+                            <option value="@FootballEventsEnum.SubstitutionAwayTeam">Substitution Away team</option>
                         </select>
                         @switch(SelectedEvent)
                         {
+                            case FootballEventsEnum.GoalScored:
+                                <Scoreboards.Features.Football.Manager.Events.Goals.GoalEventView
+                                    EventBus="ViewModel.Event"
+                                    HomeTeam="ViewModel.HomeTeam"
+                                    AwayTeam="ViewModel.AwayTeam"
+                                ></Scoreboards.Features.Football.Manager.Events.Goals.GoalEventView>
+                                break;
                             case FootballEventsEnum.SubstitutionHomeTeam:
                             case FootballEventsEnum.SubstitutionAwayTeam:
                                 <Scoreboards.Features.Football.Manager.Events.Substitutions.MakeSubsitutionView>
