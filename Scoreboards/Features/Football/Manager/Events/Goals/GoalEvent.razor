@@ -12,10 +12,23 @@
                 }
             </select>
         </div>
+        <div class="form-group">
+            <label>Minute: </label>
+            <div>
+                <div class="d-inline">
+                    <input type="number" @bind="@Minute" />
+                </div>
+                <div class="d-inline">
+                    <button class="btn btn-secondary" @onclick="()=>Minute = (CurrentTime / 60)">Current time</button>
+                </div>
+            </div>
+        </div>
         <button @onclick="Confirm" class="btn btn-primary">Confirm</button>
     </div>
 </div>
 @code {
+    [Parameter]
+    public int CurrentTime { get; set; } = 60;
     [Parameter]
     public FootballEventsEnum Mode { get; set; } = FootballEventsEnum.None;
     [Parameter]
@@ -26,17 +39,24 @@
 
     public FootballPlayer Scorer { get; set; } = new FootballPlayer();
     public int ScorerIndex { get; set; } = 0;
+    public int Minute { get; set; } = 0;
 
 
     public void Confirm()
     {
         Scorer = Team.Players[ScorerIndex];
+        Team.Scorers.Add(new FootballScorer()
+            {
+                Player = Scorer,
+                Time = Minute * 60
+        });
         EventBus.Data = new List<KeyValuePair<FootballEventsDataKeysEnum, string>>()
         {
             new KeyValuePair<FootballEventsDataKeysEnum, string>(FootballEventsDataKeysEnum.GoalScored_Scorer,Scorer.ToString()),
         };
         EventBus.EventType = Mode;
         Team.Score = Team.Score + 1;
+        Team.Scorers = Team.Scorers;
         EventBus.Activate(TimeSpan.FromSeconds(30));
 
         this.StateHasChanged();

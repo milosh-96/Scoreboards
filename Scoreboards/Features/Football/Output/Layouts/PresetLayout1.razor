@@ -3,21 +3,20 @@
 @using Scoreboards.Features.Football.Output.UI.MatchStats
 @using Scoreboards.Data.Football;
 @using Scoreboards.Features.Football;
-@inject IJSRuntime jsRuntime;
+@inject IJSRuntime jsRuntime
 @{
     var layoutOptions = ViewModel.LayoutOptions;
     string middleColumnWidth = layoutOptions.ShowStats ? "col-md-5" : "col-md-4";
-
 }
 
 <div id="wrapper">
-    @if (ViewModel.Event.IsActive)
-    {
+
+    @if(ViewModel.Event.IsActive) {
         <div class="container">
             @EventOutput
-    </div>
+        </div>
     }
-    <div class="container main-screen" style="">
+    <div class="container main-screen">
         <div class="row">
             <div class="column">
                 <div class="width-33 height-33 home-team team-logo">
@@ -32,11 +31,15 @@
             </div>
             <div class="column middle-section">
                 <div class="region width-33 height-33">
-                    @*<div class="infobar">
-                        <p>
-                            Coppa Italia
-                        </p>
-                    </div>*@
+                    <div class="infobar">
+                       
+                         <div>
+                            @foreach(var item in ViewModel.HomeTeam.Scorers) {
+                                <p>@item.Player.ToString() - @(item.Time/60)<span>'</span></p>
+                            }
+                         </div>
+                           
+                    </div>
                     <div class="clock">
                       
                         <p>@ViewModel.GetClockString()</p>
@@ -66,23 +69,8 @@
                             </ul>
                         </div>
                     </div>
-                </div>
-@*                <div class="sponsors region-region-25">
-                    <div class="glide">
-                        <div class="glide__track">
-                            <ul class="glide__slides">
-                                <li class="glide__slide">
-                                    <div>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Tissot_Logo.svg/640px-Tissot_Logo.svg.png"
-                                             alt="Alternate Text"
-                                             width="100%" />
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>*@
-                </div>
+                </div>            
+            </div>
             <div class="column">
                 <div class="width-33 height-33 away-team team-logo">
                     <div class="logo-object">
@@ -92,12 +80,11 @@
                 <div class="width-33 height-66 away-team team-score">
                     <p>@ViewModel.AwayTeam.Score</p>
                 </div>
-
             </div>
-            
         </div>
     </div>
 </div>
+
 @code {
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
@@ -137,7 +124,7 @@
         justify-content:center;
         align-items:center;
     }
-    @@media all and (display-mode: fullscreen) {
+    @@ media all and (display-mode: fullscreen) {
         .team-score {
             font-size:30rem;
         }
@@ -234,7 +221,7 @@
                 width: 20%;
             }
 
-    @@media all and (display-mode: fullscreen) {
+    @@ media all and (display-mode: fullscreen) {
         .match-stats ul > li > p {padding-top:0.6rem;}
     }
 

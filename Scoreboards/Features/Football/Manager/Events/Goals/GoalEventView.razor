@@ -8,7 +8,10 @@
                             <h3>@HomeTeam.Name</h3>
                             <GoalEvent Mode="FootballEventsEnum.GoalScored"
                                               EventBus="EventBus"
-                                              Team="HomeTeam"></GoalEvent>
+                                              Team="HomeTeam"
+                                                CurrentTime="CurrentTime"
+                            >
+                                          </GoalEvent>
                         </div>
                     </div>
                     <div class="col">
@@ -16,13 +19,16 @@
                             <h3>@AwayTeam.Name</h3>
             <GoalEvent Mode="FootballEventsEnum.GoalScored"
                        EventBus="EventBus"
-                       Team="AwayTeam"></GoalEvent>
+                       Team="AwayTeam"
+                       CurrentTime="CurrentTime"></GoalEvent>
                         </div>
                     </div>
                     </div>
                  
 @code {
-    
+    [Parameter]
+    public int CurrentTime { get; set; } = 60;
+
     [Parameter]
     public FootballEventBus EventBus { get; set; } = new FootballEventBus();
 
