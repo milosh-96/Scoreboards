@@ -1,5 +1,6 @@
 ﻿@page "/manager/baseball"
 @inject NavigationManager Navigation
+@inject BaseballScoreboardViewModel ViewModel;
 @using Microsoft.AspNetCore.SignalR.Client;
 @using Scoreboards.Data.Baseball;
 @using Scoreboards.Features.Baseball.Manager.AtBat;
@@ -116,7 +117,7 @@
 </div>
 
 @code {
-    public BaseballScoreboardViewModel ViewModel { get; set; } = new BaseballScoreboardViewModel();
+    //public BaseballScoreboardViewModel ViewModel { get; set; } = new BaseballScoreboardViewModel();
 
     public void Dispose()
     {
@@ -143,7 +144,7 @@
         // increment seconds count of viewmodel //
         InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
     }
-   
+
     private void SyncScoreboardData(object stateInfo)
     {
         if (hubConnection != null)
@@ -200,6 +201,8 @@
         .Build();
 
         await hubConnection.StartAsync();
+
+       
 
         // start output updates once app is started //
         SetupDataSyncTimer();

@@ -20,6 +20,8 @@ namespace Scoreboards
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+            builder.Services.AddScoped<BaseballScoreboardViewModel>();
+            builder.Services.AddScoped<FootballScoreboardViewModel>();
             var app = builder.Build();
             //added for signalr
             app.UseResponseCompression();

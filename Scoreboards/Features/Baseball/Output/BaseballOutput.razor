@@ -4,12 +4,13 @@
 @using Scoreboards.Data.Baseball;
 @using Scoreboards.Features.Baseball;
 @using System.Drawing;
+@using System.Text.Json;
 @inject IJSRuntime jsRuntime;
 @inject NavigationManager Navigation
 
 <div class="scoreboard">
   <CascadingValue Value="@ViewModel">
-        <Scoreboards.Features.Baseball.Output.Layouts.TorontoBasedLayout></Scoreboards.Features.Baseball.Output.Layouts.TorontoBasedLayout>
+        <Scoreboards.Features.Baseball.Output.Layouts.NewYorkFlushingLayout></Scoreboards.Features.Baseball.Output.Layouts.NewYorkFlushingLayout>
   </CascadingValue>
 </div>
 
@@ -18,8 +19,8 @@
 </style>
 @code {
 
-        [Parameter]
-        public string Token { get; set; } = "";
+    [Parameter]
+    public string Token { get; set; } = "";
 
     //signalr stuff//
     private HubConnection? hubConnection;
@@ -28,7 +29,7 @@
 
     public BaseballScoreboardViewModel ViewModel { get; set; } = new BaseballScoreboardViewModel();
 
-   
+
     //life cycle events//
     protected override async Task OnInitializedAsync()
     {
@@ -44,6 +45,8 @@
                 ViewModel = item.Value;
             }
             InvokeAsync(StateHasChanged);
+
+            string jsonString = JsonSerializer.Serialize(ViewModel);
 
         });
         //hubConnection.On<KeyValuePair<string,FootballEventsEnum>>("EmittedEvent", async (item) =>

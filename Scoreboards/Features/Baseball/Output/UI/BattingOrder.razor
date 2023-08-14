@@ -8,22 +8,34 @@
     </div>
         <div class="content-body">
             <ul>
-            <li class="item" style="display:flex">
-                <div class="shirt-number-column">#</div>
-                <div class="name-column">Name</div>
-                <div class="position-column">Pos</div>
-                @if (ShowStats)
-                {
-                    <div>H</div>
-                    <div>BB</div>
-                    <div>K</div>
-                }
-            </li>
+            @if(ShowHeader)
+            {
+                <li class="item heading" style="display:flex">
+                    <div class="shirt-number-column">#</div>
+                    <div class="name-column">Name</div>
+                    <div class="position-column">Pos</div>
+                    @if (ShowStats)
+                    {
+                        <div>H</div>
+                        <div>BB</div>
+                        <div>K</div>
+                    }
+                </li>
+            }
             @foreach (var item in Team.Lineup)
             {
                 <li class="item" style="display:flex">
                     <div class="shirt-number-column">@item.ShirtNumber</div>
-                    <div class="name-column">@item.ToString()</div>
+                    <div class="name-column">
+                        @if(ShowFullName)
+                        {
+                            @item.ToString()
+                        }
+                        else
+                        {
+                            @item.LastName
+                        }
+                    </div>
                     <div class="position-column">@BaseballPositionsEnumHandler.DisplayTwoLetterAbbreviation(item.Position)</div>
                     @if(ShowStats)
                     {
@@ -41,7 +53,13 @@
     public BaseballTeam Team { get; set; } = new BaseballTeam();
 
     [Parameter]
+    public bool ShowHeader { get; set; } = false;
+
+    [Parameter]
     public bool ShowStats { get; set; } = true;
+
+    [Parameter]
+    public bool ShowFullName { get; set; } = false;
 
 }
 

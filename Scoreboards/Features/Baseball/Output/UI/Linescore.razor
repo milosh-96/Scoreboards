@@ -2,7 +2,7 @@
 <div class="ui-linescore">
     @if (ShowHeadingRow)
     {
-        <div class="head">
+        <div class="head" style="display:flex">
             <div class="team-name">Team</div>
             <div class="inning-item">1</div>
             <div class="inning-item">2</div>
@@ -19,7 +19,7 @@
         </div>
     }
     <div class="content-body">
-        <div>
+        <div class="team-row" style="display:flex">
             <div class="away team-name">
                 @if (UseTeamAbbreviations)
                 {
@@ -34,14 +34,14 @@
             @for (int i = 0; i < 9; i++)
             {
                 var item = AwayTeam.Stats.Linescore[i];
-                <div id="inning-item away-@i" @key="@i">@item.Runs</div>
+                <div class="inning-item" id="away-@i" @key="@i">@item.Runs</div>
             }
             <div class="away rhe-column runs">@AwayTeam.Stats.Runs</div>
             <div class="away rhe-column hits">@AwayTeam.Stats.Hits</div>
             <div class="away rhe-column errors">@AwayTeam.Stats.Errors</div>
 
         </div>
-        <div>
+        <div class="team-row" style="display:flex;">
             <div class="home team-name">
                 @if (UseTeamAbbreviations)
                 {
@@ -56,7 +56,7 @@
             @for (int i = 0; i < 9; i++)
             {
                 var item = HomeTeam.Stats.Linescore[i];
-                <td id="home inning-item home-@i" @key="@i">@item.Runs</td>
+                <div class="home inning-item" id="home-@i" @key="@i">@item.Runs</div>
             }
             <div class="home rhe-column runs">@HomeTeam.Stats.Runs</div>
             <div class="home rhe-column hits">@HomeTeam.Stats.Hits</div>
