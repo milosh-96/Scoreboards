@@ -15,133 +15,130 @@
         Do not close this tab/window. Closing of this tab/window will stop all outputs
         with current token. All entered data will be lost as well! 
     </div>
-    <div>
-        <h3>Football</h3>
-        <div class="row">
-            <div class="col">
-                <div class="input-group">
-                    <select class="form-control" @bind="ViewModel.LayoutPreset">
-                        <option value="1">Layout Preset 1</option>
-                        <option value="2">Layout Preset 2 (Anfield-like)</option>
-@*                        <option value="3">Layout Preset 3 (Bayern stadium-like)</option>
-*@                    </select>
-                </div>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-sm btn-secondary my-1" data-bs-toggle="modal" data-bs-target="#layoutOptions">
-                    Layout Options
-                </button><p></p>
-                
-            </div>
-            <div class="col">
-                <a class="btn btn-primary mx-1" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
-                @if (dataSyncTimer != null)
-                {
-                    <button class="btn btn-sm btn-warning" @onclick="()=>{dataSyncTimer.Dispose();dataSyncTimer=null;}">Pause Output Syncing</button>
-                }
-                else
-                {
-                    <button class="btn btn-sm btn-success" @onclick="()=>SetupDataSyncTimer()">Start Output Syncing</button>
-                }
-            </div>
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <Navigation OnPageSelected="SwitchPage"></Navigation>
         </div>
-
-        <hr />
-
-
-        <div class="row">
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-12">
-                        <span>Home Team</span>
-                        <div class="input-group">
-                            <input @bind="@ViewModel.HomeTeam.Name" class="form-control" />
-                            <input type="number" min="0" max="15" @bind="@ViewModel.HomeTeam.Score" class="form-control" />
-                            <input type="text" @bind="@ViewModel.HomeTeam.Logo" class="form-control" placeholder="Team Logo URL" />
-                            <input type="color" @bind="@ViewModel.HomeTeam.AccentColorHex" class="form-control" />
-                        </div>
-                        <hr />
-
-                    </div>
-                    <div class="col-12">
-                        <span>Away Team</span>
-                        <div class="input-group">
-                            <input @bind="@ViewModel.AwayTeam.Name" class="form-control" />
-                            <input type="number" min="0" max="15" @bind="@ViewModel.AwayTeam.Score" class="form-control" />
-                            <input type="text" @bind="@ViewModel.AwayTeam.Logo" class="form-control" placeholder="Team Logo URL" />
-                            <input type="color" @bind="@ViewModel.AwayTeam.AccentColorHex" class="form-control" />
-                        </div>
-                        <hr />
-                    </div>
+        <div class="col-12 col-md-9">
+            <h3>Football - @CurrentPage.ToString()</h3>
+            <div class="row">
+              
+                <div class="col">
+                    <a class="btn btn-primary mx-1" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
+                    @if (dataSyncTimer != null)
+                    {
+                        <button class="btn btn-sm btn-warning" @onclick="()=>{dataSyncTimer.Dispose();dataSyncTimer=null;}">Pause Output Syncing</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-success" @onclick="()=>SetupDataSyncTimer()">Start Output Syncing</button>
+                    }
                 </div>
-                <div class="row">
-                    <hr />
-                    <div class="col">
-                        <div>
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editMatchStats">
-                                Edit Match Stats
-                            </button><p></p>
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editLineups">
-                                Edit Lineups
-                            </button>
-                        </div>
-                        <hr />
-                        <h3>Match Events</h3>
-                        <div>
+            </div>
+
+            <hr />
+
+
+            @switch(CurrentPage)
+            {
+                case FootballPagesEnum.Teams:
+                    <Scoreboards.Features.Football.Manager.Pages.Teams
+                        HomeTeam="ViewModel.HomeTeam"
+                        AwayTeam="ViewModel.AwayTeam"
+                    ></Scoreboards.Features.Football.Manager.Pages.Teams>
+                    break;
+                    case FootballPagesEnum.Players:
+                    <Scoreboards.Features.Football.Manager.Pages.Players
+                        HomeTeam="ViewModel.HomeTeam"
+                        AwayTeam="ViewModel.AwayTeam"
+                    ></Scoreboards.Features.Football.Manager.Pages.Players>
+                    break;
+                    case FootballPagesEnum.Stats:
+                    <Scoreboards.Features.Football.Manager.Pages.Stats
+                        HomeTeam="ViewModel.HomeTeam"
+                        AwayTeam="ViewModel.AwayTeam"
+                    ></Scoreboards.Features.Football.Manager.Pages.Stats>
+                    break;
+                    
+                    case FootballPagesEnum.ClockSettings:
+                    <Scoreboards.Features.Football.Manager.Pages.ClockSettings
+                        timer="timer"
+                        Clock="ViewModel.Clock"
+                        OnClockStart="StartTimer"
+                        OnClockStop="StopTimer"
+                    ></Scoreboards.Features.Football.Manager.Pages.ClockSettings>
+                    break;
+                    case FootballPagesEnum.OutputSettings:
+                    <Scoreboards.Features.Football.Manager.Pages.OutputSettings
+                        LayoutOptions="ViewModel.LayoutOptions"
+                    ></Scoreboards.Features.Football.Manager.Pages.OutputSettings>
+                    break;
+                default:
+                    <div class="row">
+                        <div class="col-md-8">
+
                             <div class="row">
+                                <hr />
                                 <div class="col">
-                                    <button class="btn btn-secondary" 
-                                    @onclick="@(
+                                    <div>
+                                       
+                                    </div>
+                                    <hr />
+                                    <h3>Match Events</h3>
+                                    <div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <button class="btn btn-secondary"
+                                                @onclick="@(
                                         async ()=>{
-                                            ViewModel.Clock = 0;
+                                            ViewModel.Clock.Milliseconds = 0;
                                             TriggerEvent(FootballEventsEnum.MatchStarted,"Kick-Off");
                                     await StartTimer();
                                         }
                                     )"
-                                    disabled="@(timer != null)">
-                                        Kick Off
-                                    </button>
-                                    <button class="mx-1 btn btn-secondary" 
-                                    @onclick="@(
+                                                        disabled="@(timer != null)">
+                                                    Kick Off
+                                                </button>
+                                                <button class="mx-1 btn btn-secondary"
+                                                @onclick="@(
                                         async ()=>{
                                             await StopTimer();
-                                            ViewModel.Clock = 45*60;
+                                            ViewModel.Clock.Milliseconds = 45*60000;
                                             TriggerEvent(FootballEventsEnum.HalfTime,"Half-Time!");
 
                                         }
-                                     )" 
-                                    disabled="@(timer == null)">
-                                        Half Time
-                                    </button>
-                                    <button class="btn btn-secondary"
-                                    @onclick="@(
+                                     )"
+                                                        disabled="@(timer == null)">
+                                                    Half Time
+                                                </button>
+                                                <button class="btn btn-secondary"
+                                                @onclick="@(
                                         async ()=>{
                                             await StopTimer();
-                                            ViewModel.Clock = 90*60;
+                                            ViewModel.Clock.Milliseconds = 90*60000;
                                             TriggerEvent(FootballEventsEnum.MatchEnd,"Full-Time!");
 
                                         }
                                     )"
-                                    disabled="@(timer == null)">
-                                        Match End
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col mt-3">
-                                    <button class="mx-1 btn btn-secondary"
-                                    @onclick="@(
+                                                        disabled="@(timer == null)">
+                                                    Match End
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-3">
+                                                <button class="mx-1 btn btn-secondary"
+                                                @onclick="@(
                                         async ()=>{
                                             ViewModel.HomeTeam.Score++;
                                             TriggerEvent(FootballEventsEnum.GoalScored,"GOOAALL!!!!!");
 
                                         }
                                     )">
-                                        Goal (home team)
-                                    </button>
-                                    <button class="btn btn-secondary"
-                                    @onclick="@(
+                                                    Goal (home team)
+                                                </button>
+                                                <button class="btn btn-secondary"
+                                                @onclick="@(
                                         async ()=>{
                                             ViewModel.AwayTeam.Score++;
                                             TriggerEvent(
@@ -155,75 +152,40 @@
 
                                         }
                                     )">
-                                        Goal (away team)
+                                                    Goal (away team)
 
-                                    </button>
-                                    
-                                   
+                                                </button>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col mt-3">
+
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventSelector">
+                                                Events Dashboard
+                                            </button>
+                                            <EventSelectorModal ViewModel="ViewModel"></EventSelectorModal>
+
+
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
-                       
-                        <div class="row">
-                            <div class="col mt-3">
-                              
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventSelector">
-                                    Events Dashboard
-                                </button>
-                               <EventSelectorModal ViewModel="ViewModel"></EventSelectorModal>
-                                
-                              
-                            </div>
+
+
+
+                        <div class="col-md-4">
+                            <h3>@ViewModel.GetClockString()</h3>
                         </div>
                     </div>
-
-                        @*this will open when  layout options  button is clicked*@
-                        <Scoreboards.Features.Football.Manager.LayoutOptions.LayoutOptionsModal
-                            Options="ViewModel.LayoutOptions">
-                        </Scoreboards.Features.Football.Manager.LayoutOptions.LayoutOptionsModal>@*this will open when  edit stats button is clicked*@
-                        <Scoreboards.Features.Football.Manager.MatchStats.EditStatsModal 
-                            HomeTeam="ViewModel.HomeTeam"
-                            AwayTeam="ViewModel.AwayTeam">
-                        </Scoreboards.Features.Football.Manager.MatchStats.EditStatsModal>
-                        @*this will open when edit lineups button is clicked*@
-                        <Scoreboards.Features.Football.Manager.TeamLineup.EditLineupsModal
-                            HomeTeam="ViewModel.HomeTeam"
-                            AwayTeam="ViewModel.AwayTeam">
-                        </Scoreboards.Features.Football.Manager.TeamLineup.EditLineupsModal>
-                    </div>
-                </div>
-
-
-
-            <div class="col-md-4">
-                <h3>@ViewModel.GetClockString()</h3>
-                <hr />
-                <div>
-                    <button class="btn btn-primary" @onclick="StartTimer" disabled="@(timer != null)">Start Clock</button>
-                    <button class="btn btn-primary" @onclick="StopTimer" disabled="@(timer == null)">Stop Clock</button>
-                </div>
-                <hr />
-                @if (timer == null)
-                {
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-sm btn-secondary my-1" @onclick="()=>ViewModel.Clock+= 60">Increase Minutes</button>
-                            <button class="btn btn-sm btn-secondary" @onclick="()=>ViewModel.Clock++">Increasee Seconds</button>
-                        </div>
-                        <div class="col">
-                            @if (ViewModel.Clock >= 60)
-                            {
-                                <button class="btn btn-sm btn-secondary my-1" @onclick="()=>{if(ViewModel.Clock >= 60){ViewModel.Clock-=60;}}">Decrease Minutes</button>
-                            }
-                            @if (ViewModel.Clock > 0)
-                            {
-                                <button class="btn btn-sm btn-secondary" @onclick="()=>{if(ViewModel.Clock >= 0){ViewModel.Clock--;}}">Decrease Seconds</button>
-                            }
-                        </div>
-                    </div>
-                }
-
-            </div>
+                    break;
+            }
+            
         </div>
     </div>
 
@@ -271,10 +233,12 @@
     //this is game clock
     System.Threading.Timer? timer;
 
+    FootballPagesEnum CurrentPage { get; set; } = FootballPagesEnum.Home;
+
     private void SetClock(object stateInfo)
     {
         // increment seconds count of viewmodel //
-        ViewModel.Clock = ViewModel.Clock + 1;
+        ViewModel.Clock.Milliseconds = ViewModel.Clock.Milliseconds + 1000;
 
         InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
     }
@@ -342,6 +306,10 @@
         ViewModel.Event.Options = options;
     }
 
+    private void SwitchPage(FootballPagesEnum page)
+    {
+        CurrentPage = page;
+    }
 
     //life cycle events//
     protected override async Task OnInitializedAsync()

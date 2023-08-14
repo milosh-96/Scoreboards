@@ -1,0 +1,23 @@
+﻿<h3>OutputSettings</h3>
+<div class="row">
+    <div class="col">
+        <div class="input-group">
+            <select class="form-control" @bind="LayoutOptions.LayoutPreset">
+                <option value="1">Layout Preset 1</option>
+                <option value="2">Layout Preset 2 (Anfield-like)</option>
+                @*                        <option value="3">Layout Preset 3 (Bayern stadium-like)</option>
+                *@
+            </select>
+        </div>
+        
+        <Scoreboards.Features.Football.Manager.LayoutOptions.LayoutOptions
+            Options="LayoutOptions"
+        ></Scoreboards.Features.Football.Manager.LayoutOptions.LayoutOptions>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public FootballScoreboardLayoutOptions LayoutOptions { get; set; }
+}

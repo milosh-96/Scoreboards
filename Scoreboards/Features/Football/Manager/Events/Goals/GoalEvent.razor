@@ -19,7 +19,7 @@
                     <input type="number" @bind="@Minute" />
                 </div>
                 <div class="d-inline">
-                    <button class="btn btn-secondary" @onclick="()=>Minute = (CurrentTime / 60)">Current time</button>
+                    <button class="btn btn-secondary" @onclick="()=>Minute = (CurrentTime.Milliseconds / 60000)">Current time</button>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
 </div>
 @code {
     [Parameter]
-    public int CurrentTime { get; set; } = 60;
+    public Clock CurrentTime { get; set; }
     [Parameter]
     public FootballEventsEnum Mode { get; set; } = FootballEventsEnum.None;
     [Parameter]
@@ -48,7 +48,7 @@
         Team.Scorers.Add(new FootballScorer()
             {
                 Player = Scorer,
-                Time = Minute * 60
+                Time = Minute * 60000
         });
         EventBus.Data = new List<KeyValuePair<FootballEventsDataKeysEnum, string>>()
         {

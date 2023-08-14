@@ -11,7 +11,6 @@ namespace Scoreboards.Features.Football
         public FootballEventBus Event { get; set; } = new FootballEventBus();
 
         public FootballScoreboardLayoutOptions LayoutOptions { get; set; } = new FootballScoreboardLayoutOptions();
-        public int LayoutPreset { get; set; } = 1;
 
 
         public FootballTeam HomeTeam { get; set; } = new FootballTeam()
@@ -30,11 +29,11 @@ namespace Scoreboards.Features.Football
 
 
         //set clock to 89 min for testing
-        public int Clock { get; set; } = 0 * 60;
+        public Clock Clock { get; set; } = new Clock();
 
         public string GetClockString()
         {
-            var timeSpan = TimeSpan.FromSeconds(Clock);
+            var timeSpan = TimeSpan.FromMilliseconds(Clock.Milliseconds);
             return string.Format("{0:D2}:{1:D2}",
                 (int)timeSpan.TotalMinutes,
                 timeSpan.Seconds);

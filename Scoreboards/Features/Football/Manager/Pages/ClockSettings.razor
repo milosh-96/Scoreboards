@@ -1,0 +1,38 @@
+﻿@using Scoreboards.Data;
+<h3>ClockSettings</h3>
+<div>
+    <button class="btn btn-primary" @onclick="()=>OnClockStart.InvokeAsync()" disabled="@(timer != null)">Start Clock</button>
+    <button class="btn btn-primary" @onclick="()=>OnClockStop.InvokeAsync()" disabled="@(timer == null)">Stop Clock</button>
+</div>
+<hr />
+@if (timer == null)
+{
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-sm btn-secondary my-1" @onclick="()=>{Clock.Milliseconds += 60000;this.StateHasChanged();}">Increase Minutes</button>
+            <button class="btn btn-sm btn-secondary" @onclick="()=>Clock.Milliseconds += 1000">Increasee Seconds</button>
+        </div>
+        <div class="col">
+            @if (Clock.Milliseconds >= 60000)
+            {
+                <button class="btn btn-sm btn-secondary my-1" @onclick="()=>{if(Clock.Milliseconds >= 60000){Clock.Milliseconds-=60000;}}">Decrease Minutes</button>
+            }
+            @if (Clock.Milliseconds > 1000)
+            {
+                <button class="btn btn-sm btn-secondary" @onclick="()=>{if(Clock.Milliseconds >= 1000){Clock.Milliseconds -= 1000;}}">Decrease Seconds</button>
+            }
+        </div>
+    </div>
+}
+@code {
+    [Parameter]
+    public Clock Clock { get; set; }
+
+    [Parameter]
+    public System.Threading.Timer timer { get; set; }
+
+    [Parameter]
+    public EventCallback OnClockStart { get; set; }
+    [Parameter]
+    public EventCallback OnClockStop { get; set; }
+}

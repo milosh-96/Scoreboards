@@ -2,6 +2,8 @@
 {
     public class FootballScoreboardLayoutOptions
     {
+        public int LayoutPreset { get; set; } = 1;
+
         public bool ShowScore { get; set; } = true;
         public bool ShowClock { get; set; } = true;
         public bool ShowTeamNames { get; set; } = false;
