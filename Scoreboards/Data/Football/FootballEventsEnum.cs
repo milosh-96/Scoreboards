@@ -44,5 +44,6 @@
         GoalScored_ScoringMinute = 23,
         Substitution_SubbedOutPlayer = 31,
         Substitution_SubbedInPlayer = 32,
+        AdditionalTime = 40,
     }
 }

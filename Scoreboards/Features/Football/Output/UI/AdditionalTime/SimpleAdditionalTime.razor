@@ -1,0 +1,19 @@
+﻿@using Scoreboards.Data;
+@using Scoreboards.Data.Football;
+<div>
+    <p style="font-size:3rem">Additional Time</p>
+    <p style="font-size:10rem">
+        +@EventBus.Data.FirstOrDefault(x=>x.Key==FootballEventsDataKeysEnum.AdditionalTime).Value
+    </p>
+    <p style="font-size:3rem">@Clock.ToString()</p>
+
+</div>
+
+@code {
+    [Parameter]
+    public FootballEventBus EventBus { get; set; } = new FootballEventBus();
+
+    [Parameter]
+    public Clock Clock { get; set; } = new Clock();
+
+}

@@ -1,0 +1,40 @@
+﻿@using Scoreboards.Data;
+@using Scoreboards.Data.Football;
+
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            <label>Minutes:</label>
+            <input type="number" @bind="Minutes" class="form-control" />
+        </div>
+        @if(Minutes > 0)
+        {
+            <button @onclick="Confirm" class="btn btn-primary">Submit</button>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public FootballEventBus EventBus { get; set; } = new FootballEventBus();
+
+    public int Minutes { get; set; } = 0;
+
+    public void Confirm()
+    {
+
+        EventBus.Data = new List<KeyValuePair<FootballEventsDataKeysEnum, string>>()
+        {
+            new KeyValuePair<FootballEventsDataKeysEnum, string>(FootballEventsDataKeysEnum.AdditionalTime,Minutes.ToString()),
+        };
+        EventBus.EventType = FootballEventsEnum.AdditionalTime;
+
+        if (Minutes > 0)
+        {
+            EventBus.Activate(TimeSpan.FromSeconds(60*Minutes+30));
+        }
+
+        this.StateHasChanged();
+        
+    }
+}

@@ -11,9 +11,8 @@
 
 <PageTitle>Operator Panel, Football - @SiteInfo.Name</PageTitle>
 <div class="container mb-3">
-    <div class="alert alert-warning">
-        Do not close this tab/window. Closing of this tab/window will stop all outputs
-        with current token. All entered data will be lost as well! 
+    <div id="statusbar" style="margin:16px 0;padding:8px;background:#333;color:#fff">
+        Current match: @ViewModel.GetClockString(), @ViewModel.GetMatchTitleWithScore()
     </div>
     <div class="row">
         <div class="col-12 col-md-3">
@@ -188,7 +187,11 @@
             
         </div>
     </div>
-
+    <hr />
+    <div class="alert alert-warning">
+        Do not close this tab/window. Closing of this tab/window will stop all outputs
+        with current token. All entered data will be lost as well!
+    </div>
     </div>
 @*debug
     <div>
