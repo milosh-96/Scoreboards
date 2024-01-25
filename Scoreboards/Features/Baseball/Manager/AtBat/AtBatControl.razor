@@ -1,0 +1,15 @@
+﻿@using Scoreboards.Data.Baseball;
+<h3>AtBat</h3>
+<div class="row">
+    <div class="col">
+        <input type="number" @bind="AtBat.Balls" id="" />
+    </div>
+    <div class="col">
+        <input type="number" @bind="AtBat.Strikes" id="" />
+
+    </div>
+</div>
+@code {
+    [Parameter]
+    public BaseballAtBat AtBat { get; set; } = new BaseballAtBat();
+}

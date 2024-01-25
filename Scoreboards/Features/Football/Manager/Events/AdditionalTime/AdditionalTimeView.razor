@@ -1,0 +1,17 @@
+﻿@using Scoreboards.Data;
+@using Scoreboards.Features.Football.Manager
+@using Scoreboards.Data.Football;
+
+                <div class="row">
+                    <div class="col">
+                       <AdditionalTime EventBus="EventBus"></AdditionalTime>
+                    </div>
+                    </div>
+                 
+@code {
+    
+    [Parameter]
+    public FootballEventBus EventBus { get; set; } = new FootballEventBus();
+
+
+}

@@ -1,0 +1,59 @@
+﻿@using Scoreboards.Data.Football;
+@using Scoreboards.Features.Football.Manager.Events;
+<div class="modal modal-xl fade" id="eventSelector" tabindex="-1" aria-labelledby="eventSelectorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="makeSubstitutionLabel">Select an event</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <select @bind="SelectedEvent" class="form-control">
+                            <option value="@FootballEventsEnum.None">None</option>
+                            <option value="@FootballEventsEnum.AdditionalTime">Additional time</option>
+                            <option value="@FootballEventsEnum.GoalScored">Goal</option>
+                            <option value="@FootballEventsEnum.SubstitutionHomeTeam">Substitutions</option>
+                        </select>
+                        @switch(SelectedEvent)
+                        {
+                            case FootballEventsEnum.AdditionalTime:
+                                <Scoreboards.Features.Football.Manager.Events.AdditionalTime.AdditionalTimeView
+                                    EventBus="ViewModel.Event"
+                                ></Scoreboards.Features.Football.Manager.Events.AdditionalTime.AdditionalTimeView>
+                                break;
+                            case FootballEventsEnum.GoalScored:
+                                <Scoreboards.Features.Football.Manager.Events.Goals.GoalEventView
+                                    EventBus="ViewModel.Event"
+                                    HomeTeam="ViewModel.HomeTeam"
+                                    AwayTeam="ViewModel.AwayTeam"
+                                    CurrentTime="ViewModel.Clock"></Scoreboards.Features.Football.Manager.Events.Goals.GoalEventView>
+                                break;
+                            case FootballEventsEnum.SubstitutionHomeTeam:
+                            case FootballEventsEnum.SubstitutionAwayTeam:
+                                <Scoreboards.Features.Football.Manager.Events.Substitutions.MakeSubstitutionsView
+                                    EventBus="ViewModel.Event"
+                                    HomeTeam="ViewModel.HomeTeam"
+                                    AwayTeam="ViewModel.AwayTeam"
+                                ></Scoreboards.Features.Football.Manager.Events.Substitutions.MakeSubstitutionsView>
+                                break;
+                            default:
+                            <div>please select an event</div>
+                                break;
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel() { };
+
+    public FootballEventsEnum SelectedEvent { get; set; } = FootballEventsEnum.None;
+}

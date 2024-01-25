@@ -1,0 +1,72 @@
+﻿@using Scoreboards.Data.Football;
+@{
+    var homeStats = HomeTeam.Stats;
+    var awayStats = AwayTeam.Stats;
+}
+<div class="match-stats">
+    <ul>
+        <li>
+            <p>@homeStats.Shots</p>
+            <p>Shots</p>
+            <p>@awayStats.Shots</p>
+        </li>
+        <li>
+            <p>@homeStats.ShotsOnTarget</p>
+            <p>Shots (on target)</p>
+            <p>@awayStats.ShotsOnTarget</p>
+        </li>
+        <li>
+            <p>@homeStats.Passes</p>
+            <p>Passes</p>
+            <p>@awayStats.Passes</p>
+        </li>
+        <li>
+            <p>@homeStats.CompletedPasses</p>
+            <p>Successful Passes</p>
+            <p>@awayStats.CompletedPasses</p>
+        </li>
+        <li>
+            <p>@homeStats.CornerKicks</p>
+            <p>Corner Kicks</p>
+            <p>@awayStats.CornerKicks</p>
+        </li>
+        <li>
+            <p>@homeStats.Possession</p>
+            <p>Possesion (%)</p>
+            <p>@awayStats.Possession</p>
+        </li>
+        <li>
+            <p>@homeStats.GoalkeeperSaves</p>
+            <p>Saves</p>
+            <p>@awayStats.GoalkeeperSaves</p>
+        </li>
+        <li>
+            <p>@homeStats.Fouls</p>
+            <p>Fouls</p>
+            <p>@awayStats.Fouls</p>
+        </li>
+        <li>
+            <p>@homeStats.Offsides</p>
+            <p>Offsides</p>
+            <p>@awayStats.Offsides</p>
+        </li>
+        <li>
+            <p>@homeStats.YellowCards</p>
+            <p>Yellow Cards</p>
+            <p>@awayStats.YellowCards</p>
+        </li>
+        <li>
+            <p>@homeStats.RedCards</p>
+            <p>Red Cards</p>
+            <p>@awayStats.RedCards</p>
+        </li>
+    </ul>
+</div>
+
+
+@code {
+    [Parameter]
+    public FootballTeam HomeTeam { get; set; } = new FootballTeam();
+    [Parameter]
+    public FootballTeam AwayTeam { get; set; } = new FootballTeam();
+}

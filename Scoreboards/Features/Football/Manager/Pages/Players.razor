@@ -1,0 +1,16 @@
+﻿@using Scoreboards.Data.Football;
+<div class="row">
+    <div class="col">
+        <Scoreboards.Features.Football.Manager.TeamLineup.TeamLineup Team="HomeTeam"></Scoreboards.Features.Football.Manager.TeamLineup.TeamLineup>
+    </div>
+    <div class="col">
+        <Scoreboards.Features.Football.Manager.TeamLineup.TeamLineup Team="AwayTeam"></Scoreboards.Features.Football.Manager.TeamLineup.TeamLineup>
+
+    </div>
+</div>
+@code {
+    [Parameter]
+    public FootballTeam HomeTeam { get; set; } = new FootballTeam();
+    [Parameter]
+    public FootballTeam AwayTeam { get; set; } = new FootballTeam();
+}

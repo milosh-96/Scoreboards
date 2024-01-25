@@ -1,0 +1,79 @@
+﻿@using Scoreboards.Data.Baseball;
+<div class="ui-linescore">
+    @if (ShowHeadingRow)
+    {
+        <div class="head" style="display:flex">
+            <div class="team-name">Team</div>
+            <div class="inning-item">1</div>
+            <div class="inning-item">2</div>
+            <div class="inning-item">3</div>
+            <div class="inning-item">4</div>
+            <div class="inning-item">5</div>
+            <div class="inning-item">6</div>
+            <div class="inning-item">7</div>
+            <div class="inning-item">8</div>
+            <div class="inning-item">9</div>
+            <div class="rhe-column runs">R</div>
+            <div class="rhe-column hits">H</div>
+            <div class="rhe-column errors">E</div>
+        </div>
+    }
+    <div class="content-body">
+        <div class="team-row" style="display:flex">
+            <div class="away team-name">
+                @if (UseTeamAbbreviations)
+                {
+                    @AwayTeam.Abbreviation
+                }
+                else
+                {
+                    @AwayTeam.Name
+                }
+            </div>
+
+            @for (int i = 0; i < 9; i++)
+            {
+                var item = AwayTeam.Stats.Linescore[i];
+                <div class="inning-item" id="away-@i" @key="@i">@item.Runs</div>
+            }
+            <div class="away rhe-column runs">@AwayTeam.Stats.Runs</div>
+            <div class="away rhe-column hits">@AwayTeam.Stats.Hits</div>
+            <div class="away rhe-column errors">@AwayTeam.Stats.Errors</div>
+
+        </div>
+        <div class="team-row" style="display:flex;">
+            <div class="home team-name">
+                @if (UseTeamAbbreviations)
+                {
+                    @HomeTeam.Abbreviation
+                }
+                else
+                {
+                    @HomeTeam.Name
+                }
+            </div>
+
+            @for (int i = 0; i < 9; i++)
+            {
+                var item = HomeTeam.Stats.Linescore[i];
+                <div class="home inning-item" id="home-@i" @key="@i">@item.Runs</div>
+            }
+            <div class="home rhe-column runs">@HomeTeam.Stats.Runs</div>
+            <div class="home rhe-column hits">@HomeTeam.Stats.Hits</div>
+            <div class="home rhe-column erors">@HomeTeam.Stats.Errors</div>
+        </div>
+
+    </div>
+</div>
+@code {
+    [Parameter]
+    public BaseballTeam HomeTeam { get; set; } = new BaseballTeam();
+    [Parameter]
+    public BaseballTeam AwayTeam { get; set; } = new BaseballTeam();
+
+    //
+    [Parameter]
+    public bool ShowHeadingRow { get; set; } = true;
+    [Parameter]
+    public bool UseTeamAbbreviations { get; set; } = true;
+}

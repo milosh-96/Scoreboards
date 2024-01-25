@@ -1,0 +1,26 @@
+﻿@using Scoreboards.Data.Football;
+<div class="lineups">
+    <ul>
+        @if(Team.Players.Count < 1)
+        {
+            <li class="item">
+                <p></p>
+                <p>There was an error! There are no players.</p>
+            </li>
+        }
+        else {
+            @foreach(var item in Team.Players)
+            {
+                <li class="item">
+                    <p>@item.ShirtNumber</p>
+                    <p>@item.FirstName</p>
+                    <p>@item.LastName</p>
+                </li>
+            }
+        }
+    </ul>
+</div>
+@code {
+    [Parameter]
+    public FootballTeam Team { get; set; } = new FootballTeam();
+}

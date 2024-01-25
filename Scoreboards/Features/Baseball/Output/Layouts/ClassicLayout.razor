@@ -1,0 +1,84 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Features.Baseball.Output
+@using Scoreboards.Data.Baseball;
+@using Scoreboards.Features.Baseball;
+@{
+
+}
+
+<div class="container scoreboard">
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>R</th>
+                        <th>H</th>
+                        <th>E</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@ViewModel.AwayTeam.Name </td>
+
+                        @for (int i = 0; i < 9; i++)
+                        {
+                            var item = ViewModel.AwayTeam.Stats.Linescore[i];
+                            <td id="home-@i" @key="@i">@item.Runs</td>
+                        }
+
+                        <td>@ViewModel.AwayTeam.Stats.Runs</td>
+                        <td>@ViewModel.AwayTeam.Stats.Hits</td>
+                        <td>@ViewModel.AwayTeam.Stats.Errors</td>
+                      
+                    </tr>
+                    <tr>
+                        <td>@ViewModel.HomeTeam.Name</td>
+
+                        @for (int i = 0; i < 9; i++)
+                        {
+                            var item = ViewModel.HomeTeam.Stats.Linescore[i];
+                            <td id="home-@i" @key="@i">@item.Runs</td>
+                        }
+
+                        <td>@ViewModel.HomeTeam.Stats.Runs</td>
+                        <td>@ViewModel.HomeTeam.Stats.Hits</td>
+                        <td>@ViewModel.HomeTeam.Stats.Errors</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public BaseballScoreboardViewModel ViewModel { get; set; } = new BaseballScoreboardViewModel();
+}
+
+<style>
+    body {
+        background: #003000;
+        font-size: 24px;
+        color: #fefefe;
+    }
+
+    .scoreboard {
+        color:#fafafa;
+    }
+    .scoreboard th,.scoreboard td {
+        color:#fff;
+    }
+</style>

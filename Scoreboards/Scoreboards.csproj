@@ -7,18 +7,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Football\Manager\Modals\**" />
+    <Content Remove="Features\Football\Manager\Modals\**" />
+    <EmbeddedResource Remove="Features\Football\Manager\Modals\**" />
+    <None Remove="Features\Football\Manager\Modals\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Features\Baseball\Output\UI\BattingOrder.razor.css" />
+    <None Remove="flex.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Features\Baseball\Output\UI\BattingOrder.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.14" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.12" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Manager\Controllers\" />
-    <Folder Include="Areas\Manager\Data\" />
-    <Folder Include="Areas\Manager\Models\" />
-    <Folder Include="Areas\Manager\Views\" />
-    <Folder Include="Areas\Output\Controllers\" />
-    <Folder Include="Areas\Output\Data\" />
-    <Folder Include="Areas\Output\Models\" />
-    <Folder Include="Areas\Output\Views\" />
+    <Folder Include="Features\Football\Manager\Events\Bookings\" />
+    <Folder Include="wwwroot\css\output\baseball\" />
   </ItemGroup>
 
 </Project>

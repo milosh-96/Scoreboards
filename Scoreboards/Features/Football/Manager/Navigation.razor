@@ -1,0 +1,26 @@
+﻿<h3>Navigation</h3>
+<ul class="nav flex-column">
+    <li class="nav-item">
+        <a class="nav-link" href="#" @onclick:preventDefault="preventDefault" @onclick="()=>{OnPageSelected.InvokeAsync(FootballPagesEnum.Home);}">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="#" @onclick:preventDefault="preventDefault" @onclick="()=>{OnPageSelected.InvokeAsync(FootballPagesEnum.Teams);}">Teams</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" @onclick:preventDefault="preventDefault" @onclick="()=>{OnPageSelected.InvokeAsync(FootballPagesEnum.Players);}">Players</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" @onclick:preventDefault="preventDefault" @onclick="()=>{OnPageSelected.InvokeAsync(FootballPagesEnum.Stats);}">Stats</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" @onclick:preventDefault="preventDefault" @onclick="()=>{OnPageSelected.InvokeAsync(FootballPagesEnum.ClockSettings);}">Clock Settings</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" @onclick:preventDefault="preventDefault" @onclick="()=>{OnPageSelected.InvokeAsync(FootballPagesEnum.OutputSettings);}">Output Settings</a>
+    </li>
+</ul>
+@code {
+    [Parameter]
+    public EventCallback<FootballPagesEnum> OnPageSelected { get; set; }
+    bool preventDefault = true;
+}

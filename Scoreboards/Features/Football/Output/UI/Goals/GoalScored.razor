@@ -1,0 +1,14 @@
+﻿@using Scoreboards.Data;
+@using Scoreboards.Data.Football;
+<div>
+    <p style="font-size:10rem">Goal!</p>
+    <p style="font-size:5rem">
+        @EventBus.Data.FirstOrDefault(x=>x.Key==FootballEventsDataKeysEnum.GoalScored_Scorer).Value
+
+    </p>
+</div>
+
+@code {
+    [Parameter]
+    public FootballEventBus EventBus { get; set; } = new FootballEventBus();
+}

@@ -1,0 +1,107 @@
+﻿<div class="container">
+    <div class="row" id="top-row">
+        <div class="column region">
+            <div class="width-30 height-85" style="padding-left:1rem;padding-right:1rem">
+                <Scoreboards.Features.Baseball.Output.UI.BattingOrder
+                    Team="@ViewModel.HomeTeam"
+                ></Scoreboards.Features.Baseball.Output.UI.BattingOrder>
+            </div>
+        </div>
+        <div class="column region">
+            <div class="width-70 height-85">
+
+                <div class="width-70 height-60">
+                    ok
+                </div>
+                <div class="width-70 height-25" style="display:flex">
+                    <div class="width-50 height-25">
+                        <Scoreboards.Features.Baseball.Output.UI.Linescore HomeTeam="ViewModel.HomeTeam"
+                                                                           AwayTeam="ViewModel.AwayTeam">
+
+                        </Scoreboards.Features.Baseball.Output.UI.Linescore>
+                    </div>
+                    <div class="width-20 height-25">
+                        Balls strikes outs
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+
+    </div>
+
+    <div class="row" id="ad-row">
+        <div class="column region">
+            <div class="width-100 height-15">
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    public BaseballScoreboardViewModel ViewModel { get; set; } = new BaseballScoreboardViewModel();
+}
+
+<style>
+    .container {
+        background-image:url("/assets/baseball/newyorkflushing/background.jpg");
+        background-size:cover;
+        font-size:20px;
+        color:#333;
+    }
+    .region {
+        background-color: #10199Ee6;
+    }
+    .ui-batting-order {
+        background: rgba(255,255,255,0.7);
+        height:85vh;
+    }
+    .ui-batting-order .head {
+            background-color: #10199E;
+            color: #EB5817;
+        font-weight:bold;
+        text-transform:uppercase;
+       
+        }
+
+        .ui-batting-order .head .team-name {
+            padding:1rem;
+            font-size:1.4rem;
+        }
+        .ui-batting-order li.item {
+            padding-top:0.3rem;
+            padding-bottom:0.3rem;
+            color:#10199E;
+        }
+        .ui-batting-order li.item div {
+            padding:0.3rem;
+            text-transform:uppercase;
+            min-width:2.5vw;
+            text-align:center;
+        }
+        .ui-batting-order li.item .name-column {
+            min-width:10vw;
+            text-align:left;
+        }
+        .ui-batting-order li.item .position-column {
+            min-width:4vw;
+        }
+
+    .ui-linescore {
+        color: #fff;
+        font-size: 1.2rem;
+    }
+    .ui-linescore .inning-item {
+            width:2vw;
+        }
+        .ui-linescore .team-name {
+            width:5vw;
+        }
+        .ui-linescore .rhe-column {
+            width:3vw;
+            font-weight:bold;
+        }
+</style>

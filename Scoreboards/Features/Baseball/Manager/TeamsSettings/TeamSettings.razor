@@ -1,0 +1,17 @@
+﻿@using Scoreboards.Data.Baseball;
+<h3>Team Settings</h3>
+<div class="row">
+    <div class="col-12">
+        <div class="input-group">
+            <input @bind="@Team.Name" class="form-control" />
+            <input @bind="@Team.Abbreviation" class="form-control" />
+            <input type="text" @bind="@Team.Logo" class="form-control" placeholder="Team Logo URL" />
+            <input type="color" @bind="@Team.AccentColorHex" class="form-control" />
+        </div>
+        <hr />
+    </div>
+</div>
+@code {
+    [Parameter]
+    public BaseballTeam Team { get; set; } = new BaseballTeam();
+}

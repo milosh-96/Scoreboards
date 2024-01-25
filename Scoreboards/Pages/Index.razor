@@ -1,9 +1,141 @@
-﻿@page "/"
+﻿@page "/landing"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home - @SiteInfo.Name</PageTitle>
+<!-- Responsive navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container px-5">
+        <a class="navbar-brand" href="#!">@SiteInfo.Name</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            @*<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">Services</a></li>
+            </ul>*@
+        </div>
+    </div>
+</nav>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<header class="bg-dark py-5">
+    <div class="container px-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-6">
+                <div class="text-center my-5">
+                    <h1 class="display-5 fw-bolder text-white mb-2">A scoreboard for you!</h1>
+                    <p class="lead text-white-50 mb-4">
+                        @SiteInfo.Description
+                    </p>
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                        <a class="btn btn-primary btn-lg px-4 me-sm-3" href="/app/manager/football">Get Started</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Features section-->
+<div>
+    <section class="py-5 border-bottom" id="features">
+        <div class="container px-5 my-5">
+            <div class="row gx-5">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
+                    <h2 class="h4 fw-bolder">Various  sports</h2>
+                    <p>Currently supported sports: football (soccer), basketball and baseball. More
+                        sports coming soon!
+                    </p>
+                   @* <a class="text-decoration-none" href="#!">
+                        See Road map
+                        <i class="bi bi-arrow-right"></i>
+                    </a>*@
+                </div>
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-building"></i></div>
+                    <h2 class="h4 fw-bolder">Live Stats</h2>
+                    <p>
+                        Our scoreboards support live match stats.
+                    </p>
+                   @* <a class="text-decoration-none" href="#!">
+                        More about Stats
+                        <i class="bi bi-arrow-right"></i>
+                    </a>*@
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
+                    <h2 class="h4 fw-bolder">Real(istic) Layouts</h2>
+                    <p>
+                        All Layout presets are inspired by real scoreboards. 
+                        For entertainment purposes there are some layouts that will
+                        allow you to simulate a real scoreboard. Currently the layout preset
+                        2 is a replica of the Anfield scoreboard.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+                    </p>
+                    <a class="text-decoration-none" href="/app/manager/football">
+                        Try Now (choose Preset 2)
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Pricing section-->
+    <section class="bg-light py-5 border-bottom">
+        <div class="container px-5 my-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder">Beta testing</h2>
+                <p class="lead mb-0">During beta test (and after it) some plans will be always free.</p>
+            </div>
+            <div class="row gx-5 justify-content-center">
+                <!-- Pricing card free-->
+                <div class="col-lg-6 col-xl-4">
+                    <div class="card mb-5 mb-xl-0">
+                        <div class="card-body p-5">
+                            <div class="small text-uppercase fw-bold text-muted">Free</div>
+                            <div class="mb-3">
+                                <span class="display-4 fw-bold">$0</span>
+                                <span class="text-muted">/ mo.</span>
+                            </div>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    <strong>5 live matches</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    All sports
+                                </li>
+                            </ul>
+                            <div class="d-grid"><a class="btn btn-outline-primary" href="/manager/football" target="_blank">Try Now</a></div>
+                        </div>
+                    </div>
+                </div>
+              
+                </div>
+            </div>
+       
+    </section>
+  
+    <section class="bg-light py-5 border-bottom">
+                <div class="container px-5 my-5">
+
+            <div class="row gx-5 justify-content-center">
+                <div class="col">
+                    <h2>How to use?</h2>
+                    <p>
+                        As an admin you will be using the manager window where you will be able to make all changes to the scoreboard.
+                        Once everything is ready, you can open the output window in a new tab/window and that tab/window can be then projected (mirrored)
+                        to the stadium screen. <strong>All updates will be immediately displayed on the output.</strong>
+                    </p>
+                    <p>
+                        If you use Windows operating system, these instructions about <a href="https://support.microsoft.com/en-us/windows/screen-mirroring-and-projecting-to-your-pc-5af9f371-c704-1c7f-8f0d-fa607551d09c" target="_blank">Screen Mirroning</a> may help you.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<footer class="py-5 bg-dark">
+    <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; @SiteInfo.Name 2022-@DateTime.Now.ToString("yyyy")</p></div>
+</footer>

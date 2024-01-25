@@ -1,0 +1,75 @@
+﻿@page "/scoreboard/baseball/{token}"
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Features.Baseball.Output
+@using Scoreboards.Data.Baseball;
+@using Scoreboards.Features.Baseball;
+@using System.Drawing;
+@using System.Text.Json;
+@inject IJSRuntime jsRuntime;
+@inject NavigationManager Navigation
+
+<div class="scoreboard">
+  <CascadingValue Value="@ViewModel">
+        <Scoreboards.Features.Baseball.Output.Layouts.NewYorkFlushingLayout></Scoreboards.Features.Baseball.Output.Layouts.NewYorkFlushingLayout>
+  </CascadingValue>
+</div>
+
+<style>
+
+</style>
+@code {
+
+    [Parameter]
+    public string Token { get; set; } = "";
+
+    //signalr stuff//
+    private HubConnection? hubConnection;
+    //properties
+    public string? ConnectionId { get; set; }
+
+    public BaseballScoreboardViewModel ViewModel { get; set; } = new BaseballScoreboardViewModel();
+
+
+    //life cycle events//
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/scoreboards/baseball"))
+            .Build();
+
+        hubConnection.On<KeyValuePair<string,BaseballScoreboardViewModel>>("UpdateData", (item) =>
+        {
+
+
+            if(item.Key == Token) {
+                ViewModel = item.Value;
+            }
+            InvokeAsync(StateHasChanged);
+
+            string jsonString = JsonSerializer.Serialize(ViewModel);
+
+        });
+        //hubConnection.On<KeyValuePair<string,FootballEventsEnum>>("EmittedEvent", async (item) =>
+        // {
+
+        //     var t = new System.Threading.Thread(async ()=>await OnEvent(item));
+        //     t.Start();
+        //});
+       
+
+        await hubConnection.StartAsync();
+    }
+
+
+    // events
+
+    //private async Task OnEvent(KeyValuePair<string,FootballEventsEnum> item) {
+    //         if(item.Key == Token) {
+    //                  ActiveEvent = item.Value;
+    //                  await Task.Delay(TimeSpan.FromSeconds(15));
+    //                  ActiveEvent = null;
+    //              }
+    //}
+    }
+
+      

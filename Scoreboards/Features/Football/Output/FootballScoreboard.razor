@@ -1,0 +1,79 @@
+﻿@page "/scoreboard/football/{token}"
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Data.Football;
+@using Scoreboards.Features.Football
+@using Scoreboards.Features.Football.Output.Layouts
+@using System.Drawing;
+@inject IJSRuntime jsRuntime;
+@inject NavigationManager Navigation
+
+<div>
+  <CascadingValue Value="@ViewModel">
+       
+        @switch (ViewModel.LayoutOptions.LayoutPreset)
+        {
+            case 2:
+                <LiverpoolBasedLayout></LiverpoolBasedLayout>
+                break;
+            case 3:
+                <BayernBasedLayout>
+
+                </BayernBasedLayout>
+                break;
+            case 1:
+            default:
+               
+                <PresetLayout1>
+                    <EventOutput>
+                        <EventOutput></EventOutput>
+                    </EventOutput>
+                </PresetLayout1>
+                break;
+        }
+  </CascadingValue>
+    <div style="border-top:0.5rem dashed blue;box-sizing:border-box;">if you see the blue dashed lines, align your screen so they aren't visible.</div>
+
+</div>
+
+@code {
+
+    [Parameter]
+    public string Token { get; set; } = "";
+
+    //signalr stuff//
+    private HubConnection? hubConnection;
+    //properties
+    public string? ConnectionId { get; set; }
+
+    public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+
+   
+
+    //life cycle events//
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/scoreboards/football"))
+            .Build();
+
+        hubConnection.On<KeyValuePair<string,FootballScoreboardViewModel>>("UpdateData", (item) =>
+        {
+
+
+            if(item.Key == Token) {
+                ViewModel = item.Value;
+            }
+            InvokeAsync(StateHasChanged);
+
+        });
+      
+
+
+        await hubConnection.StartAsync();
+    }
+
+
+    
+    }
+
+      

@@ -1,0 +1,41 @@
+﻿@using Scoreboards.Data;
+@using Scoreboards.Features.Football.Manager
+@using Scoreboards.Data.Football;
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <h3>@HomeTeam.Name</h3>
+                            <GoalEvent Mode="FootballEventsEnum.GoalScored"
+                                              EventBus="EventBus"
+                                              Team="HomeTeam"
+                                                CurrentTime="CurrentTime"
+                            >
+                                          </GoalEvent>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <h3>@AwayTeam.Name</h3>
+            <GoalEvent Mode="FootballEventsEnum.GoalScored"
+                       EventBus="EventBus"
+                       Team="AwayTeam"
+                       CurrentTime="CurrentTime"></GoalEvent>
+                        </div>
+                    </div>
+                    </div>
+                 
+@code {
+    [Parameter]
+    public Clock CurrentTime { get; set; }
+
+    [Parameter]
+    public FootballEventBus EventBus { get; set; } = new FootballEventBus();
+
+    [Parameter]
+    public FootballTeam HomeTeam { get; set; } = new FootballTeam(); 
+    
+    [Parameter]
+    public FootballTeam AwayTeam { get; set; } = new FootballTeam();
+
+}

@@ -1,16 +1,40 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
 @namespace Scoreboards.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
+@inject IHostEnvironment env;
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="@SiteInfo.Description" />
     <base href="~/" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link href="css/site.css" rel="stylesheet" />
-    <link href="Scoreboards.styles.css" rel="stylesheet" />
+    @if (!Context.Request.Path.Value.StartsWith("/scoreboard"))
+    {
+        <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css" />
+}
+    else {
+        <link rel="stylesheet" href="/css/output/shared.css">
+        <link rel="stylesheet" href="https://unpkg.com/@@glidejs/glide@3.6.0/dist/css/glide.core.min.css">
+        <link href="/lib/animatecss/animate.min.css" rel="stylesheet" />
+
+    }
+    <link href="/css/site.css" rel="stylesheet" />
+
+   
+    
+    @if(env.IsProduction())
+    {
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-TYF8C9N8SS"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', 'G-YVMYNPNN30');
+        </script>
+    }
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 <body>
@@ -27,6 +51,21 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <script src="_framework/blazor.server.js"></script>
+    
+    <script src="/_framework/blazor.server.js"></script>
+   
+    @if (!Context.Request.Path.Value.StartsWith("/scoreboard"))
+    {
+        <script src="/lib/jquery/jquery.slim.min.js"></script>
+        <script src="/lib/popper/umd/popper.min.js"></script>
+        <script src="/lib/bootstrap/js/bootstrap.bundle.js"></script>
+    }
+    else
+    {
+        <script src="https://unpkg.com/@@glidejs/glide@3.6.0/dist/glide.min.js"></script>
+        <script src="/js/init-scripts.js"></script>
+    }
 </body>
 </html>
+
+

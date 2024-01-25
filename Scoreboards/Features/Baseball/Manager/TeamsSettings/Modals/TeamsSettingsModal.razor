@@ -1,0 +1,38 @@
+﻿@using Scoreboards.Features.Baseball.Manager.Lineups.Components
+@using Scoreboards.Data.Baseball;
+<!-- Modal -->
+<div class="modal modal-xl fade" id="editTeams" tabindex="-1" aria-labelledby="editTeamsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editTeamsLabel">Edit Teams</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        Home team
+                        <hr />
+                        <TeamSettings Team="HomeTeam"></TeamSettings>
+                    </div>
+                    <div class="col">
+                        Away Team
+                        <hr />
+                        <TeamSettings Team="AwayTeam"></TeamSettings>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public BaseballTeam HomeTeam { get; set; } = new BaseballTeam();
+    [Parameter]
+    public BaseballTeam AwayTeam { get; set; } = new BaseballTeam();
+}

@@ -1,0 +1,64 @@
+﻿@using Scoreboards.Features.Football;
+<div class="wrapper">
+    <div class="container scoreboard">
+            <div class="row">
+                <div class="region width-50 height-25 team-name">
+                    @ViewModel.HomeTeam.Name
+                </div>
+                <div class="region width-25 height-25 team-score">
+                    @ViewModel.HomeTeam.Score
+                </div>
+                <div class="region width-25 height-25 date-time">
+                    @DateTime.Now.ToString("HH:mm")
+                </div>
+                
+                
+            </div>
+            <div class="row">
+                    <div class="region width-50 height-25 team-name">
+                        @ViewModel.AwayTeam.Name
+                    </div>
+                    <div class="region width-25 height-25 team-score">
+                        @ViewModel.AwayTeam.Score
+                    </div>
+                    <div class="region width-25 height-25 clock">
+                        @ViewModel.GetClockString()
+                    </div>
+                
+            </div>
+           
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+}
+
+<style>
+    
+    .scoreboard {
+        flex-direction:column;
+        font-size:1rem;
+        background:@ViewModel.HomeTeam.AccentColorHex;
+        align-content:center;
+        color:#fff;
+        
+    }   
+    .row,.region {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .scoreboard .team-name {
+        font-size:7rem;
+        text-transform:uppercase;
+    }
+    .scoreboard .team-score {
+        font-size:7rem;
+        font-weight:bold;
+    }
+    .scoreboard .clock,.scoreboard .date-time {
+        font-size:7rem;
+    }
+</style>

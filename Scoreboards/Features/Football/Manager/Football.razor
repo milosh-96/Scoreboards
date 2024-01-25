@@ -1,0 +1,340 @@
+﻿@page "/manager/football"
+@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Data;
+@using Scoreboards.Features.Football
+@using Scoreboards.Features.Football.Manager
+@using Scoreboards.Features.Football.Output;
+@using Scoreboards.Data.Football;
+@implements IDisposable;
+@inject NavigationManager Navigation
+@inject FootballScoreboardViewModel ViewModel;
+
+<PageTitle>Operator Panel, Football - @SiteInfo.Name</PageTitle>
+<div class="container mb-3">
+    <div id="statusbar" style="margin:16px 0;padding:8px;background:#333;color:#fff">
+        Current match: @ViewModel.GetClockString(), @ViewModel.GetMatchTitleWithScore()
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <Navigation OnPageSelected="SwitchPage"></Navigation>
+        </div>
+        <div class="col-12 col-md-9">
+            <h3>Football - @CurrentPage.ToString()</h3>
+            <div class="row">
+              
+                <div class="col">
+                    <a class="btn btn-primary mx-1" href="/scoreboard/football/@ConnectionToken" target="_blank">Open Output</a>
+                    @if (dataSyncTimer != null)
+                    {
+                        <button class="btn btn-sm btn-warning" @onclick="()=>{dataSyncTimer.Dispose();dataSyncTimer=null;}">Pause Output Syncing</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-success" @onclick="()=>SetupDataSyncTimer()">Start Output Syncing</button>
+                    }
+                </div>
+            </div>
+
+            <hr />
+
+
+            @switch(CurrentPage)
+            {
+                case FootballPagesEnum.Teams:
+                    <Scoreboards.Features.Football.Manager.Pages.Teams
+                        HomeTeam="ViewModel.HomeTeam"
+                        AwayTeam="ViewModel.AwayTeam"
+                    ></Scoreboards.Features.Football.Manager.Pages.Teams>
+                    break;
+                    case FootballPagesEnum.Players:
+                    <Scoreboards.Features.Football.Manager.Pages.Players
+                        HomeTeam="ViewModel.HomeTeam"
+                        AwayTeam="ViewModel.AwayTeam"
+                    ></Scoreboards.Features.Football.Manager.Pages.Players>
+                    break;
+                    case FootballPagesEnum.Stats:
+                    <Scoreboards.Features.Football.Manager.Pages.Stats
+                        HomeTeam="ViewModel.HomeTeam"
+                        AwayTeam="ViewModel.AwayTeam"
+                    ></Scoreboards.Features.Football.Manager.Pages.Stats>
+                    break;
+                    
+                    case FootballPagesEnum.ClockSettings:
+                    <Scoreboards.Features.Football.Manager.Pages.ClockSettings
+                        timer="timer"
+                        Clock="ViewModel.Clock"
+                        OnClockStart="StartTimer"
+                        OnClockStop="StopTimer"
+                    ></Scoreboards.Features.Football.Manager.Pages.ClockSettings>
+                    break;
+                    case FootballPagesEnum.OutputSettings:
+                    <Scoreboards.Features.Football.Manager.Pages.OutputSettings
+                        LayoutOptions="ViewModel.LayoutOptions"
+                    ></Scoreboards.Features.Football.Manager.Pages.OutputSettings>
+                    break;
+                default:
+                    <div class="row">
+                        <div class="col-md-8">
+
+                            <div class="row">
+                                <hr />
+                                <div class="col">
+                                    <div>
+                                       
+                                    </div>
+                                    <hr />
+                                    <h3>Match Events</h3>
+                                    <div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <button class="btn btn-secondary"
+                                                @onclick="@(
+                                        async ()=>{
+                                            ViewModel.Clock.Milliseconds = 0;
+                                            TriggerEvent(FootballEventsEnum.MatchStarted,"Kick-Off");
+                                    await StartTimer();
+                                        }
+                                    )"
+                                                        disabled="@(timer != null)">
+                                                    Kick Off
+                                                </button>
+                                                <button class="mx-1 btn btn-secondary"
+                                                @onclick="@(
+                                        async ()=>{
+                                            await StopTimer();
+                                            ViewModel.Clock.Milliseconds = 45*60000;
+                                            TriggerEvent(FootballEventsEnum.HalfTime,"Half-Time!");
+
+                                        }
+                                     )"
+                                                        disabled="@(timer == null)">
+                                                    Half Time
+                                                </button>
+                                                <button class="btn btn-secondary"
+                                                @onclick="@(
+                                        async ()=>{
+                                            await StopTimer();
+                                            ViewModel.Clock.Milliseconds = 90*60000;
+                                            TriggerEvent(FootballEventsEnum.MatchEnd,"Full-Time!");
+
+                                        }
+                                    )"
+                                                        disabled="@(timer == null)">
+                                                    Match End
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col mt-3">
+                                                <button class="mx-1 btn btn-secondary"
+                                                @onclick="@(
+                                        async ()=>{
+                                            ViewModel.HomeTeam.Score++;
+                                            TriggerEvent(FootballEventsEnum.GoalScored,"GOOAALL!!!!!");
+
+                                        }
+                                    )">
+                                                    Goal (home team)
+                                                </button>
+                                                <button class="btn btn-secondary"
+                                                @onclick="@(
+                                        async ()=>{
+                                            ViewModel.AwayTeam.Score++;
+                                            TriggerEvent(
+                                                FootballEventsEnum.GoalScored,
+                                                "Goal for visitors.",
+                                                new ScoreboardEventOutputOptions() {
+                                                    FontSize = 5,BackgroundColor = ViewModel.AwayTeam.AccentColorHex,
+                                                    AnimationCssClasses = new List<string>()
+                                                }
+                                                );
+
+                                        }
+                                    )">
+                                                    Goal (away team)
+
+                                                </button>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col mt-3">
+
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventSelector">
+                                                Events Dashboard
+                                            </button>
+                                            <EventSelectorModal ViewModel="ViewModel"></EventSelectorModal>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-4">
+                            <h3>@ViewModel.GetClockString()</h3>
+                        </div>
+                    </div>
+                    break;
+            }
+            
+        </div>
+    </div>
+    <hr />
+    <div class="alert alert-warning">
+        Do not close this tab/window. Closing of this tab/window will stop all outputs
+        with current token. All entered data will be lost as well!
+    </div>
+    </div>
+@*debug
+    <div>
+    token: @Token
+    @if (hubConnection != null && hubConnection.ConnectionId != null) {
+    <span>@hubConnection.ConnectionId</span>
+    }
+    else {
+    <span>wait...</span>
+    }
+    </div>*@
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        ViewModel.HomeTeam.Name = "Inter";
+        ViewModel.HomeTeam.Logo = "https://uploads.r8match.com/sportsglobe/football/ita/fc-internazionale-milano.png";  
+
+        ViewModel.AwayTeam.Name = "AC Milan";
+        ViewModel.AwayTeam.Logo = "https://uploads.r8match.com/sportsglobe/football/ita/ac-milan.png";
+    }     
+    public void Dispose()
+    {
+        // kill connection with current token when this tab/window is closed //
+        if (hubConnection != null)
+        {
+            Task.Run(async () => { await hubConnection.DisposeAsync(); });
+        }
+    }
+    //signalr stuff//
+
+    private HubConnection? hubConnection;
+    //properties
+    private string ConnectionToken { get; set; } = Guid.NewGuid().ToString();
+
+    //public FootballScoreboardViewModel ViewModel { get; set; } = new FootballScoreboardViewModel();
+    // this timer will be run to send data to output //
+    System.Threading.Timer? dataSyncTimer;
+
+    //this is game clock
+    System.Threading.Timer? timer;
+
+    FootballPagesEnum CurrentPage { get; set; } = FootballPagesEnum.Home;
+
+    private void SetClock(object stateInfo)
+    {
+        // increment seconds count of viewmodel //
+        ViewModel.Clock.Milliseconds = ViewModel.Clock.Milliseconds + 1000;
+
+        InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
+    }
+    private void SyncScoreboardData(object stateInfo)
+    {
+        if (hubConnection != null)
+        {
+            // send data to output each seconds, this is important because of clock //
+            Task.Run(async () =>
+                {
+                    await RefreshOutputData();
+                }
+            );
+        }
+        InvokeAsync(StateHasChanged); // MUST CALL StateHasChanged() BECAUSE THIS IS TRIGGERED BY A TIMER INSTEAD OF A USER EVENT
+    }
+    public async Task StartTimer()
+    {
+        if (timer == null)
+        {
+            // run timer every second
+            timer = new System.Threading.Timer(SetClock, new System.Threading.AutoResetEvent(false), 10, 1000); //
+        }
+    }
+
+    public async Task StopTimer()
+    {
+        if (timer != null)
+        {
+            timer.Dispose();
+            timer = null;
+        }
+    }
+
+    public async Task RefreshOutputData()
+    {
+        if (hubConnection != null)
+        {
+            await hubConnection.SendAsync("SendMessage",
+              new KeyValuePair<string, FootballScoreboardViewModel>(ConnectionToken, ViewModel)
+          );
+        }
+    }
+
+    public void SetupDataSyncTimer()
+    {
+        if (dataSyncTimer == null)
+        {
+            // run timer every second
+            dataSyncTimer = new System.Threading.Timer(SyncScoreboardData, new System.Threading.AutoResetEvent(false), 10, 1000); //
+        }
+    }
+
+    // match events
+    public void TriggerEvent(FootballEventsEnum eventType,string message)
+    {
+        ViewModel.Event.EventType = eventType;
+        ViewModel.Event.Message = message;
+        ViewModel.Event.Options.BackgroundColor = ViewModel.HomeTeam.AccentColorHex; ;
+        ViewModel.Event.Activate();
+    } 
+    public void TriggerEvent(FootballEventsEnum eventType, string message, ScoreboardEventOutputOptions options)
+    {
+        TriggerEvent(eventType, message);
+        ViewModel.Event.Options = options;
+    }
+
+    private void SwitchPage(FootballPagesEnum page)
+    {
+        CurrentPage = page;
+    }
+
+    //life cycle events//
+    protected override async Task OnInitializedAsync()
+    {
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/scoreboards/football"))
+        .Build();
+
+        await hubConnection.StartAsync();
+
+        // start output updates once app is started //
+        SetupDataSyncTimer();
+    }
+
+   
+
+
+
+
+
+
+
+
+}

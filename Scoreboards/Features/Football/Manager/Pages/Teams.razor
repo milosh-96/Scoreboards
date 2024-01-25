@@ -1,0 +1,31 @@
+﻿@using Scoreboards.Data.Football;
+<h3>Teams</h3>
+<div class="row">
+    <div class="col-12">
+        <span>Home Team</span>
+        <div class="input-group">
+            <input @bind="@HomeTeam.Name" class="form-control" />
+            <input type="number" min="0" max="15" @bind="@HomeTeam.Score" class="form-control" />
+            <input type="text" @bind="@HomeTeam.Logo" class="form-control" placeholder="Team Logo URL" />
+            <input type="color" @bind="@HomeTeam.AccentColorHex" class="form-control" />
+        </div>
+        <hr />
+
+    </div>
+    <div class="col-12">
+        <span>Away Team</span>
+        <div class="input-group">
+            <input @bind="@AwayTeam.Name" class="form-control" />
+            <input type="number" min="0" max="15" @bind="@AwayTeam.Score" class="form-control" />
+            <input type="text" @bind="@AwayTeam.Logo" class="form-control" placeholder="Team Logo URL" />
+            <input type="color" @bind="@AwayTeam.AccentColorHex" class="form-control" />
+        </div>
+        <hr />
+    </div>
+</div>
+@code {
+    [Parameter]
+    public FootballTeam HomeTeam { get; set; } = new FootballTeam();
+    [Parameter]
+    public FootballTeam AwayTeam { get; set; } = new FootballTeam();
+}

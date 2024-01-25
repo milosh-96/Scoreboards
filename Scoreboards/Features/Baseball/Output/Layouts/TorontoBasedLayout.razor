@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client;
+@using Scoreboards.Features.Baseball.Output
+@using Scoreboards.Data.Baseball;
+@using Scoreboards.Features.Baseball;
+@{
+
+}
+<div class="container">
+    <div class="row" id="top-row">
+        <div class="column">
+            <div class="width-25 height-75">
+                @switch (ViewModel.Game.CurrentInning.State)
+                {
+                    case BaseballInningStateEnum.Top:
+                    case BaseballInningStateEnum.Middle:
+                        <Scoreboards.Features.Baseball.Output.UI.BattingOrder Team="ViewModel.AwayTeam"></Scoreboards.Features.Baseball.Output.UI.BattingOrder>
+                        break;
+                    default:
+                        <Scoreboards.Features.Baseball.Output.UI.BattingOrder Team="ViewModel.HomeTeam"></Scoreboards.Features.Baseball.Output.UI.BattingOrder>
+                        break;
+                }
+            </div>
+           
+        </div>
+        <div class="column">
+            <div class="width-50 height-75">
+                <p>aaaa</p> <p>aaaa</p> <p>aaaa</p> <p>aaaa</p> <p>aaaa</p>
+            </div>
+          
+        </div>
+        <div class="column">
+            <div class="width-25 height-75">
+                <p>sidebar</p>
+            </div>
+          
+        </div>
+    </div>
+    <div class="row" id="bottom-row">
+                    <div class="region width-10 height-25">
+                        <img width="100%"
+                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR757bKJiroURNgG3b8b_WFENDurqfiY8Qn0c8wR0bF7BDPgcvceb3n_A1yqQ9AWBZdw8&usqp=CAU" alt="" />
+                    </div>
+                    <div class="region width-15 height-25">due up</div>
+            <div class="region width-50 height-25">
+                <Scoreboards.Features.Baseball.Output.UI.Linescore HomeTeam="ViewModel.HomeTeam"
+                                                                   AwayTeam="ViewModel.AwayTeam"
+                                                                   ShowHeadingRow="true"></Scoreboards.Features.Baseball.Output.UI.Linescore>
+            </div>
+            <div class="region width-25 height-25">
+                <div class="ui-inning-state">
+                    <div class="head">
+                            <div>B</div>
+                            <div>S</div>
+                            <div>O</div>
+                    </div>
+                    <div class="content-body">
+                                <div>@ViewModel.Game.CurrentAtBat.Balls</div>
+                                <div>@ViewModel.Game.CurrentAtBat.Strikes</div>
+                                <div>@ViewModel.Game.CurrentInning.Outs</div>
+                            </div>
+                      
+                </div>
+            </div>
+    </div>
+</div>
+@code {
+
+    [CascadingParameter]
+    public BaseballScoreboardViewModel ViewModel { get; set; } = new BaseballScoreboardViewModel();
+}
+
+<style>
+
+
+       
+</style>

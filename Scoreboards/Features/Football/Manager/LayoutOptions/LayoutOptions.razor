@@ -1,0 +1,35 @@
+﻿@using Scoreboards.Features.Football;
+<p>You can customize what will be shown on the preset layout.
+    <small>some layouts don't include all options that are listed here</small>
+
+</p>
+<div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" @bind="Options.ShowClock" />
+        <label class="form-check-label">Show clock</label>
+
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" @bind="Options.ShowTeamLogos" />
+        <label class="form-check-label">Show Team Logos</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" @bind="Options.ShowTeamNames" />
+        <label class="form-check-label">Show Team Names</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" @bind="Options.ShowLineups" />
+        <label class="form-check-label">Show Lineups</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" @bind="Options.ShowStats" />
+        <label class="form-check-label">Show Stats</label>
+        
+        <em>on some layouts stats will replace lineups</em>
+    </div>
+    
+</div>
+@code {
+    [Parameter]
+    public FootballScoreboardLayoutOptions Options { get; set; } = new FootballScoreboardLayoutOptions();
+}

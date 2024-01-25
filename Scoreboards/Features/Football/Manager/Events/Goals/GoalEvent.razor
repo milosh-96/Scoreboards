@@ -1,0 +1,66 @@
+﻿@using Scoreboards.Data.Football;
+@using Scoreboards.Data;
+<h3>GoalEvent</h3>
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            <label>Who scored?</label>
+            <select class="form-control" @bind="ScorerIndex">
+                @foreach(var item in Team.Players)
+                {
+                    <option value="@Team.Players.IndexOf(item)">@item.ToString()</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Minute: </label>
+            <div>
+                <div class="d-inline">
+                    <input type="number" @bind="@Minute" />
+                </div>
+                <div class="d-inline">
+                    <button class="btn btn-secondary" @onclick="()=>Minute = (CurrentTime.Milliseconds / 60000)">Current time</button>
+                </div>
+            </div>
+        </div>
+        <button @onclick="Confirm" class="btn btn-primary">Confirm</button>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public Clock CurrentTime { get; set; }
+    [Parameter]
+    public FootballEventsEnum Mode { get; set; } = FootballEventsEnum.None;
+    [Parameter]
+    public FootballEventBus EventBus { get; set; } = new FootballEventBus();
+
+    [Parameter]
+    public FootballTeam Team { get; set; } = new FootballTeam();
+
+    public FootballPlayer Scorer { get; set; } = new FootballPlayer();
+    public int ScorerIndex { get; set; } = 0;
+    public int Minute { get; set; } = 0;
+
+
+    public void Confirm()
+    {
+        Scorer = Team.Players[ScorerIndex];
+        Team.Scorers.Add(new FootballScorer()
+            {
+                Player = Scorer,
+                Time = Minute * 60000
+        });
+        EventBus.Data = new List<KeyValuePair<FootballEventsDataKeysEnum, string>>()
+        {
+            new KeyValuePair<FootballEventsDataKeysEnum, string>(FootballEventsDataKeysEnum.GoalScored_Scorer,Scorer.ToString()),
+        };
+        EventBus.EventType = Mode;
+        Team.Score = Team.Score + 1;
+        Team.Scorers = Team.Scorers;
+        EventBus.Activate(TimeSpan.FromSeconds(30));
+
+        this.StateHasChanged();
+        this.ScorerIndex = 0;
+        this.Scorer = Team.Players[0];
+    }
+}
